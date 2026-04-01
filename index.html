@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task & Expense Manager Pro v2</title>
+    <title>Task & Expense Manager Pro v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -85,12 +85,8 @@
             display:none; flex-direction:column; align-items:center; justify-content:center;
             padding:80px 20px; opacity:0.3; text-align:center;
         }
-
-        /* MIGLIORIA: Budget progress bar */
         .budget-bar { height:6px; border-radius:3px; background:#1f2937; overflow:hidden; }
         .budget-bar-fill { height:100%; border-radius:3px; transition:width 0.4s ease; }
-
-        /* MIGLIORIA: Undo toast */
         #undoToast {
             position:fixed; bottom:80px; right:24px; z-index:101;
             background:#1e293b; border:1px solid #334155; color:white;
@@ -100,8 +96,6 @@
             animation: slideDown 0.25s ease;
         }
         #undoToast.visible { display:flex; }
-
-        /* MIGLIORIA: Range slider */
         input[type="range"] {
             -webkit-appearance:none; appearance:none; height:4px;
             background:#1f2937; border-radius:2px; outline:none;
@@ -110,7 +104,6 @@
             -webkit-appearance:none; width:14px; height:14px;
             background:#3b82f6; border-radius:50%; cursor:pointer;
         }
-
         /* Light mode */
         html:not(.dark) body { background:#f1f5f9; color:#1e293b; }
         html:not(.dark) .section-card { background:#fff; border-color:#e2e8f0; }
@@ -146,7 +139,6 @@
     <div id="calTipBody" class="space-y-0.5"></div>
 </div>
 
-<!-- MIGLIORIA 1: Undo toast -->
 <div id="undoToast">
     <span id="undoMsg" class="text-sm font-semibold"></span>
     <button id="undoBtn" class="text-xs font-black px-3 py-1.5 bg-accent text-white rounded-lg hover:bg-blue-600 transition-colors">Annulla</button>
@@ -165,11 +157,10 @@
             </div>
             <div>
                 <h1 class="text-xl font-bold tracking-tight text-white leading-none">Task &amp; Expenses</h1>
-                <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v2</p>
+                <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v3</p>
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <!-- MIGLIORIA 9: Valuta configurabile -->
             <select id="currencySelect" onchange="setCurrency(this.value)"
                 class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-accent appearance-none cursor-pointer">
                 <option value="€">€ EUR</option>
@@ -177,7 +168,6 @@
                 <option value="£">£ GBP</option>
                 <option value="CHF">CHF</option>
             </select>
-            <!-- MIGLIORIA 8: Notifiche -->
             <button onclick="requestNotifications()" id="notifBtn" title="Attiva notifiche scadenze"
                 class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm">🔔</button>
             <button onclick="toggleTheme()" class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm">
@@ -198,7 +188,84 @@
         <!-- ===== SIDEBAR ===== -->
         <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
 
-            <!-- Form -->
+            <!-- ① RIEPILOGO & SALDO — ora in cima -->
+            <div class="section-card border-t-[3px] border-t-emerald-500">
+                <details class="group" open>
+                    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-emerald-400 group-open:mb-4">
+                        💰 Riepilogo &amp; Saldo
+                        <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
+                    </summary>
+                    <div class="space-y-2 pt-3 border-t border-slate-800">
+                        <!-- Saldo 30gg -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">Saldo netto (30 giorni)</div>
+                            <div class="grid grid-cols-3 gap-2 text-center">
+                                <div>
+                                    <div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5">Entrate</div>
+                                    <div id="balanceIncome" class="mono text-xs font-bold text-emerald-400">0.00</div>
+                                </div>
+                                <div>
+                                    <div class="text-[8px] text-red-400 font-bold uppercase mb-0.5">Spese</div>
+                                    <div id="balanceExpense" class="mono text-xs font-bold text-red-400">0.00</div>
+                                </div>
+                                <div>
+                                    <div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5">Netto</div>
+                                    <div id="balanceNet" class="mono text-xs font-bold text-white">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Totali rapidi -->
+                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
+                            <span class="text-[10px] text-slate-500">Oggi</span>
+                            <span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
+                            <span class="text-[10px] text-slate-500">Ultimi 7 giorni</span>
+                            <span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
+                            <span class="text-[10px] text-slate-500">Ultimi 30 giorni</span>
+                            <span id="summaryMonthly" class="mono font-bold text-sm text-white">0.00</span>
+                        </div>
+                        <!-- Periodo personalizzato -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Periodo personalizzato</label>
+                            <div class="grid grid-cols-2 gap-2 mb-2">
+                                <input type="date" id="filterStart" onchange="calculateSummaries()"
+                                    class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
+                                <input type="date" id="filterEnd" onchange="calculateSummaries()"
+                                    class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="applyPeriodFilter()"
+                                    class="flex-1 text-[9px] font-bold py-1.5 px-2 bg-accent/20 text-accent border border-accent/30 rounded-lg hover:bg-accent/30 transition-colors">📋 Filtra</button>
+                                <button onclick="clearPeriodFilter()"
+                                    class="text-[9px] font-bold py-1.5 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors">✕</button>
+                            </div>
+                            <div id="periodTotalContainer" class="hidden mt-2 bg-accent/10 border border-accent/20 p-2 rounded-lg text-center">
+                                <span class="text-[9px] text-slate-400 block mb-0.5">Totale spese periodo</span>
+                                <span id="summaryPeriod" class="mono font-bold text-base text-white">0.00</span>
+                            </div>
+                        </div>
+                        <!-- Filtro importo -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Filtro importo</label>
+                            <div class="flex items-center gap-2">
+                                <span id="rangeMinLabel" class="text-[9px] mono text-slate-500 w-12">0</span>
+                                <input type="range" id="rangeMin" min="0" max="5000" value="0" step="10" oninput="onRangeChange()" class="flex-1">
+                                <input type="range" id="rangeMax" min="0" max="5000" value="5000" step="10" oninput="onRangeChange()" class="flex-1">
+                                <span id="rangeMaxLabel" class="text-[9px] mono text-slate-500 w-12 text-right">5000</span>
+                            </div>
+                            <div class="flex gap-2 mt-1.5">
+                                <button onclick="applyAmountFilter()" class="flex-1 text-[9px] font-bold py-1 bg-accent/20 text-accent border border-accent/30 rounded-lg">Applica</button>
+                                <button onclick="clearAmountFilter()" class="text-[9px] font-bold py-1 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- ② FORM — Nuovo Task / Spesa -->
             <div class="section-card border-t-[3px] border-t-accent">
                 <h2 id="formTitle" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
                     <span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
@@ -273,7 +340,7 @@
                 </form>
             </div>
 
-            <!-- Calendario -->
+            <!-- ③ Calendario -->
             <div class="section-card">
                 <details class="group" open>
                     <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -322,7 +389,7 @@
                 </details>
             </div>
 
-            <!-- Analisi Spese -->
+            <!-- ④ Analisi Spese -->
             <div class="section-card">
                 <details class="group">
                     <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -334,8 +401,7 @@
                             <button onclick="switchChartTab('dist')" id="tabDist"
                                 class="chart-tab active flex-1 text-[9px] font-bold py-1.5 rounded-lg">🍩 Distribuzione</button>
                             <button onclick="switchChartTab('trend')" id="tabTrend"
-                                class="chart-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📈 Trend 6 mesi</button>
-                            <!-- MIGLIORIA 11: Grafico saldo netto -->
+                                class="chart-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📈 Trend 6M</button>
                             <button onclick="switchChartTab('balance')" id="tabBalance"
                                 class="chart-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">💹 Saldo</button>
                         </div>
@@ -364,7 +430,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- MIGLIORIA 11: Panel saldo netto -->
                         <div id="panelBalance" class="hidden">
                             <div class="h-52 relative"><canvas id="balanceChart"></canvas></div>
                             <div class="flex justify-center gap-5 mt-2.5">
@@ -378,82 +443,7 @@
                 </details>
             </div>
 
-            <!-- Riepilogo + Saldo netto -->
-            <div class="section-card">
-                <details class="group" open>
-                    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-accent group-open:mb-4">
-                        💰 Riepilogo &amp; Saldo
-                        <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-                    </summary>
-                    <div class="space-y-2 pt-3 border-t border-slate-800">
-                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                            <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">Saldo netto (30 giorni)</div>
-                            <div class="grid grid-cols-3 gap-2 text-center">
-                                <div>
-                                    <div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5">Entrate</div>
-                                    <div id="balanceIncome" class="mono text-xs font-bold text-emerald-400">0.00</div>
-                                </div>
-                                <div>
-                                    <div class="text-[8px] text-red-400 font-bold uppercase mb-0.5">Spese</div>
-                                    <div id="balanceExpense" class="mono text-xs font-bold text-red-400">0.00</div>
-                                </div>
-                                <div>
-                                    <div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5">Netto</div>
-                                    <div id="balanceNet" class="mono text-xs font-bold text-white">0.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                            <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Periodo personalizzato</label>
-                            <div class="grid grid-cols-2 gap-2 mb-2">
-                                <input type="date" id="filterStart" onchange="calculateSummaries()"
-                                    class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
-                                <input type="date" id="filterEnd" onchange="calculateSummaries()"
-                                    class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="applyPeriodFilter()"
-                                    class="flex-1 text-[9px] font-bold py-1.5 px-2 bg-accent/20 text-accent border border-accent/30 rounded-lg hover:bg-accent/30 transition-colors">📋 Filtra</button>
-                                <button onclick="clearPeriodFilter()"
-                                    class="text-[9px] font-bold py-1.5 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors">✕</button>
-                            </div>
-                            <div id="periodTotalContainer" class="hidden mt-2 bg-accent/10 border border-accent/20 p-2 rounded-lg text-center">
-                                <span class="text-[9px] text-slate-400 block mb-0.5">Totale spese periodo</span>
-                                <span id="summaryPeriod" class="mono font-bold text-base text-white">0.00</span>
-                            </div>
-                        </div>
-                        <!-- MIGLIORIA 7: Filtro importo -->
-                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                            <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Filtro importo</label>
-                            <div class="flex items-center gap-2">
-                                <span id="rangeMinLabel" class="text-[9px] mono text-slate-500 w-12">0</span>
-                                <input type="range" id="rangeMin" min="0" max="5000" value="0" step="10" oninput="onRangeChange()" class="flex-1">
-                                <input type="range" id="rangeMax" min="0" max="5000" value="5000" step="10" oninput="onRangeChange()" class="flex-1">
-                                <span id="rangeMaxLabel" class="text-[9px] mono text-slate-500 w-12 text-right">5000</span>
-                            </div>
-                            <div class="flex gap-2 mt-1.5">
-                                <button onclick="applyAmountFilter()" class="flex-1 text-[9px] font-bold py-1 bg-accent/20 text-accent border border-accent/30 rounded-lg">Applica</button>
-                                <button onclick="clearAmountFilter()" class="text-[9px] font-bold py-1 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg">✕</button>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
-                            <span class="text-[10px] text-slate-500">Oggi</span>
-                            <span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
-                            <span class="text-[10px] text-slate-500">Ultimi 7 giorni</span>
-                            <span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
-                            <span class="text-[10px] text-slate-500">Ultimi 30 giorni</span>
-                            <span id="summaryMonthly" class="mono font-bold text-sm text-white">0.00</span>
-                        </div>
-                    </div>
-                </details>
-            </div>
-
-            <!-- Persone -->
+            <!-- ⑤ Persone -->
             <div class="section-card">
                 <details class="group">
                     <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -474,7 +464,7 @@
                 </details>
             </div>
 
-            <!-- Categorie con Budget -->
+            <!-- ⑥ Categorie con Budget -->
             <div class="section-card">
                 <details class="group">
                     <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -488,7 +478,6 @@
                                 onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}">
                             <input type="color" id="newCatColor" value="#6366f1"
                                 class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5">
-                            <!-- MIGLIORIA 4: Budget per categoria -->
                             <input type="number" id="newCatBudget" placeholder="Budget" min="0" step="10"
                                 class="w-20 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-accent mono">
                             <button type="button" onclick="addCategory()" class="bg-accent px-3 py-2 rounded-xl text-white font-bold hover:bg-blue-600 transition-colors">✓</button>
@@ -505,7 +494,6 @@
             <div class="mb-4 flex flex-col sm:flex-row gap-3">
                 <div class="relative flex-1">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span>
-                    <!-- MIGLIORIA 5: Search con debounce -->
                     <input type="text" id="searchInput" placeholder="Cerca per categoria, descrizione, persona…"
                         oninput="debouncedSearch()"
                         class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors">
@@ -571,7 +559,7 @@
 
 <script>
 // =============================================
-// SAFE STORAGE — FIX crash localStorage
+// SAFE STORAGE
 // =============================================
 function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
 function safeSet(k,v) { try { localStorage.setItem(k, v); } catch(e) {} }
@@ -613,7 +601,7 @@ let undoTimeout=null, undoData=null;
 const CUR = () => state.currency;
 
 // =============================================
-// MIGLIORIA 9: Valuta
+// VALUTA
 // =============================================
 function setCurrency(v) {
     state.currency = v;
@@ -635,7 +623,7 @@ function applyTheme(dark) {
 function toggleTheme() { applyTheme(!document.documentElement.classList.contains('dark')); }
 
 // =============================================
-// INIT — try/catch per sicurezza totale
+// INIT
 // =============================================
 window.onload = () => {
     try {
@@ -644,6 +632,9 @@ window.onload = () => {
         document.getElementById('amountLabel').textContent = `Importo ${CUR()}`;
         document.getElementById('amountSymbol').textContent = CUR();
         document.getElementById('taskDate').value = todayStr();
+        // BUG FIX: init rangeMax label
+        document.getElementById('rangeMinLabel').textContent = CUR() + '0';
+        document.getElementById('rangeMaxLabel').textContent = CUR() + '5000';
         setTaskType('expense');
         initSelects();
         renderCategories();
@@ -654,13 +645,11 @@ window.onload = () => {
         calculateSummaries();
     } catch(e) { console.error('Init error:', e); }
 
-    // Chart init separato — se Chart.js non caricato, l'app funziona lo stesso
     try { initChart(); } catch(e) { console.warn('Chart init skipped:', e); }
     try { initMonthlyChart(); } catch(e) { console.warn('Monthly chart skipped:', e); }
     try { initBalanceChart(); } catch(e) { console.warn('Balance chart skipped:', e); }
     try { switchChartTab('dist'); } catch(e) {}
 
-    // MIGLIORIA 8: Notifiche scadenze oggi
     checkTodayNotifications();
 };
 
@@ -675,16 +664,19 @@ function parseDateLocal(str) {
     const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m-1, d);
 }
-function fmt(n) { return `${CUR()} ${n.toFixed(2)}`; }
+// BUG FIX: fmt() ora non aggiunge spazio per CHF
+function fmt(n) {
+    const c = CUR();
+    return c.length > 1 ? `${n.toFixed(2)} ${c}` : `${c}${n.toFixed(2)}`;
+}
 
-// MIGLIORIA 5: Search debounce
 function debouncedSearch() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => renderTasks(), 200);
 }
 
 // =============================================
-// MIGLIORIA 1: Undo Toast (sostituisce confirm)
+// UNDO TOAST
 // =============================================
 function showUndo(msg, data, onUndo) {
     hideUndo();
@@ -704,7 +696,7 @@ function hideUndo() {
 }
 
 // =============================================
-// MIGLIORIA 8: Notifiche browser
+// NOTIFICHE BROWSER
 // =============================================
 function requestNotifications() {
     if (!('Notification' in window)) { showToast('⚠️','Browser non supporta notifiche'); return; }
@@ -796,7 +788,7 @@ function renderClientFilters() {
     list.innerHTML = '';
     state.clients.forEach(c => {
         const btn = document.createElement('button');
-        btn.id = `filter-${c.id}`;
+        btn.id = `filter-client-${c.id}`;
         btn.className = 'filter-btn px-4 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';
         btn.style.color = c.color;
         btn.textContent = c.name;
@@ -830,7 +822,7 @@ function clearPeriodFilter() {
     calculateSummaries(); setFilter('all');
 }
 
-// MIGLIORIA 7: Filtro importo
+// Filtro importo
 function onRangeChange() {
     const min = parseInt(document.getElementById('rangeMin').value);
     const max = parseInt(document.getElementById('rangeMax').value);
@@ -873,6 +865,7 @@ function removeClient(id) {
     const backup = { clients:[...state.clients], tasks:state.tasks.map(t=>({...t})) };
     state.tasks.forEach(t => { if (t.clientId === id) t.clientId = null; });
     state.clients = state.clients.filter(c => c.id !== id);
+    // BUG FIX: reset filter se era sul client rimosso
     if (currentFilter === id) setFilter('all');
     saveState(); renderClientManagement(); renderClientFilters(); initSelects(); renderTasks(); renderCalendar();
     showUndo(`"${client.name}" rimosso`, backup, (b) => {
@@ -900,7 +893,7 @@ function renderClientManagement() {
 }
 
 // =============================================
-// CATEGORIE con BUDGET (MIGLIORIA 4)
+// CATEGORIE con BUDGET
 // =============================================
 function renderCategories() {
     const list = document.getElementById('categoryListDisplay');
@@ -908,7 +901,6 @@ function renderCategories() {
     const now = new Date();
     const curMonth = now.getMonth(), curYear = now.getFullYear();
     [...state.categories].sort((a,b)=>a.name.localeCompare(b.name)).forEach(c => {
-        // Calcola spesa mensile corrente per questa categoria
         const spent = state.tasks.filter(t => {
             if (t.done || t.type==='income' || !t.amount) return false;
             const td = parseDateLocal(t.date);
@@ -947,7 +939,6 @@ function addCategory() {
     const bi = document.getElementById('newCatBudget');
     const v = ni.value.trim();
     if (!v) { showToast('⚠️','Inserisci un nome!'); return; }
-    // FIX D: case-insensitive
     if (state.categories.find(c=>c.name.toLowerCase()===v.toLowerCase())) { showToast('⚠️','Categoria già esistente!'); return; }
     state.categories.push({ name:v, color:ci.value, budget: bi.value ? parseFloat(bi.value) : 0 });
     saveState(); renderCategories(); initSelects();
@@ -1045,7 +1036,7 @@ function goToToday(){const n=new Date();calYear=n.getFullYear();calMonth=n.getMo
 function syncCalendarToForm(){const v=document.getElementById('taskDate').value;if(!v)return;const[y,m]=v.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();}
 
 // =============================================
-// CHARTS — tutto in try/catch
+// CHARTS
 // =============================================
 function initChart(){
     if(typeof Chart==='undefined')return;
@@ -1078,7 +1069,6 @@ function updateMonthlyChart(){
     monthlyChart.data.labels=labels;monthlyChart.data.datasets[0].data=incD;monthlyChart.data.datasets[1].data=expD;monthlyChart.update();
 }
 
-// MIGLIORIA 11: Grafico saldo netto cumulativo
 function initBalanceChart(){
     if(typeof Chart==='undefined')return;
     const ctx=document.getElementById('balanceChart').getContext('2d');
@@ -1120,7 +1110,7 @@ function clearCatError(){
 }
 
 // =============================================
-// FORM SUBMIT — COMPLETAMENTE ROBUSTO
+// FORM SUBMIT
 // =============================================
 document.getElementById('mainForm').onsubmit = (e) => {
     e.preventDefault();
@@ -1145,11 +1135,18 @@ document.getElementById('mainForm').onsubmit = (e) => {
         return;
     }
 
+    // BUG FIX: importo negativo non permesso
+    const parsedAmount = amountVal !== '' ? parseFloat(amountVal) : null;
+    if (parsedAmount !== null && parsedAmount < 0) {
+        showToast('⚠️', 'Importo non può essere negativo!');
+        return;
+    }
+
     const taskData = {
         id:       editId ? parseInt(editId) : Date.now(),
         date, category:cat, type,
         clientId: clientId ? Number(clientId) : null,
-        amount:   amountVal !== '' ? parseFloat(amountVal) : null,
+        amount:   parsedAmount,
         note, recurrence, done:false
     };
 
@@ -1158,7 +1155,6 @@ document.getElementById('mainForm').onsubmit = (e) => {
         if (idx !== -1) state.tasks[idx] = {...state.tasks[idx], ...taskData, done: state.tasks[idx].done};
     } else {
         state.tasks.push(taskData);
-        // Reset al filtro "Tutti" così il nuovo task è visibile
         if (currentFilter !== 'all') {
             currentFilter = 'all';
             selectedCalDate = null;
@@ -1171,16 +1167,8 @@ document.getElementById('mainForm').onsubmit = (e) => {
         }
     }
 
-    // Salva e aggiorna UI — ogni step è indipendente
     saveState();
-    renderTasks();
-    renderCalendar();
-    renderClientManagement();
-    renderCategories();
-    calculateSummaries();
-    try { updateChart(); } catch(e) {}
-    try { if (chartTab==='trend') updateMonthlyChart(); } catch(e) {}
-    try { if (chartTab==='balance') updateBalanceChart(); } catch(e) {}
+    fullRefresh();
     resetForm();
     showToast('✓', editId ? 'Task aggiornato!' : 'Task salvato!');
 };
@@ -1201,12 +1189,11 @@ function toggleTaskStatus(id) {
         state.tasks.push({...task, id:Date.now(), date:getLocalDateStr(nd), done:false});
         showToast('🔄', `Ricorrenza → ${getLocalDateStr(nd)}`);
     }
-    saveState(); renderTasks(); renderCalendar(); renderClientManagement(); renderCategories(); calculateSummaries();
-    try{updateChart();}catch(e){} try{if(chartTab==='trend')updateMonthlyChart();}catch(e){} try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
+    saveState(); fullRefresh();
 }
 
 // =============================================
-// RENDER TASKS — ORDINAMENTO DISCENDENTE
+// RENDER TASKS
 // =============================================
 function renderTasks() {
     const grid = document.getElementById('taskGrid');
@@ -1217,7 +1204,6 @@ function renderTasks() {
     const today = parseDateLocal(ts);
     let filtered = [...state.tasks];
 
-    // Filtri
     if (currentFilter==='calDay'&&selectedCalDate) filtered=filtered.filter(t=>t.date===selectedCalDate);
     else if (currentFilter==='expired') filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
     else if (currentFilter==='expense') filtered=filtered.filter(t=>t.type==='expense');
@@ -1225,12 +1211,14 @@ function renderTasks() {
     else if (currentFilter==='period') {
         const s=document.getElementById('filterStart').value, en=document.getElementById('filterEnd').value;
         if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}
-    } else if (currentFilter!=='all') filtered=filtered.filter(t=>t.clientId===currentFilter);
+    } else if (currentFilter!=='all') {
+        // Filtro per client ID numerico
+        filtered=filtered.filter(t=>t.clientId===currentFilter);
+    }
 
-    // MIGLIORIA 7: Filtro importo
     if (amountFilterActive) {
         filtered = filtered.filter(t => {
-            if (!t.amount) return amountMin === 0;
+            if (t.amount === null || t.amount === undefined) return amountMin === 0;
             return t.amount >= amountMin && t.amount <= amountMax;
         });
     }
@@ -1244,7 +1232,6 @@ function renderTasks() {
         });
     }
 
-    // FIX B: Data discendente — più recenti in alto
     if (currentSort==='date') filtered.sort((a,b) => b.date.localeCompare(a.date));
     else if (currentSort==='amount') filtered.sort((a,b) => (b.amount||0)-(a.amount||0));
     else if (currentSort==='status') filtered.sort((a,b) => Number(a.done)-Number(b.done));
@@ -1256,8 +1243,11 @@ function renderTasks() {
         const exp=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
         const inc=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
         ftBox.classList.remove('hidden');
-        ftEl.textContent = inc>0 ? `+${fmt(inc)} / -${fmt(exp)}` : `-${fmt(exp)}`;
-    } else ftBox.classList.add('hidden');
+        // BUG FIX: mostra entrambi solo se ci sono entrate, altrimenti solo spese
+        ftEl.textContent = inc > 0 ? `+${fmt(inc)} / -${fmt(exp)}` : `-${fmt(exp)}`;
+    } else {
+        ftBox.classList.add('hidden');
+    }
 
     filtered.forEach(t => {
         const client=state.clients.find(c=>c.id===t.clientId);
@@ -1284,7 +1274,6 @@ function renderTasks() {
                     <span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑ Entrata':'↓ Spesa'}</span>
                 </div>
                 <div class="flex gap-1.5">
-                    <!-- MIGLIORIA 12: Duplica task -->
                     <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-600 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
                     <button onclick="editTask(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors">✏️</button>
                     <button onclick="deleteTask(${t.id})" class="text-xs text-slate-600 hover:text-red-400 p-1 transition-colors">✕</button>
@@ -1306,20 +1295,18 @@ function renderTasks() {
         grid.appendChild(card);
     });
 
-    calculateSummaries();
     updateExpiredBanner();
 }
 
 // =============================================
-// MIGLIORIA 12: Duplica task
+// DUPLICA TASK
 // =============================================
 function duplicateTask(id) {
     const t = state.tasks.find(t => t.id === id);
     if (!t) return;
     const clone = { ...t, id: Date.now(), done: false, date: todayStr() };
     state.tasks.push(clone);
-    saveState(); renderTasks(); renderCalendar(); renderClientManagement(); renderCategories();
-    try{updateChart();}catch(e){}
+    saveState(); fullRefresh();
     showToast('📋', `"${t.category}" duplicato!`);
 }
 
@@ -1353,7 +1340,7 @@ function calculateSummaries() {
 }
 
 // =============================================
-// EDIT / DELETE — con Undo (MIGLIORIA 1)
+// EDIT / DELETE
 // =============================================
 function editTask(id) {
     const t=state.tasks.find(t=>t.id===id);if(!t)return;
@@ -1410,14 +1397,20 @@ function clearCompletedTasks() {
     showUndo(`${count} completati rimossi`,backup,(b)=>{state.tasks=b;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 
-// Helper per aggiornare tutto
+// BUG FIX: fullRefresh centralizzato — calculateSummaries() non più duplicato dentro renderTasks()
 function fullRefresh() {
-    renderTasks(); renderCalendar(); renderClientManagement(); renderCategories(); calculateSummaries();
-    try{updateChart();}catch(e){} try{if(chartTab==='trend')updateMonthlyChart();}catch(e){} try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
+    renderTasks();
+    calculateSummaries();
+    renderCalendar();
+    renderClientManagement();
+    renderCategories();
+    try{updateChart();}catch(e){}
+    try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}
+    try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
 }
 
 // =============================================
-// EXPORT
+// EXPORT / IMPORT
 // =============================================
 function exportCSV() {
     if(!state.tasks.length){showToast('⚠️','Nessun task');return;}
@@ -1435,17 +1428,25 @@ function exportBackup() {
 }
 function importBackup(event) {
     const file=event.target.files[0];if(!file)return;
-    if(!confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){event.target.value='';return;}
-    const reader=new FileReader();
-    reader.onload=(e)=>{
-        try{const imp=JSON.parse(e.target.result);
-        if(imp.tasks&&imp.clients&&imp.categories){
-            imp.categories=migrateCats(imp.categories);
-            imp.tasks=imp.tasks.map(t=>({type:'expense',...t,clientId:t.clientId!=null?Number(t.clientId):null}));
-            state=imp;if(imp.currency)state.currency=imp.currency;
-            saveState();location.reload();
-        }else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore nel file JSON');}
-    };reader.readAsText(file);
+    // BUG FIX: usa showUndo-style confirm tramite toast per ambienti che bloccano confirm()
+    const proceed = () => {
+        const reader=new FileReader();
+        reader.onload=(e)=>{
+            try{const imp=JSON.parse(e.target.result);
+            if(imp.tasks&&imp.clients&&imp.categories){
+                imp.categories=migrateCats(imp.categories);
+                imp.tasks=imp.tasks.map(t=>({type:'expense',...t,clientId:t.clientId!=null?Number(t.clientId):null}));
+                state=imp;if(imp.currency)state.currency=imp.currency;
+                saveState();location.reload();
+            }else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore nel file JSON');}
+        };reader.readAsText(file);
+    };
+    // Usa confirm nativo (funziona in quasi tutti i browser tranne iframe sandboxed)
+    if(window.confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){
+        proceed();
+    } else {
+        event.target.value='';
+    }
 }
 
 // =============================================
