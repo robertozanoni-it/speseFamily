@@ -57,7 +57,10 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;hei
 /* 2. Tags */
 .task-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25);cursor:pointer}
 .task-tag:hover{background:rgba(99,102,241,.3)}
-/* 3. Drag handle */
+/* Stat KPI buttons cliccabili */
+.stat-kpi-btn{cursor:pointer;width:100%;border:none;background:transparent;display:block}
+html:not(.dark) .stat-kpi-btn:hover{background:rgba(0,0,0,.04)!important}
+/* Drag handle */
 .drag-handle{cursor:grab;opacity:.3;transition:opacity .15s}
 .drag-handle:hover{opacity:.8}
 .card-task:active .drag-handle{cursor:grabbing}
@@ -182,14 +185,24 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
             💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
           <div class="space-y-2 pt-3 border-t border-slate-800">
-            <!-- Saldo 30gg -->
+            <!-- Saldo 30gg — cliccabili -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
               <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">Saldo netto (30 giorni)</div>
               <div class="grid grid-cols-3 gap-2 text-center">
-                <div><div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5">Entrate</div><div id="balanceIncome" class="mono text-xs font-bold text-emerald-400">0.00</div></div>
-                <div><div class="text-[8px] text-red-400 font-bold uppercase mb-0.5">Spese</div><div id="balanceExpense" class="mono text-xs font-bold text-red-400">0.00</div></div>
-                <div><div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5">Netto</div><div id="balanceNet" class="mono text-xs font-bold text-white">0.00</div></div>
+                <button onclick="setFilter('income')" class="stat-kpi-btn rounded-xl p-2 transition-all hover:bg-emerald-500/10 hover:ring-1 hover:ring-emerald-500/40 active:scale-95 group">
+                  <div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5 group-hover:text-emerald-300">Entrate ↗</div>
+                  <div id="balanceIncome" class="mono text-xs font-bold text-emerald-400 group-hover:text-emerald-300">0.00</div>
+                </button>
+                <button onclick="setFilter('expense')" class="stat-kpi-btn rounded-xl p-2 transition-all hover:bg-red-500/10 hover:ring-1 hover:ring-red-500/40 active:scale-95 group">
+                  <div class="text-[8px] text-red-400 font-bold uppercase mb-0.5 group-hover:text-red-300">Spese ↘</div>
+                  <div id="balanceExpense" class="mono text-xs font-bold text-red-400 group-hover:text-red-300">0.00</div>
+                </button>
+                <button onclick="setFilter('all')" class="stat-kpi-btn rounded-xl p-2 transition-all hover:bg-slate-700/60 hover:ring-1 hover:ring-slate-500/40 active:scale-95 group">
+                  <div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5 group-hover:text-slate-300">Netto ≈</div>
+                  <div id="balanceNet" class="mono text-xs font-bold text-white group-hover:text-slate-200">0.00</div>
+                </button>
               </div>
+              <div class="text-[8px] text-slate-700 text-center mt-1.5">clicca per filtrare</div>
             </div>
             <!-- 4. Budget mensile globale -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
@@ -240,12 +253,16 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ② Form Nuovo Task -->
+      <!-- ② Form Nuovo Task — chiuso di default -->
       <div class="section-card border-t-[3px] border-t-accent">
-        <h2 id="formTitle" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-          <span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>Nuovo Task / Spesa
-        </h2>
-        <form id="mainForm" class="space-y-3">
+        <details id="formDetails" class="group">
+          <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4 select-none">
+            <span id="formTitle" class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>Nuovo Task / Spesa
+            </span>
+            <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
+          </summary>
+        <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800">
           <input type="hidden" id="editTaskId">
           <input type="hidden" id="taskType" value="expense">
           <div class="space-y-1">
@@ -302,6 +319,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
             <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
           </div>
         </form>
+        </details>
       </div>
 
       <!-- ③ Calendario con tema indipendente -->
@@ -1314,6 +1332,8 @@ function editTask(id){
   document.getElementById('taskRecurrenceType').value=t.recurrence||'none';
   document.getElementById('taskNote').value=t.note||'';
   document.getElementById('taskTags').value=(t.tags||[]).join(', ');
+  // Apri il pannello form e aggiorna titolo
+  document.getElementById('formDetails').open=true;
   document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';
   document.getElementById('submitBtn').textContent='Aggiorna';
   document.getElementById('cancelEdit').classList.remove('hidden');
@@ -1328,6 +1348,8 @@ function resetForm(){
   document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span> Nuovo Task / Spesa';
   document.getElementById('submitBtn').textContent='Salva';
   document.getElementById('cancelEdit').classList.add('hidden');
+  // Chiudi il pannello dopo reset
+  document.getElementById('formDetails').open=false;
   setTaskType('expense');clearCatError();
 }
 function deleteTask(id){
