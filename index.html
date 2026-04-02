@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Task & Expense Manager Pro v4</title>
+<title>Task & Expense Manager Pro v5</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -54,20 +54,15 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.6);cursor:p
 #undoToast.visible{display:flex}
 input[type="range"]{-webkit-appearance:none;appearance:none;height:4px;background:#1f2937;border-radius:2px;outline:none}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:#3b82f6;border-radius:50%;cursor:pointer}
-/* 2. Tags */
 .task-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25);cursor:pointer}
 .task-tag:hover{background:rgba(99,102,241,.3)}
-/* Stat KPI buttons cliccabili */
 .stat-kpi-btn{cursor:pointer;width:100%;border:none;background:transparent;display:block}
 html:not(.dark) .stat-kpi-btn:hover{background:rgba(0,0,0,.04)!important}
-/* Drag handle */
 .drag-handle{cursor:grab;opacity:.3;transition:opacity .15s}
 .drag-handle:hover{opacity:.8}
 .card-task:active .drag-handle{cursor:grabbing}
-/* 7. History */
 .hist-entry{font-size:9px;color:#94a3b8;padding:3px 0 3px 8px;border-left:2px solid #1f2937;margin-bottom:3px}
 .hist-entry .hist-action{font-weight:700;color:#64748b}
-/* 8. Calendar light mode */
 #calendarSection.cal-light{background:#f8fafc!important;border-color:#e2e8f0!important}
 #calendarSection.cal-light .cal-day{color:#334155}
 #calendarSection.cal-light .cal-day:hover:not(.selected):not(.other-month){background:#e2e8f0}
@@ -76,8 +71,24 @@ html:not(.dark) .stat-kpi-btn:hover{background:rgba(0,0,0,.04)!important}
 #calendarSection.cal-light .text-slate-600{color:#94a3b8!important}
 #calendarSection.cal-light .bg-slate-800{background:#e2e8f0!important}
 #calendarSection.cal-light .border-slate-800{border-color:#e2e8f0!important}
-/* 10. Pagination */
 #paginationBar{display:none;align-items:center;justify-content:center;gap:3px;margin-top:20px;flex-wrap:wrap}
+
+/* ===== VOICE ANALYSIS MODAL ===== */
+.voice-tab{color:#64748b;transition:all .15s;cursor:pointer}
+.voice-tab.active-vtab{background:#1f2937;color:#e2e8f0;font-weight:700}
+.voice-tab:hover:not(.active-vtab){color:#94a3b8;background:#ffffff08}
+#voiceAnalysisModal .va-table th{padding:6px 8px;font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:#475569;border-bottom:1px solid #1f2937;white-space:nowrap}
+#voiceAnalysisModal .va-table td{padding:7px 8px;border-bottom:1px solid #0f172a}
+#voiceAnalysisModal .va-table tr:last-child td{border-bottom:none}
+#voiceAnalysisModal .va-table tr:hover td{background:rgba(255,255,255,.025)}
+.va-bar{height:3px;border-radius:2px;background:#1f2937;overflow:hidden;margin-top:3px}
+.va-bar-fill{height:100%;border-radius:2px;transition:width .5s ease}
+/* Category clickable in card */
+.cat-link{cursor:pointer;transition:color .15s}
+.cat-link:hover{color:#3b82f6 !important}
+.cat-link:hover .cat-link-icon{opacity:1}
+.cat-link-icon{opacity:0;transition:opacity .15s;font-size:9px;margin-left:4px;color:#3b82f6}
+
 /* Light mode */
 html:not(.dark) body{background:#f1f5f9;color:#1e293b}
 html:not(.dark) .section-card{background:#fff;border-color:#e2e8f0}
@@ -104,9 +115,14 @@ html:not(.dark) #undoToast{background:#f8fafc;border-color:#e2e8f0;color:#1e293b
 html:not(.dark) .budget-bar{background:#e2e8f0}
 html:not(.dark) input[type="range"]{background:#e2e8f0}
 html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
-/* Print styles (6. PDF) */
+html:not(.dark) #voiceAnalysisModal .va-table th{color:#94a3b8;border-bottom-color:#e2e8f0}
+html:not(.dark) #voiceAnalysisModal .va-table td{border-bottom-color:#f1f5f9}
+html:not(.dark) #voiceAnalysisModal .va-table tr:hover td{background:rgba(0,0,0,.02)}
+html:not(.dark) .va-bar{background:#e2e8f0}
+html:not(.dark) .voice-tab.active-vtab{background:#e2e8f0;color:#1e293b}
+
 @media print{
-  #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal{display:none!important}
+  #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal{display:none!important}
   body{background:white!important;color:black!important}
   .card-task{break-inside:avoid;border:1px solid #ccc!important;box-shadow:none!important}
   .card-task:hover{transform:none!important}
@@ -117,7 +133,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
 </head>
 <body class="bg-darkBg text-slate-200 min-h-screen">
 
-<!-- 7. History Modal -->
+<!-- History Modal -->
 <div id="historyModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
   <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
     <div class="flex justify-between items-center mb-4">
@@ -126,6 +142,41 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
     </div>
     <div id="historyList" class="space-y-1 max-h-60 overflow-y-auto custom-scrollbar pr-1"></div>
     <p id="historyEmpty" class="text-[10px] text-slate-600 italic text-center py-4 hidden">Nessuno storico</p>
+  </div>
+</div>
+
+<!-- ===== VOICE ANALYSIS MODAL ===== -->
+<div id="voiceAnalysisModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-xl shadow-2xl flex flex-col" style="max-height:88vh">
+
+    <!-- Header -->
+    <div class="flex justify-between items-start p-5 pb-0">
+      <div class="flex items-center gap-3">
+        <div id="vaCatDot" class="w-3.5 h-3.5 rounded-full flex-shrink-0 mt-0.5"></div>
+        <div>
+          <h3 id="vaCatName" class="text-base font-black text-white leading-none"></h3>
+          <p class="text-[10px] text-slate-500 mt-0.5">Analisi aggregata per voce</p>
+        </div>
+      </div>
+      <button onclick="closeVoiceModal()" class="text-slate-500 hover:text-white text-xl leading-none ml-4 flex-shrink-0 mt-0.5">✕</button>
+    </div>
+
+    <!-- Grand total KPIs -->
+    <div id="vaGrandTotal" class="grid grid-cols-4 gap-2 p-5 pb-3"></div>
+
+    <!-- Tabs -->
+    <div class="px-5 pb-3">
+      <div class="flex gap-0.5 bg-slate-800/60 rounded-xl p-1">
+        <button onclick="switchVoiceTab('list')"  id="vtab-list"  class="voice-tab active-vtab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📋 Tutti</button>
+        <button onclick="switchVoiceTab('year')"  id="vtab-year"  class="voice-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📅 Anni</button>
+        <button onclick="switchVoiceTab('month')" id="vtab-month" class="voice-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">🗓 Mesi</button>
+        <button onclick="switchVoiceTab('week')"  id="vtab-week"  class="voice-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📆 Sett.</button>
+        <button onclick="switchVoiceTab('day')"   id="vtab-day"   class="voice-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">🔹 Giorni</button>
+      </div>
+    </div>
+
+    <!-- Table content -->
+    <div id="vaContent" class="flex-1 overflow-y-auto custom-scrollbar px-5 pb-5 min-h-0"></div>
   </div>
 </div>
 
@@ -152,7 +203,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
       </div>
       <div>
         <h1 class="text-xl font-bold tracking-tight text-white leading-none">Task &amp; Expenses</h1>
-        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v4</p>
+        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v5</p>
       </div>
     </div>
     <div class="flex items-center gap-3 flex-wrap justify-center">
@@ -160,8 +211,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         <option value="€">€ EUR</option><option value="$">$ USD</option><option value="£">£ GBP</option><option value="CHF">CHF</option>
       </select>
       <button onclick="requestNotifications()" title="Attiva notifiche" class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm">🔔</button>
-      <!-- 6. PDF print button -->
-      <button onclick="printSummary()" title="Esporta PDF" class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm" title="Stampa / PDF">🖨️</button>
+      <button onclick="printSummary()" title="Esporta PDF" class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm">🖨️</button>
       <button onclick="toggleTheme()" class="p-2 rounded-xl hover:bg-slate-800 border border-slate-700 text-sm"><span id="themeIcon">☀️</span></button>
       <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800 gap-1">
         <button onclick="exportBackup()" class="px-3 py-2 text-xs font-semibold hover:bg-slate-800 rounded-lg transition-colors">📤 Backup</button>
@@ -178,14 +228,13 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
     <!-- ===== SIDEBAR ===== -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
 
-      <!-- ① Riepilogo & Saldo (top) -->
+      <!-- Riepilogo & Saldo -->
       <div class="section-card border-t-[3px] border-t-emerald-500">
         <details class="group" open>
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-emerald-400 group-open:mb-4">
             💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
           <div class="space-y-2 pt-3 border-t border-slate-800">
-            <!-- Saldo 30gg — cliccabili -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
               <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">Saldo netto (30 giorni)</div>
               <div class="grid grid-cols-3 gap-2 text-center">
@@ -204,7 +253,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
               </div>
               <div class="text-[8px] text-slate-700 text-center mt-1.5">clicca per filtrare</div>
             </div>
-            <!-- 4. Budget mensile globale -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
               <div class="flex justify-between items-center mb-2">
                 <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Budget mensile globale</label>
@@ -215,11 +263,9 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
               <div class="budget-bar mb-1"><div id="globalBudgetBar" class="budget-bar-fill" style="width:0%;background:#3b82f6"></div></div>
               <div id="globalBudgetLabel" class="text-[9px] text-slate-500 text-right"></div>
             </div>
-            <!-- Totali rapidi -->
             <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">Oggi</span><span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span></div>
             <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">7 giorni</span><span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span></div>
             <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">30 giorni</span><span id="summaryMonthly" class="mono font-bold text-sm text-white">0.00</span></div>
-            <!-- Periodo -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
               <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Periodo personalizzato</label>
               <div class="grid grid-cols-2 gap-2 mb-2">
@@ -235,7 +281,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
                 <span id="summaryPeriod" class="mono font-bold text-base text-white">0.00</span>
               </div>
             </div>
-            <!-- Filtro importo -->
             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
               <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Filtro importo</label>
               <div class="flex items-center gap-2">
@@ -253,7 +298,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ② Form Nuovo Task — chiuso di default -->
+      <!-- Form Nuovo Task -->
       <div class="section-card border-t-[3px] border-t-accent">
         <details id="formDetails" class="group">
           <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4 select-none">
@@ -305,7 +350,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
               </select>
             </div>
           </div>
-          <!-- 2. Tags input -->
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
             <input type="text" id="taskTags" placeholder="lavoro, urgente, casa…" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent">
@@ -322,13 +366,12 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ③ Calendario con tema indipendente -->
+      <!-- Calendario -->
       <div id="calendarSection" class="section-card">
         <details class="group" open>
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
             📅 Calendario
             <div class="flex items-center gap-2">
-              <!-- 8. Toggle tema calendario -->
               <button onclick="event.stopPropagation();toggleCalTheme()" id="calThemeBtn" title="Tema calendario" class="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 hover:border-accent transition-colors">☀️</button>
               <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
             </div>
@@ -366,7 +409,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ④ Analisi Spese + grafico entrate -->
+      <!-- Analisi -->
       <div class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -379,7 +422,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
               <button onclick="switchChartTab('balance')" id="tabBalance" class="chart-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">💹 Saldo</button>
             </div>
             <div id="panelDist">
-              <!-- 5. Toggle entrate/spese nel grafico -->
               <div class="flex justify-center mb-2">
                 <div class="flex bg-slate-900/70 rounded-lg p-0.5 gap-0.5">
                   <button onclick="setChartDataType('expense')" id="chartTypeExpense" class="text-[9px] font-bold px-3 py-1 rounded-md bg-slate-800 text-red-400 transition-all">📤 Spese</button>
@@ -408,7 +450,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ⑤ Persone con statistiche -->
+      <!-- Persone -->
       <div class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -425,7 +467,7 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </details>
       </div>
 
-      <!-- ⑥ Categorie & Budget -->
+      <!-- Categorie & Budget -->
       <div class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
@@ -450,7 +492,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
       <div id="noPrint2" class="mb-4 flex flex-col sm:flex-row gap-3 filter-bar-wrapper">
         <div class="relative flex-1">
           <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span>
-          <!-- 1. Search per importo incluso -->
           <input type="text" id="searchInput" placeholder="Cerca: nome, tag, #categoria, o importo (es. 50)…" oninput="debouncedSearch()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors">
         </div>
         <div class="flex items-center gap-1.5 bg-darkCard border border-slate-800 rounded-xl px-3 py-2 flex-shrink-0">
@@ -458,7 +499,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
           <button onclick="setSort('date')" id="sort-date" class="sort-btn active text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">📅</button>
           <button onclick="setSort('amount')" id="sort-amount" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">💰</button>
           <button onclick="setSort('status')" id="sort-status" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">✓</button>
-          <!-- 3. Custom sort (drag) -->
           <button onclick="setSort('custom')" id="sort-custom" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all" title="Ordine personalizzato (drag&drop)">⠿</button>
         </div>
       </div>
@@ -478,7 +518,6 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         <button onclick="clearPeriodFilter()" id="filter-period" class="filter-btn hidden px-3 py-1.5 rounded-full border border-accent text-xs font-bold transition-all text-accent">📅 ✕</button>
         <div class="h-4 w-px bg-slate-800 mx-1"></div>
         <div id="clientFilterList" class="flex flex-wrap gap-2"></div>
-        <!-- 2. Tag filter chips (populated dynamically) -->
         <div id="tagFilterList" class="flex flex-wrap gap-1.5"></div>
       </div>
 
@@ -499,11 +538,16 @@ html:not(.dark) .task-tag{background:rgba(99,102,241,.10);color:#6366f1}
         </div>
       </div>
 
+      <!-- Hint for voice analysis -->
+      <div class="mb-4 flex items-center gap-2 text-[10px] text-slate-600 bg-slate-900/40 border border-slate-800 rounded-xl px-4 py-2.5">
+        <span class="text-base">📊</span>
+        <span>Clicca sul <strong class="text-slate-400 font-bold">nome della categoria</strong> in una card per analizzare i totali per anno, mese, settimana o giorno.</span>
+      </div>
+
       <div id="taskGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
         ondragover="event.preventDefault()" ondrop="onGridDrop(event)"></div>
       <div id="emptyTasks"><span class="text-6xl mb-4">🎯</span><p class="text-lg font-semibold">Nessun task trovato</p></div>
 
-      <!-- 10. Paginazione -->
       <div id="paginationBar" class="flex items-center justify-center gap-2 mt-6 flex-wrap">
         <button id="pgPrev" onclick="changePage(-1)" class="px-3 py-1.5 text-xs font-bold bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-30">‹ Prec.</button>
         <div id="pgNumbers" class="flex gap-1"></div>
@@ -559,7 +603,6 @@ let state={
   taskOrder:  JSON.parse(safeGet('app_taskOrder'))||[]
 };
 
-// Globals
 let currentFilter='all', currentSort='date';
 let myChart=null, monthlyChart=null, balanceChartObj=null;
 let chartMode='category', chartTab='dist', chartDataType='expense';
@@ -572,12 +615,180 @@ const PAGE_SIZE=20;
 let dragSrcId=null;
 let activeTagFilter=null;
 
+// Voice Analysis state
+let currentVoiceCategory=null;
+let currentVoiceTab='list';
+
 const CUR=()=>state.currency;
+function fmt(n){const c=CUR();return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;}
 
 // ============================================================
-// FMT
+// VOICE ANALYSIS
 // ============================================================
-function fmt(n){const c=CUR();return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;}
+function showVoiceAnalysis(category){
+  currentVoiceCategory=category;
+  currentVoiceTab='list';
+  const catObj=state.categories.find(c=>c.name===category);
+  const color=catObj?catObj.color:'#6366f1';
+  document.getElementById('vaCatDot').style.background=color;
+  document.getElementById('vaCatName').textContent=category;
+  // Reset tabs
+  document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));
+  document.getElementById('vtab-list').classList.add('active-vtab');
+  renderVoiceGrandTotal();
+  renderVoiceContent();
+  document.getElementById('voiceAnalysisModal').classList.remove('hidden');
+}
+
+function closeVoiceModal(){
+  document.getElementById('voiceAnalysisModal').classList.add('hidden');
+}
+
+document.getElementById('voiceAnalysisModal').onclick=function(e){if(e.target===this)closeVoiceModal();};
+
+function switchVoiceTab(tab){
+  currentVoiceTab=tab;
+  document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));
+  document.getElementById(`vtab-${tab}`).classList.add('active-vtab');
+  renderVoiceContent();
+}
+
+function renderVoiceGrandTotal(){
+  const cat=currentVoiceCategory;
+  const all=state.tasks.filter(t=>t.category===cat);
+  const active=all.filter(t=>!t.done&&t.amount>0);
+  const totalExp=active.filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  const totalInc=active.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const net=totalInc-totalExp;
+  const gt=document.getElementById('vaGrandTotal');
+  gt.innerHTML=`
+    <div class="bg-slate-800/60 rounded-xl p-3 text-center border border-slate-700/40">
+      <div class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-1">N° Task</div>
+      <div class="mono text-lg font-black text-white">${all.length}</div>
+    </div>
+    <div class="bg-red-500/10 rounded-xl p-3 text-center border border-red-500/15">
+      <div class="text-[8px] text-red-400 font-bold uppercase tracking-widest mb-1">Tot. Spese</div>
+      <div class="mono text-lg font-black text-red-400">${fmt(totalExp)}</div>
+    </div>
+    <div class="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/15">
+      <div class="text-[8px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Tot. Entrate</div>
+      <div class="mono text-lg font-black text-emerald-400">${fmt(totalInc)}</div>
+    </div>
+    <div class="${net>=0?'bg-emerald-500/10 border-emerald-500/15':'bg-red-500/10 border-red-500/15'} rounded-xl p-3 text-center border">
+      <div class="text-[8px] ${net>=0?'text-emerald-400':'text-red-400'} font-bold uppercase tracking-widest mb-1">Netto</div>
+      <div class="mono text-lg font-black ${net>=0?'text-emerald-400':'text-red-400'}">${net>=0?'+':''}${fmt(net)}</div>
+    </div>`;
+}
+
+function getISOWeek(d){
+  const tmp=new Date(d);tmp.setHours(0,0,0,0);
+  tmp.setDate(tmp.getDate()+3-(tmp.getDay()+6)%7);
+  const week1=new Date(tmp.getFullYear(),0,4);
+  const wn=1+Math.round(((tmp-week1)/86400000-3+(week1.getDay()+6)%7)/7);
+  return `${tmp.getFullYear()}-W${String(wn).padStart(2,'0')}`;
+}
+
+function fmtPeriodLabel(key,tab){
+  const MONTHS=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+  if(tab==='year') return `📅 ${key}`;
+  if(tab==='month'){const[y,m]=key.split('-');return `${MONTHS[parseInt(m)-1]} ${y}`;}
+  if(tab==='week'){const[y,w]=key.split('-W');return `Sett. ${w} — ${y}`;}
+  if(tab==='day'){const d=parseDateLocal(key);return d.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short',year:'2-digit'});}
+  return key;
+}
+
+function renderVoiceContent(){
+  const cat=currentVoiceCategory;
+  const tasks=state.tasks.filter(t=>t.category===cat);
+  const content=document.getElementById('vaContent');
+
+  if(currentVoiceTab==='list'){
+    if(!tasks.length){content.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-10">Nessun task per questa categoria</p>';return;}
+    const sorted=[...tasks].sort((a,b)=>b.date.localeCompare(a.date));
+    content.innerHTML=`
+      <table class="va-table w-full">
+        <thead><tr>
+          <th class="text-left">Data</th>
+          <th class="text-left">Persona</th>
+          <th class="text-left">Note</th>
+          <th class="text-right">Importo</th>
+          <th class="text-center">✓</th>
+        </tr></thead>
+        <tbody>${sorted.map(t=>{
+          const cl=state.clients.find(c=>c.id===t.clientId);
+          const isInc=t.type==='income';
+          const d=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'});
+          return `<tr class="${t.done?'opacity-40':''}">
+            <td class="mono text-[10px] text-slate-400 whitespace-nowrap">${d}</td>
+            <td class="text-[10px] text-slate-400">${cl?cl.name:'Generico'}</td>
+            <td class="text-[10px] text-slate-500 max-w-[100px] truncate">${t.note||'—'}</td>
+            <td class="text-right mono text-[11px] font-bold whitespace-nowrap ${isInc?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isInc?'+':'-')+fmt(t.amount):'—'}</td>
+            <td class="text-center text-[10px] ${t.done?'text-emerald-400':'text-slate-700'}">${t.done?'✓':'·'}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>`;
+    return;
+  }
+
+  // Aggregate
+  const groups={};
+  tasks.forEach(t=>{
+    if(t.done||!t.amount||t.amount<=0)return;
+    const d=parseDateLocal(t.date);
+    let key;
+    if(currentVoiceTab==='year')         key=`${d.getFullYear()}`;
+    else if(currentVoiceTab==='month')   key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    else if(currentVoiceTab==='week')    key=getISOWeek(d);
+    else if(currentVoiceTab==='day')     key=t.date;
+    if(!groups[key])groups[key]={exp:0,inc:0,count:0};
+    if(t.type==='income')groups[key].inc+=t.amount;
+    else groups[key].exp+=t.amount;
+    groups[key].count++;
+  });
+
+  const sorted=Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0]));
+  if(!sorted.length){content.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-10">Nessun dato per questo periodo</p>';return;}
+
+  // Max for bar chart
+  const maxExp=Math.max(...sorted.map(([,v])=>v.exp),1);
+  const maxInc=Math.max(...sorted.map(([,v])=>v.inc),1);
+  const maxTotal=Math.max(maxExp,maxInc);
+
+  content.innerHTML=`
+    <table class="va-table w-full">
+      <thead><tr>
+        <th class="text-left">Periodo</th>
+        <th class="text-center">#</th>
+        <th class="text-right">Spese</th>
+        <th class="text-right">Entrate</th>
+        <th class="text-right">Netto</th>
+      </tr></thead>
+      <tbody>${sorted.map(([key,v])=>{
+        const net=v.inc-v.exp;
+        const expPct=maxTotal>0?(v.exp/maxTotal*100):0;
+        const incPct=maxTotal>0?(v.inc/maxTotal*100):0;
+        const catObj=state.categories.find(c=>c.name===cat);
+        const catColor=catObj?catObj.color:'#6366f1';
+        return `<tr>
+          <td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td>
+          <td class="text-center text-[10px] text-slate-500">${v.count}</td>
+          <td class="text-right">
+            <div class="text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmt(v.exp):'—'}</div>
+            ${v.exp>0?`<div class="va-bar w-16 ml-auto"><div class="va-bar-fill bg-red-500/60" style="width:${expPct.toFixed(0)}%"></div></div>`:''}
+          </td>
+          <td class="text-right">
+            <div class="text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmt(v.inc):'—'}</div>
+            ${v.inc>0?`<div class="va-bar w-16 ml-auto"><div class="va-bar-fill" style="width:${incPct.toFixed(0)}%;background:${catColor}60"></div></div>`:''}
+          </td>
+          <td class="text-right text-[11px] mono font-black whitespace-nowrap ${net>=0?'text-emerald-400':'text-red-400'}">${net>=0?'+':''}${fmt(net)}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500">
+      <span>Periodi con attività: <strong class="text-slate-300">${sorted.length}</strong></span>
+      <span>Media spesa: <strong class="text-red-400 mono">${fmt(sorted.reduce((s,[,v])=>s+v.exp,0)/sorted.length)}</strong></span>
+    </div>`;
+}
 
 // ============================================================
 // VALUTA
@@ -599,11 +810,8 @@ function applyTheme(dark){
 }
 function toggleTheme(){applyTheme(!document.documentElement.classList.contains('dark'));}
 
-// 8. TEMA CALENDARIO INDIPENDENTE
 function toggleCalTheme(){
-  calDarkMode=!calDarkMode;
-  safeSet('app_calDark',calDarkMode);
-  applyCalTheme();
+  calDarkMode=!calDarkMode;safeSet('app_calDark',calDarkMode);applyCalTheme();
 }
 function applyCalTheme(){
   const sec=document.getElementById('calendarSection');
@@ -612,32 +820,18 @@ function applyCalTheme(){
 }
 
 // ============================================================
-// 4. BUDGET GLOBALE
+// BUDGET GLOBALE
 // ============================================================
 function setGlobalBudget(v){
-  state.globalBudget=parseFloat(v)||0;
-  safeSet('app_globalBudget',state.globalBudget);
-  updateGlobalBudgetBar();
+  state.globalBudget=parseFloat(v)||0;safeSet('app_globalBudget',state.globalBudget);updateGlobalBudgetBar();
 }
 function updateGlobalBudgetBar(){
-  const inp=document.getElementById('globalBudgetInput');
-  if(inp)inp.value=state.globalBudget||'';
+  const inp=document.getElementById('globalBudgetInput');if(inp)inp.value=state.globalBudget||'';
   const now=new Date();
-  const exp=state.tasks.filter(t=>{
-    if(t.done||t.type==='income'||!t.amount)return false;
-    const td=parseDateLocal(t.date);
-    return td.getMonth()===now.getMonth()&&td.getFullYear()===now.getFullYear();
-  }).reduce((s,t)=>s+t.amount,0);
-  const bar=document.getElementById('globalBudgetBar');
-  const lbl=document.getElementById('globalBudgetLabel');
-  if(!bar||!lbl)return;
-  if(state.globalBudget>0){
-    const pct=Math.min((exp/state.globalBudget)*100,100);
-    const col=pct>90?'#ef4444':pct>70?'#f59e0b':'#3b82f6';
-    bar.style.width=pct+'%';bar.style.background=col;
-    lbl.textContent=`${fmt(exp)} / ${fmt(state.globalBudget)} (${pct.toFixed(0)}%)`;
-    lbl.style.color=col;
-  }else{bar.style.width='0%';lbl.textContent='';}
+  const exp=state.tasks.filter(t=>{if(t.done||t.type==='income'||!t.amount)return false;const td=parseDateLocal(t.date);return td.getMonth()===now.getMonth()&&td.getFullYear()===now.getFullYear();}).reduce((s,t)=>s+t.amount,0);
+  const bar=document.getElementById('globalBudgetBar'),lbl=document.getElementById('globalBudgetLabel');if(!bar||!lbl)return;
+  if(state.globalBudget>0){const pct=Math.min((exp/state.globalBudget)*100,100);const col=pct>90?'#ef4444':pct>70?'#f59e0b':'#3b82f6';bar.style.width=pct+'%';bar.style.background=col;lbl.textContent=`${fmt(exp)} / ${fmt(state.globalBudget)} (${pct.toFixed(0)}%)`;lbl.style.color=col;}
+  else{bar.style.width='0%';lbl.textContent='';}
 }
 
 // ============================================================
@@ -645,29 +839,17 @@ function updateGlobalBudgetBar(){
 // ============================================================
 window.onload=()=>{
   try{
-    applyTheme(safeGet('app_theme')!=='light');
-    applyCalTheme();
+    applyTheme(safeGet('app_theme')!=='light');applyCalTheme();
     document.getElementById('currencySelect').value=state.currency;
     document.getElementById('amountLabel').textContent=`Importo ${CUR()}`;
     document.getElementById('amountSymbol').textContent=CUR();
     document.getElementById('taskDate').value=todayStr();
     document.getElementById('rangeMinLabel').textContent=CUR()+'0';
     document.getElementById('rangeMaxLabel').textContent=CUR()+'5000';
-    updateGlobalBudgetBar();
-    setTaskType('expense');
-    initSelects();
-    renderTagFilters();
-    renderCategories();
-    renderClientManagement();
-    renderClientFilters();
-    renderCalendar();
-    renderTasks();
-    calculateSummaries();
+    updateGlobalBudgetBar();setTaskType('expense');initSelects();renderTagFilters();
+    renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();
   }catch(e){console.error('Init:',e);}
-  try{initChart();}catch(e){}
-  try{initMonthlyChart();}catch(e){}
-  try{initBalanceChart();}catch(e){}
-  try{switchChartTab('dist');}catch(e){}
+  try{initChart();}catch(e){}try{initMonthlyChart();}catch(e){}try{initBalanceChart();}catch(e){}try{switchChartTab('dist');}catch(e){}
   checkTodayNotifications();
 };
 
@@ -684,8 +866,7 @@ function debouncedSearch(){clearTimeout(searchTimeout);searchTimeout=setTimeout(
 // ============================================================
 function showUndo(msg,data,onUndo){
   hideUndo();undoData={data,onUndo};
-  document.getElementById('undoMsg').textContent=msg;
-  document.getElementById('undoToast').classList.add('visible');
+  document.getElementById('undoMsg').textContent=msg;document.getElementById('undoToast').classList.add('visible');
   document.getElementById('undoBtn').onclick=()=>{if(undoData)undoData.onUndo(undoData.data);hideUndo();};
   undoTimeout=setTimeout(()=>hideUndo(),5000);
 }
@@ -696,10 +877,7 @@ function hideUndo(){clearTimeout(undoTimeout);undoData=null;document.getElementB
 // ============================================================
 function requestNotifications(){
   if(!('Notification'in window)){showToast('⚠️','Non supportate');return;}
-  Notification.requestPermission().then(p=>{
-    if(p==='granted'){showToast('🔔','Attivate!');checkTodayNotifications();}
-    else showToast('⚠️','Rifiutate');
-  });
+  Notification.requestPermission().then(p=>{if(p==='granted'){showToast('🔔','Attivate!');checkTodayNotifications();}else showToast('⚠️','Rifiutate');});
 }
 function checkTodayNotifications(){
   if(!('Notification'in window)||Notification.permission!=='granted')return;
@@ -732,23 +910,16 @@ function initSelects(){
 }
 
 // ============================================================
-// 2. TAG FILTERS
+// TAG FILTERS
 // ============================================================
-function getAllTags(){
-  const set=new Set();
-  state.tasks.forEach(t=>(t.tags||[]).forEach(tag=>{if(tag)set.add(tag);}));
-  return [...set].sort();
-}
+function getAllTags(){const set=new Set();state.tasks.forEach(t=>(t.tags||[]).forEach(tag=>{if(tag)set.add(tag);}));return [...set].sort();}
 function renderTagFilters(){
   const list=document.getElementById('tagFilterList');list.innerHTML='';
   getAllTags().forEach(tag=>{
     const btn=document.createElement('button');
     btn.className='task-tag transition-all'+(activeTagFilter===tag?' ring-2 ring-indigo-400':'');
     btn.textContent='#'+tag;
-    btn.onclick=()=>{
-      activeTagFilter=activeTagFilter===tag?null:tag;
-      currentPage=0;renderTagFilters();renderTasks();
-    };
+    btn.onclick=()=>{activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();};
     list.appendChild(btn);
   });
 }
@@ -759,8 +930,7 @@ function renderTagFilters(){
 function setSort(mode){
   currentSort=mode;currentPage=0;
   document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`sort-${mode}`).classList.add('active');
-  renderTasks();
+  document.getElementById(`sort-${mode}`).classList.add('active');renderTasks();
 }
 function setFilter(filter){
   currentFilter=filter;currentPage=0;
@@ -782,9 +952,8 @@ function renderClientFilters(){
     btn.style.color=c.color;btn.textContent=c.name;
     btn.onclick=()=>{
       currentFilter=c.id;currentPage=0;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');selectedCalDate=null;
-      document.getElementById('filter-period').classList.add('hidden');
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+      selectedCalDate=null;document.getElementById('filter-period').classList.add('hidden');
       document.getElementById('mainTitle').textContent=`👤 ${c.name}`;
       document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;
       renderCalendar();updateExpiredBanner();renderTasks();
@@ -801,22 +970,19 @@ function applyPeriodFilter(){
 function clearPeriodFilter(){
   document.getElementById('filterStart').value='';document.getElementById('filterEnd').value='';
   document.getElementById('periodTotalContainer').classList.add('hidden');
-  document.getElementById('filter-period').classList.add('hidden');
-  calculateSummaries();setFilter('all');
+  document.getElementById('filter-period').classList.add('hidden');calculateSummaries();setFilter('all');
 }
 function onRangeChange(){
   document.getElementById('rangeMinLabel').textContent=CUR()+document.getElementById('rangeMin').value;
   document.getElementById('rangeMaxLabel').textContent=CUR()+document.getElementById('rangeMax').value;
 }
 function applyAmountFilter(){
-  amountMin=parseInt(document.getElementById('rangeMin').value);
-  amountMax=parseInt(document.getElementById('rangeMax').value);
+  amountMin=parseInt(document.getElementById('rangeMin').value);amountMax=parseInt(document.getElementById('rangeMax').value);
   if(amountMin>amountMax){showToast('⚠️','Min > Max!');return;}
   amountFilterActive=true;currentPage=0;showToast('✓',`${CUR()}${amountMin}—${CUR()}${amountMax}`);renderTasks();
 }
 function clearAmountFilter(){
-  amountFilterActive=false;
-  document.getElementById('rangeMin').value=0;document.getElementById('rangeMax').value=5000;onRangeChange();renderTasks();
+  amountFilterActive=false;document.getElementById('rangeMin').value=0;document.getElementById('rangeMax').value=5000;onRangeChange();renderTasks();
 }
 
 // ============================================================
@@ -838,7 +1004,6 @@ function removeClient(id){
   saveState();renderClientManagement();renderClientFilters();initSelects();renderTasks();renderCalendar();
   showUndo(`"${client.name}" rimosso`,backup,b=>{state.clients=b.clients;state.tasks=b.tasks;saveState();renderClientManagement();renderClientFilters();initSelects();renderTasks();renderCalendar();showToast('↩️','Annullato!');});
 }
-// 9. Statistiche persona
 function renderClientManagement(){
   const list=document.getElementById('clientListDisplay');list.innerHTML='';
   if(!state.clients.length){list.innerHTML='<p class="text-[10px] text-slate-600 italic">Nessuna persona</p>';return;}
@@ -848,21 +1013,8 @@ function renderClientManagement(){
     const monthTasks=tasks.filter(t=>{const td=parseDateLocal(t.date);return td.getMonth()===m&&td.getFullYear()===y&&!t.done;});
     const inc=monthTasks.filter(t=>t.type==='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
     const exp=monthTasks.filter(t=>t.type!=='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
-    const div=document.createElement('div');
-    div.className='p-2.5 rounded-xl bg-slate-900 border border-slate-800 group';
-    div.innerHTML=`<div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${c.color}"></span>
-        <span class="text-xs font-bold" style="color:${c.color}">${c.name}</span>
-        <span class="text-[9px] text-slate-600 mono">${tasks.length} task</span>
-      </div>
-      <button type="button" onclick="removeClient(${c.id})" class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">✕</button>
-    </div>
-    <div class="mt-1.5 flex gap-3 pl-4">
-      <span class="text-[8px] font-bold text-emerald-400">▲${fmt(inc)}</span>
-      <span class="text-[8px] font-bold text-red-400">▼${fmt(exp)}</span>
-      <span class="text-[8px] font-bold ${inc-exp>=0?'text-blue-400':'text-orange-400'}">≈${fmt(Math.abs(inc-exp))}</span>
-    </div>`;
+    const div=document.createElement('div');div.className='p-2.5 rounded-xl bg-slate-900 border border-slate-800 group';
+    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${c.color}"></span><span class="text-xs font-bold" style="color:${c.color}">${c.name}</span><span class="text-[9px] text-slate-600 mono">${tasks.length} task</span></div><button type="button" onclick="removeClient(${c.id})" class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">✕</button></div><div class="mt-1.5 flex gap-3 pl-4"><span class="text-[8px] font-bold text-emerald-400">▲${fmt(inc)}</span><span class="text-[8px] font-bold text-red-400">▼${fmt(exp)}</span><span class="text-[8px] font-bold ${inc-exp>=0?'text-blue-400':'text-orange-400'}">≈${fmt(Math.abs(inc-exp))}</span></div>`;
     list.appendChild(div);
   });
 }
@@ -878,7 +1030,10 @@ function renderCategories(){
     const div=document.createElement('div');div.className='p-2 rounded-xl bg-slate-900 border border-slate-800 group';
     let budgetHtml='';
     if(c.budget>0){const pct=Math.min((spent/c.budget)*100,100);const col=pct>90?'#ef4444':pct>70?'#f59e0b':c.color;budgetHtml=`<div class="mt-1.5"><div class="flex justify-between text-[8px] mb-0.5"><span class="text-slate-500">${fmt(spent)}/${fmt(c.budget)}</span><span style="color:${col}">${pct.toFixed(0)}%</span></div><div class="budget-bar"><div class="budget-bar-fill" style="width:${pct}%;background:${col}"></div></div></div>`;}
-    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:${c.color}"></span><span class="text-[10px] font-bold" style="color:${c.color}">${c.name}</span></div><button type="button" onclick="removeCategory('${c.name.replace(/'/g,"\\'")}') " class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[9px]">✕</button></div>${budgetHtml}`;
+    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full" style="background:${c.color}"></span>
+      <button onclick="showVoiceAnalysis('${c.name.replace(/'/g,"\\'")}')" class="text-[10px] font-bold hover:text-accent transition-colors" style="color:${c.color}">${c.name} <span class="text-[8px] opacity-50">📊</span></button>
+    </div><button type="button" onclick="removeCategory('${c.name.replace(/'/g,"\\'")}') " class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[9px]">✕</button></div>${budgetHtml}`;
     list.appendChild(div);
   });
 }
@@ -957,7 +1112,6 @@ function syncCalendarToForm(){const v=document.getElementById('taskDate').value;
 // ============================================================
 // CHARTS
 // ============================================================
-// 5. Toggle entrate/spese nel grafico
 function setChartDataType(type){
   chartDataType=type;
   document.getElementById('chartTypeExpense').className='text-[9px] font-bold px-3 py-1 rounded-md transition-all '+(type==='expense'?'bg-slate-800 text-red-400':'text-slate-500');
@@ -974,7 +1128,6 @@ function updateChart(mode=null){
   if(mode)chartMode=mode;if(!myChart)return;
   document.querySelectorAll('.chart-mode-btn').forEach(b=>b.classList.remove('ring-2','ring-accent','text-accent'));
   document.getElementById(chartMode==='category'?'chartBtnCat':'chartBtnClient').classList.add('ring-2','ring-accent','text-accent');
-  // 5. Use chartDataType to filter
   const tasks=state.tasks.filter(t=>t.amount>0&&!t.done&&t.type===(chartDataType==='income'?'income':'expense'));
   let labels=[],dataValues=[],colors=[];
   if(chartMode==='category'){const tot={};tasks.forEach(t=>tot[t.category]=(tot[t.category]||0)+t.amount);const s=Object.entries(tot).sort((a,b)=>b[1]-a[1]);labels=s.map(e=>e[0]);dataValues=s.map(e=>e[1]);colors=labels.map(n=>{const c=state.categories.find(c=>c.name===n);return c?c.color:'#6366f1';});}
@@ -1041,7 +1194,6 @@ document.getElementById('mainForm').onsubmit=(e)=>{
   const recurrence=document.getElementById('taskRecurrenceType').value;
   const note=document.getElementById('taskNote').value.trim();
   const type=document.getElementById('taskType').value;
-  // 2. Tags
   const tagsRaw=document.getElementById('taskTags').value;
   const tags=tagsRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
 
@@ -1055,18 +1207,12 @@ document.getElementById('mainForm').onsubmit=(e)=>{
 
   if(editId){
     const idx=state.tasks.findIndex(t=>t.id===parseInt(editId));
-    if(idx!==-1){
-      const prev=state.tasks[idx];
-      state.tasks[idx]={...prev,date,category:cat,type,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,tags,history:[...(prev.history||[]),histEntry].slice(-10)};
-    }
+    if(idx!==-1){const prev=state.tasks[idx];state.tasks[idx]={...prev,date,category:cat,type,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,tags,history:[...(prev.history||[]),histEntry].slice(-10)};}
   }else{
     const taskData={id:now,date,category:cat,type,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,tags,done:false,history:[histEntry]};
-    state.tasks.push(taskData);
-    // Add to taskOrder
-    state.taskOrder.push(taskData.id);
+    state.tasks.push(taskData);state.taskOrder.push(taskData.id);
     if(currentFilter!=='all'){currentFilter='all';selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));const allBtn=document.getElementById('filter-all');if(allBtn)allBtn.classList.add('active');document.getElementById('filter-period').classList.add('hidden');document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline';}
   }
-
   saveState();fullRefresh();resetForm();showToast('✓',editId?'Aggiornato!':'Salvato!');
 };
 
@@ -1076,7 +1222,6 @@ document.getElementById('mainForm').onsubmit=(e)=>{
 function toggleTaskStatus(id){
   const idx=state.tasks.findIndex(t=>t.id===id);if(idx===-1)return;
   const task=state.tasks[idx];task.done=!task.done;
-  // 7. History
   task.history=[...(task.history||[]),{ts:Date.now(),action:task.done?'Completato':'Riaperto',note:''}].slice(-10);
   if(task.done&&task.recurrence&&task.recurrence!=='none'){
     const nd=parseDateLocal(task.date);
@@ -1085,46 +1230,34 @@ function toggleTaskStatus(id){
     else if(task.recurrence==='yearly')nd.setFullYear(nd.getFullYear()+1);
     const newId=Date.now();
     state.tasks.push({...task,id:newId,date:getLocalDateStr(nd),done:false,history:[{ts:newId,action:'Creato (ricorrenza)',note:''}]});
-    state.taskOrder.push(newId);
-    showToast('🔄',`Ricorrenza → ${getLocalDateStr(nd)}`);
+    state.taskOrder.push(newId);showToast('🔄',`Ricorrenza → ${getLocalDateStr(nd)}`);
   }
   saveState();fullRefresh();
 }
 
 // ============================================================
-// 7. STORICO MODIFICHE
+// STORICO
 // ============================================================
 function showHistoryModal(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
   const list=document.getElementById('historyList');const empty=document.getElementById('historyEmpty');
-  const hist=(task.history||[]).slice().reverse();
-  list.innerHTML='';
+  const hist=(task.history||[]).slice().reverse();list.innerHTML='';
   if(!hist.length){empty.classList.remove('hidden');list.classList.add('hidden');}
-  else{
-    empty.classList.add('hidden');list.classList.remove('hidden');
-    hist.forEach(h=>{
-      const d=new Date(h.ts);const dateStr=d.toLocaleDateString('it-IT',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-      const div=document.createElement('div');div.className='hist-entry';
-      div.innerHTML=`<span class="hist-action">${h.action}</span> <span class="text-slate-600">·</span> <span>${h.note||''}</span><br><span class="text-[8px] text-slate-600">${dateStr}</span>`;
-      list.appendChild(div);
-    });
-  }
+  else{empty.classList.add('hidden');list.classList.remove('hidden');hist.forEach(h=>{const d=new Date(h.ts);const dateStr=d.toLocaleDateString('it-IT',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});const div=document.createElement('div');div.className='hist-entry';div.innerHTML=`<span class="hist-action">${h.action}</span> <span class="text-slate-600">·</span> <span>${h.note||''}</span><br><span class="text-[8px] text-slate-600">${dateStr}</span>`;list.appendChild(div);});}
   document.getElementById('historyModal').classList.remove('hidden');
 }
 function closeHistoryModal(){document.getElementById('historyModal').classList.add('hidden');}
 document.getElementById('historyModal').onclick=function(e){if(e.target===this)closeHistoryModal();};
 
 // ============================================================
-// 3. DRAG & DROP
+// DRAG & DROP
 // ============================================================
 function onDragStart(e,id){dragSrcId=id;e.dataTransfer.effectAllowed='move';setTimeout(()=>{const el=e.target.closest('.card-task');if(el)el.classList.add('dragging');},0);}
 function onDragEnd(e){e.target.closest('.card-task')?.classList.remove('dragging');}
 function onDragOver(e,id){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}
 function onDrop(e,targetId){
-  e.preventDefault();
-  document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));
+  e.preventDefault();document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));
   if(dragSrcId===null||dragSrcId===targetId)return;
-  // Ensure all tasks are in taskOrder
   state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});
   const srcIdx=state.taskOrder.indexOf(dragSrcId);const tgtIdx=state.taskOrder.indexOf(targetId);
   if(srcIdx>=0&&tgtIdx>=0){state.taskOrder.splice(srcIdx,1);state.taskOrder.splice(tgtIdx,0,dragSrcId);}
@@ -1135,25 +1268,17 @@ function onDrop(e,targetId){
 function onGridDrop(e){e.preventDefault();document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));}
 
 // ============================================================
-// 10. PAGINAZIONE
+// PAGINAZIONE
 // ============================================================
-function changePage(dir){
-  currentPage=Math.max(0,currentPage+dir);renderTasks();
-}
+function changePage(dir){currentPage=Math.max(0,currentPage+dir);renderTasks();}
 function renderPagination(total,pg,pageSize){
-  const bar=document.getElementById('paginationBar');
-  const totalPages=Math.ceil(total/pageSize);
+  const bar=document.getElementById('paginationBar');const totalPages=Math.ceil(total/pageSize);
   if(totalPages<=1){bar.style.display='none';return;}
   bar.style.display='flex';
-  document.getElementById('pgPrev').disabled=pg===0;
-  document.getElementById('pgNext').disabled=pg>=totalPages-1;
+  document.getElementById('pgPrev').disabled=pg===0;document.getElementById('pgNext').disabled=pg>=totalPages-1;
   document.getElementById('pgInfo').textContent=`${pg*pageSize+1}–${Math.min((pg+1)*pageSize,total)} di ${total}`;
   const nums=document.getElementById('pgNumbers');nums.innerHTML='';
-  for(let i=0;i<totalPages;i++){
-    const btn=document.createElement('button');
-    btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');
-    btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);
-  }
+  for(let i=0;i<totalPages;i++){const btn=document.createElement('button');btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);}
 }
 
 // ============================================================
@@ -1173,30 +1298,21 @@ function renderTasks(){
   else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
   else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
 
-  // 2. Tag filter
   if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
-
   if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
 
-  // 1. Search by amount too
   if(search){
     const searchNum=parseFloat(search);
     filtered=filtered.filter(t=>{
       const cl=state.clients.find(c=>c.id===t.clientId);
-      return t.category.toLowerCase().includes(search)
-        ||(t.note||'').toLowerCase().includes(search)
-        ||(cl?cl.name.toLowerCase().includes(search):'generico'.includes(search))
-        ||(t.tags||[]).some(tag=>tag.includes(search))
-        ||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);
+      return t.category.toLowerCase().includes(search)||(t.note||'').toLowerCase().includes(search)||(cl?cl.name.toLowerCase().includes(search):'generico'.includes(search))||(t.tags||[]).some(tag=>tag.includes(search))||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);
     });
   }
 
-  // Sort
   if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
   else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
   else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
   else if(currentSort==='custom'){
-    // 3. Custom drag order
     state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});
     filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});
   }
@@ -1204,7 +1320,6 @@ function renderTasks(){
   const totalCount=filtered.length;
   empty.style.display=totalCount===0?'flex':'none';
 
-  // Filter total
   const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
   if(currentFilter!=='all'){
     const exp=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
@@ -1212,7 +1327,6 @@ function renderTasks(){
     ftBox.classList.remove('hidden');ftEl.textContent=inc>0?`+${fmt(inc)} / -${fmt(exp)}`:`-${fmt(exp)}`;
   }else ftBox.classList.add('hidden');
 
-  // 10. Paginate
   renderPagination(totalCount,currentPage,PAGE_SIZE);
   const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
 
@@ -1228,11 +1342,10 @@ function renderTasks(){
     if(t.recurrence==='weekly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">7g</span>';
     else if(t.recurrence==='monthly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1M</span>';
     else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1A</span>';
-    // 2. Tags display
     const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag" onclick="setActiveTag('${tag}')">#${tag}</span>`).join('');
+    const safeCat=t.category.replace(/'/g,"\\'").replace(/"/g,'&quot;');
 
     const card=document.createElement('div');
-    // 3. Drag attributes
     card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;
     card.style.borderLeftColor=cColor;
     card.draggable=true;
@@ -1259,7 +1372,9 @@ function renderTasks(){
       </div>
       <div class="flex items-center gap-2 mb-1">
         <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
-        <h3 class="font-bold text-base text-white leading-tight ${t.done?'line-through text-slate-500':''}">${t.category}</h3>
+        <button onclick="showVoiceAnalysis('${safeCat}')" class="cat-link font-bold text-base leading-tight text-left ${t.done?'line-through text-slate-500':'text-white'}" title="Analizza voce per periodo">
+          ${t.category}<span class="cat-link-icon">📊</span>
+        </button>
       </div>
       <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${t.note||'—'}</p>
       ${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
@@ -1275,10 +1390,7 @@ function renderTasks(){
   updateExpiredBanner();
 }
 
-function setActiveTag(tag){
-  activeTagFilter=activeTagFilter===tag?null:tag;
-  currentPage=0;renderTagFilters();renderTasks();
-}
+function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();}
 
 // ============================================================
 // DUPLICA
@@ -1287,8 +1399,7 @@ function duplicateTask(id){
   const t=state.tasks.find(t=>t.id===id);if(!t)return;
   const newId=Date.now();
   const clone={...t,id:newId,done:false,date:todayStr(),history:[{ts:newId,action:'Duplicato da '+t.category,note:''}]};
-  state.tasks.push(clone);state.taskOrder.push(newId);
-  saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);
+  state.tasks.push(clone);state.taskOrder.push(newId);saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);
 }
 
 // ============================================================
@@ -1324,33 +1435,24 @@ function calculateSummaries(){
 // ============================================================
 function editTask(id){
   const t=state.tasks.find(t=>t.id===id);if(!t)return;
-  document.getElementById('editTaskId').value=t.id;
-  document.getElementById('taskDate').value=t.date;
-  document.getElementById('taskCategory').value=t.category;
-  document.getElementById('taskClient').value=t.clientId||'';
+  document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;
+  document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';
   document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';
   document.getElementById('taskRecurrenceType').value=t.recurrence||'none';
-  document.getElementById('taskNote').value=t.note||'';
-  document.getElementById('taskTags').value=(t.tags||[]).join(', ');
-  // Apri il pannello form e aggiorna titolo
+  document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
   document.getElementById('formDetails').open=true;
   document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';
-  document.getElementById('submitBtn').textContent='Aggiorna';
-  document.getElementById('cancelEdit').classList.remove('hidden');
+  document.getElementById('submitBtn').textContent='Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');
   setTaskType(t.type||'expense');clearCatError();
   const[y,m]=t.date.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function resetForm(){
-  document.getElementById('mainForm').reset();
-  document.getElementById('editTaskId').value='';
+  document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';
   document.getElementById('taskDate').value=todayStr();
   document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span> Nuovo Task / Spesa';
-  document.getElementById('submitBtn').textContent='Salva';
-  document.getElementById('cancelEdit').classList.add('hidden');
-  // Chiudi il pannello dopo reset
-  document.getElementById('formDetails').open=false;
-  setTaskType('expense');clearCatError();
+  document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');
+  document.getElementById('formDetails').open=false;setTaskType('expense');clearCatError();
 }
 function deleteTask(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
@@ -1363,26 +1465,19 @@ function clearPastTasks(){
   const today=parseDateLocal(todayStr());
   const removed=state.tasks.filter(t=>parseDateLocal(t.date)<today&&!t.done);
   if(!removed.length){showToast('✓','Nessun task passato');return;}
-  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
-  const removedIds=removed.map(t=>t.id);
-  state.tasks=state.tasks.filter(t=>parseDateLocal(t.date)>=today||t.done);
-  state.taskOrder=state.taskOrder.filter(x=>!removedIds.includes(x));
-  saveState();fullRefresh();
-  showUndo(`${removed.length} rimossi`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
+  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];const removedIds=removed.map(t=>t.id);
+  state.tasks=state.tasks.filter(t=>parseDateLocal(t.date)>=today||t.done);state.taskOrder=state.taskOrder.filter(x=>!removedIds.includes(x));
+  saveState();fullRefresh();showUndo(`${removed.length} rimossi`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 function clearCompletedTasks(){
-  const completed=state.tasks.filter(t=>t.done);
-  if(!completed.length){showToast('✓','Nessun completato');return;}
-  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
-  const completedIds=completed.map(t=>t.id);
-  state.tasks=state.tasks.filter(t=>!t.done);
-  state.taskOrder=state.taskOrder.filter(x=>!completedIds.includes(x));
-  saveState();fullRefresh();
-  showUndo(`${completed.length} completati rimossi`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
+  const completed=state.tasks.filter(t=>t.done);if(!completed.length){showToast('✓','Nessun completato');return;}
+  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];const completedIds=completed.map(t=>t.id);
+  state.tasks=state.tasks.filter(t=>!t.done);state.taskOrder=state.taskOrder.filter(x=>!completedIds.includes(x));
+  saveState();fullRefresh();showUndo(`${completed.length} completati rimossi`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 
 // ============================================================
-// 6. PDF / STAMPA
+// PDF / STAMPA
 // ============================================================
 function printSummary(){
   const now=new Date();const m=now.getMonth(),y=now.getFullYear();
@@ -1390,32 +1485,9 @@ function printSummary(){
   const monthTasks=state.tasks.filter(t=>{const td=parseDateLocal(t.date);return td.getMonth()===m&&td.getFullYear()===y;});
   const inc=monthTasks.filter(t=>!t.done&&t.type==='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
   const exp=monthTasks.filter(t=>!t.done&&t.type!=='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
-  const rows=monthTasks.sort((a,b)=>a.date.localeCompare(b.date)).map(t=>{
-    const cl=state.clients.find(c=>c.id===t.clientId);
-    const isInc=t.type==='income';
-    return `<tr style="border-bottom:1px solid #eee">
-      <td style="padding:6px 8px;font-size:12px">${parseDateLocal(t.date).toLocaleDateString('it-IT')}</td>
-      <td style="padding:6px 8px;font-size:12px">${t.category}</td>
-      <td style="padding:6px 8px;font-size:12px">${cl?cl.name:'Generico'}</td>
-      <td style="padding:6px 8px;font-size:12px;text-align:right;color:${isInc?'#10b981':'#ef4444'};font-weight:700">${t.amount!=null?(isInc?'+':'-')+fmt(t.amount):''}</td>
-      <td style="padding:6px 8px;font-size:11px;color:#888">${(t.tags||[]).map(tg=>'#'+tg).join(' ')}</td>
-      <td style="padding:6px 8px;font-size:11px">${t.done?'✓':''}</td>
-    </tr>`;
-  }).join('');
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Riepilogo ${MONTHS[m]} ${y}</title>
-  <style>body{font-family:sans-serif;padding:32px;color:#1e293b}h1{font-size:20px;margin-bottom:4px}h2{font-size:13px;color:#64748b;margin-bottom:24px;font-weight:400}table{width:100%;border-collapse:collapse}th{text-align:left;padding:8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#64748b;border-bottom:2px solid #e2e8f0}.summary{display:flex;gap:24px;margin-bottom:24px;background:#f8fafc;padding:16px;border-radius:12px}.kpi{text-align:center}.kpi-label{font-size:10px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px}.kpi-val{font-size:20px;font-weight:800}</style>
-  </head><body>
-  <h1>📋 Riepilogo ${MONTHS[m]} ${y}</h1><h2>Task &amp; Expense Manager Pro v4 · ${new Date().toLocaleDateString('it-IT')}</h2>
-  <div class="summary">
-    <div class="kpi"><div class="kpi-label">Entrate</div><div class="kpi-val" style="color:#10b981">${fmt(inc)}</div></div>
-    <div class="kpi"><div class="kpi-label">Spese</div><div class="kpi-val" style="color:#ef4444">${fmt(exp)}</div></div>
-    <div class="kpi"><div class="kpi-label">Saldo netto</div><div class="kpi-val" style="color:${inc-exp>=0?'#3b82f6':'#f97316'}">${fmt(inc-exp)}</div></div>
-    <div class="kpi"><div class="kpi-label">Task totali</div><div class="kpi-val">${monthTasks.length}</div></div>
-  </div>
-  <table><thead><tr><th>Data</th><th>Categoria</th><th>Persona</th><th style="text-align:right">Importo</th><th>Tag</th><th>✓</th></tr></thead><tbody>${rows}</tbody></table>
-  </body></html>`;
-  const w=window.open('','_blank');if(!w){showToast('⚠️','Popup bloccato dal browser');return;}
-  w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);
+  const rows=monthTasks.sort((a,b)=>a.date.localeCompare(b.date)).map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const isInc=t.type==='income';return `<tr style="border-bottom:1px solid #eee"><td style="padding:6px 8px;font-size:12px">${parseDateLocal(t.date).toLocaleDateString('it-IT')}</td><td style="padding:6px 8px;font-size:12px">${t.category}</td><td style="padding:6px 8px;font-size:12px">${cl?cl.name:'Generico'}</td><td style="padding:6px 8px;font-size:12px;text-align:right;color:${isInc?'#10b981':'#ef4444'};font-weight:700">${t.amount!=null?(isInc?'+':'-')+fmt(t.amount):''}</td><td style="padding:6px 8px;font-size:11px;color:#888">${(t.tags||[]).map(tg=>'#'+tg).join(' ')}</td><td style="padding:6px 8px;font-size:11px">${t.done?'✓':''}</td></tr>`;}).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Riepilogo ${MONTHS[m]} ${y}</title><style>body{font-family:sans-serif;padding:32px;color:#1e293b}h1{font-size:20px;margin-bottom:4px}h2{font-size:13px;color:#64748b;margin-bottom:24px;font-weight:400}table{width:100%;border-collapse:collapse}th{text-align:left;padding:8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#64748b;border-bottom:2px solid #e2e8f0}.summary{display:flex;gap:24px;margin-bottom:24px;background:#f8fafc;padding:16px;border-radius:12px}.kpi{text-align:center}.kpi-label{font-size:10px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px}.kpi-val{font-size:20px;font-weight:800}</style></head><body><h1>📋 Riepilogo ${MONTHS[m]} ${y}</h1><h2>Task &amp; Expense Manager Pro v5 · ${new Date().toLocaleDateString('it-IT')}</h2><div class="summary"><div class="kpi"><div class="kpi-label">Entrate</div><div class="kpi-val" style="color:#10b981">${fmt(inc)}</div></div><div class="kpi"><div class="kpi-label">Spese</div><div class="kpi-val" style="color:#ef4444">${fmt(exp)}</div></div><div class="kpi"><div class="kpi-label">Saldo netto</div><div class="kpi-val" style="color:${inc-exp>=0?'#3b82f6':'#f97316'}">${fmt(inc-exp)}</div></div><div class="kpi"><div class="kpi-label">Task totali</div><div class="kpi-val">${monthTasks.length}</div></div></div><table><thead><tr><th>Data</th><th>Categoria</th><th>Persona</th><th style="text-align:right">Importo</th><th>Tag</th><th>✓</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+  const w=window.open('','_blank');if(!w){showToast('⚠️','Popup bloccato dal browser');return;}w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);
 }
 
 // ============================================================
@@ -1435,8 +1507,7 @@ function exportCSV(){
   const rows=state.tasks.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return[t.date,t.type==='income'?'Entrata':'Spesa',`"${t.category}"`,cl?`"${cl.name}"`:'Generico',t.amount!=null?t.amount.toFixed(2):'',t.recurrence||'none',`"${(t.tags||[]).join(',')}"`,`"${(t.note||'').replace(/"/g,"''")}"`,t.done?'Sì':'No'];});
   const csv=[h,...rows].map(r=>r.join(',')).join('\n');
   const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);
-  showToast('📊',`CSV esportato (${state.tasks.length})`);
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${state.tasks.length})`);
 }
 function exportBackup(){
   const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
@@ -1454,12 +1525,9 @@ function importBackup(event){
 // SAVE & TOAST
 // ============================================================
 function saveState(){
-  safeSet('app_tasks',JSON.stringify(state.tasks));
-  safeSet('app_clients',JSON.stringify(state.clients));
-  safeSet('app_categories',JSON.stringify(state.categories));
-  safeSet('app_currency',state.currency);
-  safeSet('app_globalBudget',state.globalBudget);
-  safeSet('app_taskOrder',JSON.stringify(state.taskOrder));
+  safeSet('app_tasks',JSON.stringify(state.tasks));safeSet('app_clients',JSON.stringify(state.clients));
+  safeSet('app_categories',JSON.stringify(state.categories));safeSet('app_currency',state.currency);
+  safeSet('app_globalBudget',state.globalBudget);safeSet('app_taskOrder',JSON.stringify(state.taskOrder));
 }
 function showToast(icon,msg){
   const t=document.getElementById('toast');
