@@ -88,7 +88,6 @@ body.country-GB .move-country-box.to{border-color:#7c3aed;background:rgba(124,58
 .btn-move-confirm:hover{filter:brightness(1.1);transform:translateY(-1px)}
 .btn-move-cancel{background:transparent;color:#64748b;border:1px solid #334155;border-radius:12px;padding:12px 24px;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
 .btn-move-cancel:hover{color:#e2e8f0;border-color:#475569}
-/* Move button on card */
 .btn-move-task{font-size:11px;padding:2px 5px;border-radius:6px;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.08);color:#a5b4fc;cursor:pointer;transition:all .15s;line-height:1.4}
 .btn-move-task:hover{background:rgba(99,102,241,.22);border-color:#a5b4fc;transform:scale(1.05)}
 
@@ -149,8 +148,85 @@ body.country-GB{
 
 *:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* Light mode */
-html:not(.dark) body{background:#f1f5f9;color:#1e293b}
+/* ===== COLORED SIDEBAR SECTION CARDS ===== */
+
+/* 📅 Calendario — cyan/teal */
+#calendarSection {
+  background: linear-gradient(145deg, rgba(14,148,167,0.20) 0%, rgba(8,30,35,0.92) 100%) !important;
+  border: 1px solid rgba(20,184,196,0.40) !important;
+  border-top: 3px solid #14b8c4 !important;
+  box-shadow: 0 4px 24px rgba(20,184,196,0.14), inset 0 1px 0 rgba(20,184,196,0.10);
+}
+
+/* 💰 Riepilogo & Saldo — emerald */
+#summaryCard {
+  background: linear-gradient(145deg, rgba(16,185,129,0.17) 0%, rgba(5,22,15,0.92) 100%) !important;
+  border: 1px solid rgba(16,185,129,0.38) !important;
+  border-top: 3px solid #10b981 !important;
+  box-shadow: 0 4px 24px rgba(16,185,129,0.13), inset 0 1px 0 rgba(16,185,129,0.09);
+}
+
+/* ✨ Nuovo Task — blue accent */
+#formSection {
+  background: linear-gradient(145deg, rgba(59,130,246,0.17) 0%, rgba(8,12,35,0.92) 100%) !important;
+  border: 1px solid rgba(59,130,246,0.38) !important;
+  border-top: 3px solid var(--accent) !important;
+  box-shadow: 0 4px 24px var(--accent-glow), inset 0 1px 0 rgba(59,130,246,0.09);
+}
+body.country-GB #formSection {
+  background: linear-gradient(145deg, rgba(124,58,237,0.18) 0%, rgba(12,6,30,0.92) 100%) !important;
+}
+
+/* 🔄 Ricorrenze — indigo */
+#recurringSection {
+  background: linear-gradient(145deg, rgba(99,102,241,0.18) 0%, rgba(10,8,32,0.92) 100%) !important;
+  border: 1px solid rgba(99,102,241,0.38) !important;
+  border-top: 3px solid #6366f1 !important;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.13), inset 0 1px 0 rgba(99,102,241,0.09);
+}
+
+/* 📊 Analisi — amber/orange */
+#analysisSection {
+  background: linear-gradient(145deg, rgba(245,158,11,0.16) 0%, rgba(22,14,4,0.92) 100%) !important;
+  border: 1px solid rgba(245,158,11,0.36) !important;
+  border-top: 3px solid #f59e0b !important;
+  box-shadow: 0 4px 24px rgba(245,158,11,0.11), inset 0 1px 0 rgba(245,158,11,0.08);
+}
+
+/* 👥 Persone — rose/pink */
+#personeSection {
+  background: linear-gradient(145deg, rgba(236,72,153,0.16) 0%, rgba(25,5,18,0.92) 100%) !important;
+  border: 1px solid rgba(236,72,153,0.36) !important;
+  border-top: 3px solid #ec4899 !important;
+  box-shadow: 0 4px 24px rgba(236,72,153,0.11), inset 0 1px 0 rgba(236,72,153,0.08);
+}
+
+/* 🏷️ Categorie & Budget — violet */
+#categorieSection {
+  background: linear-gradient(145deg, rgba(139,92,246,0.17) 0%, rgba(13,5,28,0.92) 100%) !important;
+  border: 1px solid rgba(139,92,246,0.38) !important;
+  border-top: 3px solid #8b5cf6 !important;
+  box-shadow: 0 4px 24px rgba(139,92,246,0.12), inset 0 1px 0 rgba(139,92,246,0.09);
+}
+
+/* Summary label colors per sezione */
+#calendarSection details summary { color: #14b8c4 !important; }
+#recurringSection details summary { color: #6366f1 !important; }
+#analysisSection details summary { color: #f59e0b !important; }
+#personeSection details summary { color: #ec4899 !important; }
+#categorieSection details summary { color: #8b5cf6 !important; }
+#formSection details summary { color: var(--accent) !important; }
+
+/* Light mode overrides for colored sections */
+html:not(.dark) #calendarSection { background: linear-gradient(145deg, rgba(14,148,167,0.12) 0%, rgba(220,245,248,0.95) 100%) !important; }
+html:not(.dark) #summaryCard { background: linear-gradient(145deg, rgba(16,185,129,0.10) 0%, rgba(220,248,238,0.95) 100%) !important; }
+html:not(.dark) #formSection { background: linear-gradient(145deg, rgba(59,130,246,0.10) 0%, rgba(220,232,255,0.95) 100%) !important; }
+html:not(.dark) #recurringSection { background: linear-gradient(145deg, rgba(99,102,241,0.10) 0%, rgba(228,228,255,0.95) 100%) !important; }
+html:not(.dark) #analysisSection { background: linear-gradient(145deg, rgba(245,158,11,0.10) 0%, rgba(255,245,220,0.95) 100%) !important; }
+html:not(.dark) #personeSection { background: linear-gradient(145deg, rgba(236,72,153,0.10) 0%, rgba(255,220,240,0.95) 100%) !important; }
+html:not(.dark) #categorieSection { background: linear-gradient(145deg, rgba(139,92,246,0.10) 0%, rgba(240,225,255,0.95) 100%) !important; }
+
+/* Light mode borders */
 html:not(.dark) .section-card{background:#fff;border-color:#e2e8f0}
 html:not(.dark) .bg-darkCard{background:#fff!important;border-color:#e2e8f0!important}
 html:not(.dark) .bg-darkBg{background:#f1f5f9!important}
@@ -183,7 +259,6 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
 html:not(.dark) #moveTaskModal .bg-slate-900{background:#f8fafc!important}
 html:not(.dark) .move-country-box.from{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
-
 
 /* Font size */
 html{transition:font-size .18s ease}
@@ -395,32 +470,32 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
     <!-- ===== SIDEBAR ===== -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
 
-      <!-- ✅ CALENDARIO — PRIMO IN CIMA -->
-      <div id="calendarSection" class="section-card" style="border-top:3px solid var(--accent)">
+      <!-- ✅ CALENDARIO -->
+      <div id="calendarSection" class="section-card">
         <details class="group" open>
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4">
             📅 Calendario <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="pt-3 border-t border-slate-800">
+          <div class="pt-3 border-t border-slate-800/60">
             <div class="flex items-center justify-between mb-2">
-              <button onclick="prevMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">‹</button>
+              <button onclick="prevMonth()" class="w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">‹</button>
               <div class="flex items-center gap-2">
                 <span id="calMonthLabel" class="text-xs font-bold uppercase tracking-widest text-slate-300"></span>
-                <button onclick="goToToday()" id="todayBtn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-accent/20 text-accent hover:bg-accent/40 transition-colors">oggi</button>
+                <button onclick="goToToday()" id="todayBtn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/40 transition-colors">oggi</button>
               </div>
-              <button onclick="nextMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">›</button>
+              <button onclick="nextMonth()" class="w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">›</button>
             </div>
             <div class="grid grid-cols-7 gap-0.5 mb-1">
               <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Lu</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ma</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Me</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Gi</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ve</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Sa</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Do</div>
             </div>
             <div id="calGrid" class="grid grid-cols-7 gap-0.5"></div>
-            <div id="calDaySummary" class="hidden mt-3 pt-3 border-t border-slate-800">
+            <div id="calDaySummary" class="hidden mt-3 pt-3 border-t border-slate-800/60">
               <div class="flex items-center justify-between mb-2">
-                <p id="calDayLabel" class="text-[10px] font-bold uppercase tracking-widest text-accent"></p>
+                <p id="calDayLabel" class="text-[10px] font-bold uppercase tracking-widest" style="color:#14b8c4"></p>
                 <button onclick="clearCalendarFilter()" class="text-[9px] text-slate-500 hover:text-slate-300 underline">tutti</button>
               </div>
               <div id="calDayItems" class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
-              <div class="mt-2 pt-2 border-t border-slate-800 flex justify-between items-center">
+              <div class="mt-2 pt-2 border-t border-slate-800/60 flex justify-between items-center">
                 <span class="text-[10px] text-slate-500">Saldo giorno</span>
                 <span id="calDayTotal" class="mono text-sm font-bold">0.00</span>
               </div>
@@ -429,14 +504,14 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- Riepilogo & Saldo -->
-      <div class="section-card" id="summaryCard" style="border-top:3px solid var(--accent)">
+      <!-- 💰 Riepilogo & Saldo -->
+      <div class="section-card" id="summaryCard">
         <details class="group" open>
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-emerald-400 group-open:mb-4">
             💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="space-y-2 pt-3 border-t border-slate-800">
-            <div class="bg-slate-900/60 p-3 rounded-xl" id="balancePrimaryBox" style="border:1px solid rgba(99,102,241,.2)">
+          <div class="space-y-2 pt-3 border-t border-slate-800/60">
+            <div class="bg-slate-900/60 p-3 rounded-xl" id="balancePrimaryBox" style="border:1px solid rgba(16,185,129,.2)">
               <div class="flex items-center gap-2 mb-2">
                 <span id="balanceCurBadge" class="cur-badge-eur">€ EUR</span>
                 <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Saldo netto (30 giorni)</div>
@@ -457,14 +532,14 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
               </div>
             </div>
 
-            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
               <div class="flex justify-between items-center mb-2">
                 <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Budget mensile</label>
                 <input type="number" id="globalBudgetInput" min="0" step="50" placeholder="0"
-                  class="w-24 bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-[10px] text-white mono focus:border-accent outline-none text-right"
+                  class="w-24 bg-slate-800/80 border border-slate-700 rounded-lg p-1.5 text-[10px] text-white mono focus:border-emerald-400 outline-none text-right"
                   onchange="setGlobalBudget(this.value)">
               </div>
-              <div class="budget-bar mb-1"><div id="globalBudgetBar" class="budget-bar-fill" style="width:0%;background:var(--accent)"></div></div>
+              <div class="budget-bar mb-1"><div id="globalBudgetBar" class="budget-bar-fill" style="width:0%;background:#10b981"></div></div>
               <div id="globalBudgetLabel" class="text-[9px] text-slate-500 text-right"></div>
             </div>
 
@@ -477,25 +552,25 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
               <span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span>
             </div>
 
-            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
               <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Periodo personalizzato</label>
               <div class="grid grid-cols-2 gap-2 mb-2">
-                <input type="date" id="filterStart" onchange="calculateSummaries()" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
-                <input type="date" id="filterEnd" onchange="calculateSummaries()" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-accent outline-none w-full">
+                <input type="date" id="filterStart" onchange="calculateSummaries()" class="bg-slate-800/80 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-emerald-400 outline-none w-full">
+                <input type="date" id="filterEnd" onchange="calculateSummaries()" class="bg-slate-800/80 border border-slate-700 rounded-lg p-2 text-[10px] text-white focus:border-emerald-400 outline-none w-full">
               </div>
               <div class="flex gap-2">
-                <button onclick="applyPeriodFilter()" class="flex-1 text-[9px] font-bold py-1.5 px-2 bg-accent/20 text-accent border border-accent/30 rounded-lg hover:bg-accent/30 transition-colors">📋 Filtra</button>
-                <button onclick="clearPeriodFilter()" class="text-[9px] font-bold py-1.5 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors">✕</button>
+                <button onclick="applyPeriodFilter()" class="flex-1 text-[9px] font-bold py-1.5 px-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg hover:bg-emerald-500/30 transition-colors">📋 Filtra</button>
+                <button onclick="clearPeriodFilter()" class="text-[9px] font-bold py-1.5 px-2 bg-slate-800/80 text-slate-400 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors">✕</button>
               </div>
               <div id="periodTotalContainer" class="hidden mt-2">
-                <div class="bg-accent/10 border border-accent/20 p-2 rounded-lg text-center">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-lg text-center">
                   <span class="text-[9px] text-slate-400 block mb-0.5">Spese periodo</span>
                   <span id="summaryPeriod" class="mono font-bold text-base text-white">0.00</span>
                 </div>
               </div>
             </div>
 
-            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
               <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 block">Filtro importo</label>
               <div class="flex items-center gap-2">
                 <span id="rangeMinLabel" class="text-[9px] mono text-slate-500 w-12">0</span>
@@ -504,29 +579,29 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
                 <span id="rangeMaxLabel" class="text-[9px] mono text-slate-500 w-12 text-right">5000</span>
               </div>
               <div class="flex gap-2 mt-1.5">
-                <button onclick="applyAmountFilter()" class="flex-1 text-[9px] font-bold py-1 bg-accent/20 text-accent border border-accent/30 rounded-lg">Applica</button>
-                <button onclick="clearAmountFilter()" class="text-[9px] font-bold py-1 px-2 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg">✕</button>
+                <button onclick="applyAmountFilter()" class="flex-1 text-[9px] font-bold py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg">Applica</button>
+                <button onclick="clearAmountFilter()" class="text-[9px] font-bold py-1 px-2 bg-slate-800/80 text-slate-400 border border-slate-700 rounded-lg">✕</button>
               </div>
             </div>
           </div>
         </details>
       </div>
 
-      <!-- Form Nuovo Task -->
-      <div class="section-card" style="border-top:3px solid var(--accent)">
+      <!-- ✨ Form Nuovo Task -->
+      <div id="formSection" class="section-card">
         <details id="formDetails" class="group">
-          <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4 select-none">
+          <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4 select-none">
             <span id="formTitle" class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>Nuovo Task / Spesa
             </span>
             <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-        <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800">
+        <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800/60">
           <input type="hidden" id="editTaskId">
           <input type="hidden" id="taskType" value="expense">
           <input type="hidden" id="taskCurrency" value="€">
 
-          <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800 bg-slate-900/60">
+          <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/60 bg-slate-900/60">
             <span id="formCountryFlag" class="text-lg">🇮🇹</span>
             <div>
               <div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div>
@@ -538,7 +613,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Data</label>
             <div class="relative">
               <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none">📅</span>
-              <input type="date" id="taskDate" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-9 text-sm focus:outline-none focus:border-accent transition-colors cursor-pointer" onchange="syncCalendarToForm()">
+              <input type="date" id="taskDate" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-9 text-sm focus:outline-none focus:border-blue-400 transition-colors cursor-pointer" onchange="syncCalendarToForm()">
             </div>
           </div>
           <div class="space-y-1">
@@ -550,26 +625,26 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Categoria</label>
-            <select id="taskCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent appearance-none cursor-pointer transition-colors" onchange="clearCatError()">
+            <select id="taskCategory" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer transition-colors" onchange="clearCatError()">
               <option value="">Seleziona…</option>
             </select>
             <p id="catError" class="text-[10px] text-red-400 font-semibold pl-1" style="display:none">⚠ Seleziona una categoria</p>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label>
-            <select id="taskClient" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent appearance-none cursor-pointer"></select>
+            <select id="taskClient" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"></select>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label>
             <div class="relative">
               <span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span>
-              <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-accent mono">
+              <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono">
             </div>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Ricorrenza</label>
             <div class="flex items-center gap-2">
-              <select id="taskRecurrenceType" onchange="onRecTypeChange()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent appearance-none cursor-pointer">
+              <select id="taskRecurrenceType" onchange="onRecTypeChange()" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer">
                 <option value="none">— Nessuna</option>
                 <option value="weekly">settimane</option>
                 <option value="monthly">mesi</option>
@@ -579,45 +654,45 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
             <div id="recIntervalWrap" class="hidden flex items-center gap-2 mt-1.5">
               <span class="text-[10px] text-slate-500 font-bold">Ogni</span>
               <input type="number" id="taskRecurrenceInterval" min="1" max="99" value="1"
-                class="w-16 bg-slate-900 border border-slate-700 rounded-xl p-2 text-sm text-center mono focus:outline-none focus:border-accent">
+                class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-center mono focus:outline-none focus:border-blue-400">
               <span id="recIntervalUnit" class="text-[10px] text-slate-400"></span>
             </div>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
-            <input type="text" id="taskTags" placeholder="lavoro, urgente, casa…" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent">
+            <input type="text" id="taskTags" placeholder="lavoro, urgente, casa…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400">
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Descrizione</label>
-            <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-accent resize-none"></textarea>
+            <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea>
           </div>
           <div class="flex gap-2 pt-1">
             <button type="submit" id="submitBtn" class="flex-1 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-sm" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">Salva</button>
-            <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
+            <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800/80 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
           </div>
         </form>
         </details>
       </div>
 
       <!-- 🔄 Ricorrenze -->
-      <div class="section-card" style="border-top:3px solid var(--accent)">
+      <div id="recurringSection" class="section-card">
         <details class="group">
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-indigo-400 group-open:mb-4">
             🔄 Ricorrenze <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="pt-3 border-t border-slate-800">
+          <div class="pt-3 border-t border-slate-800/60">
             <div id="recurringList" class="space-y-2 max-h-72 overflow-y-auto custom-scrollbar pr-1"></div>
           </div>
         </details>
       </div>
 
-      <!-- Analisi -->
-      <div class="section-card">
+      <!-- 📊 Analisi -->
+      <div id="analysisSection" class="section-card">
         <details class="group">
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-amber-400 group-open:mb-4">
             📊 Analisi <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="pt-3 border-t border-slate-800">
+          <div class="pt-3 border-t border-slate-800/60">
             <div class="flex gap-1 mb-4 bg-slate-900/70 rounded-xl p-1">
               <button onclick="switchChartTab('dist')" id="tabDist" class="chart-tab active flex-1 text-[9px] font-bold py-1.5 rounded-lg">🍩 Dist.</button>
               <button onclick="switchChartTab('trend')" id="tabTrend" class="chart-tab flex-1 text-[9px] font-bold py-1.5 rounded-lg">📈 Trend</button>
@@ -633,8 +708,8 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
               <div class="h-40 flex items-center justify-center relative"><canvas id="expenseChart"></canvas></div>
               <div id="chartLegend" class="flex flex-wrap justify-center gap-1.5 mt-3"></div>
               <div class="flex justify-center gap-3 mt-3">
-                <button onclick="updateChart('category')" id="chartBtnCat" class="chart-mode-btn text-[9px] font-bold uppercase px-3 py-1.5 bg-slate-800 rounded-lg hover:bg-slate-700 transition-all">Categoria</button>
-                <button onclick="updateChart('client')" id="chartBtnClient" class="chart-mode-btn text-[9px] font-bold uppercase px-3 py-1.5 bg-slate-800 rounded-lg hover:bg-slate-700 transition-all">Persona</button>
+                <button onclick="updateChart('category')" id="chartBtnCat" class="chart-mode-btn text-[9px] font-bold uppercase px-3 py-1.5 bg-slate-800/80 rounded-lg hover:bg-slate-700 transition-all">Categoria</button>
+                <button onclick="updateChart('client')" id="chartBtnClient" class="chart-mode-btn text-[9px] font-bold uppercase px-3 py-1.5 bg-slate-800/80 rounded-lg hover:bg-slate-700 transition-all">Persona</button>
               </div>
             </div>
             <div id="panelTrend" class="hidden">
@@ -652,35 +727,35 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- Persone -->
-      <div class="section-card">
+      <!-- 👥 Persone -->
+      <div id="personeSection" class="section-card">
         <details class="group">
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-pink-400 group-open:mb-4">
             👥 Persone <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="space-y-3 pt-3 border-t border-slate-800">
+          <div class="space-y-3 pt-3 border-t border-slate-800/60">
             <div class="flex gap-2 items-center">
-              <input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-accent" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}">
+              <input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-pink-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}">
               <input type="color" id="newClientColor" value="#8b5cf6" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5">
-              <button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:var(--accent)">✓</button>
+              <button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#ec4899">✓</button>
             </div>
             <div id="clientListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
           </div>
         </details>
       </div>
 
-      <!-- Categorie & Budget -->
-      <div class="section-card">
+      <!-- 🏷️ Categorie & Budget -->
+      <div id="categorieSection" class="section-card">
         <details class="group">
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-violet-400 group-open:mb-4">
             🏷️ Categorie &amp; Budget <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
-          <div class="space-y-3 pt-3 border-t border-slate-800">
+          <div class="space-y-3 pt-3 border-t border-slate-800/60">
             <div class="flex gap-2 items-center flex-wrap">
-              <input type="text" id="newCatName" placeholder="Nuova categoria…" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-accent" onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}">
+              <input type="text" id="newCatName" placeholder="Nuova categoria…" class="flex-1 min-w-0 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-violet-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}">
               <input type="color" id="newCatColor" value="#6366f1" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5 flex-shrink-0">
-              <input type="number" id="newCatBudget" placeholder="Budget" min="0" step="10" class="w-20 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-accent mono flex-shrink-0">
-              <button type="button" onclick="addCategory()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors flex-shrink-0" style="background:var(--accent)">✓</button>
+              <input type="number" id="newCatBudget" placeholder="Budget" min="0" step="10" class="w-20 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-violet-400 mono flex-shrink-0">
+              <button type="button" onclick="addCategory()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors flex-shrink-0" style="background:#8b5cf6">✓</button>
             </div>
             <div id="categoryListDisplay" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
           </div>
@@ -758,6 +833,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
       <div id="taskGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
         ondragover="event.preventDefault()" ondrop="onGridDrop(event)"></div>
       <div id="emptyTasks"><span class="text-6xl mb-4">🎯</span><p class="text-lg font-semibold">Nessun task trovato</p></div>
+
       <!-- Prossime Ricorrenze -->
       <div id="upcomingRecSection" class="hidden">
         <div class="upcoming-header">
@@ -842,7 +918,6 @@ let moveTaskId=null;
 function fmtCur(n,cur){const c=cur||getActiveCurrency();return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;}
 function fmtTask(t){return fmtCur(t.amount||0,t.currency||getActiveCurrency());}
 
-// ===== HELPER: hex to rgba =====
 function hexToRgba(hex,alpha){
   let h=hex.replace('#','');
   if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
@@ -850,7 +925,6 @@ function hexToRgba(hex,alpha){
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-// ===== MOVE TASK =====
 function openMoveModal(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
   moveTaskId=id;
@@ -895,7 +969,6 @@ function confirmMoveTask(){
 document.getElementById('moveTaskModal').addEventListener('click',function(e){if(e.target===this)closeMoveModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMoveModal();closeHistoryModal();closeVoiceModal();}});
 
-// ===== SWITCH COUNTRY =====
 function switchCountry(c){
   activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();
   currentFilter='all';currentPage=0;selectedCalDate=null;activeTagFilter=null;
@@ -930,11 +1003,9 @@ function updateFormCountryIndicator(){
   document.getElementById('taskCurrency').value=cfg.currency;
 }
 
-// ===== TEMA =====
 function applyTheme(dark){document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';safeSet('app_theme',dark?'dark':'light');}
 function toggleTheme(){applyTheme(!document.documentElement.classList.contains('dark'));}
 
-// ===== BUDGET =====
 function setGlobalBudget(v){const val=parseFloat(v)||0;setGlobalBudgetForCountry(val);safeSet(activeCountry==='GB'?'app_budget_GB':'app_budget_IT',val);updateGlobalBudgetBar();}
 function updateGlobalBudgetBar(){
   const budget=getGlobalBudget();const inp=document.getElementById('globalBudgetInput');if(inp)inp.value=budget||'';
@@ -945,7 +1016,6 @@ function updateGlobalBudgetBar(){
   else{bar.style.width='0%';lbl.textContent='';}
 }
 
-// ===== HERO KPIs =====
 function updateHeroKPIs(){
   const tasks=getCountryTasks();const active=tasks.filter(t=>!t.done).length;
   const now=new Date();const msDay=86400000;const ts=todayStr();
@@ -958,7 +1028,6 @@ function updateHeroKPIs(){
   const netEl=document.getElementById('heroNet');netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
 
-// ===== INIT =====
 window.onload=()=>{
   try{applyTheme(safeGet('app_theme')!=='light');applyCountryTheme();updateFormCountryIndicator();document.getElementById('taskDate').value=todayStr();updateGlobalBudgetBar();initSelects();renderTagFilters();renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();updateHeroKPIs();renderRecurringList();renderUpcomingRecurring();applyFontSize();}catch(e){console.error('Init:',e);}
   try{initChart();}catch(e){}try{initMonthlyChart();}catch(e){}try{initBalanceChart();}catch(e){}try{switchChartTab('dist');}catch(e){}
@@ -970,7 +1039,6 @@ function getLocalDateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).
 function parseDateLocal(str){const[y,m,d]=str.split('-').map(Number);return new Date(y,m-1,d);}
 function debouncedSearch(){clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>{currentPage=0;renderTasks();},200);}
 
-// ===== UNDO =====
 function showUndo(msg,data,onUndo){hideUndo();undoData={data,onUndo};document.getElementById('undoMsg').textContent=msg;document.getElementById('undoToast').classList.add('visible');document.getElementById('undoBtn').onclick=()=>{if(undoData)undoData.onUndo(undoData.data);hideUndo();};undoTimeout=setTimeout(()=>hideUndo(),5000);}
 function hideUndo(){clearTimeout(undoTimeout);undoData=null;document.getElementById('undoToast').classList.remove('visible');}
 
@@ -1027,7 +1095,6 @@ function onRangeChange(){document.getElementById('rangeMinLabel').textContent=do
 function applyAmountFilter(){amountMin=parseInt(document.getElementById('rangeMin').value);amountMax=parseInt(document.getElementById('rangeMax').value);if(amountMin>amountMax){showToast('⚠️','Min > Max!');return;}amountFilterActive=true;currentPage=0;showToast('✓',`${amountMin}—${amountMax}`);renderTasks();}
 function clearAmountFilter(){amountFilterActive=false;document.getElementById('rangeMin').value=0;document.getElementById('rangeMax').value=5000;onRangeChange();renderTasks();}
 
-// ===== PERSONE — COLORED CARDS =====
 function addClient(){
   const ni=document.getElementById('newClientName'),ci=document.getElementById('newClientColor');
   const v=ni.value.trim();if(!v){showToast('⚠️','Inserisci un nome!');return;}
@@ -1070,7 +1137,6 @@ function renderClientManagement(){
   });
 }
 
-// ===== CATEGORIE — COLORED CARDS =====
 function renderCategories(){
   const list=document.getElementById('categoryListDisplay');list.innerHTML='';
   const cur=getActiveCurrency();const now=new Date();const m=now.getMonth(),y=now.getFullYear();
@@ -1116,7 +1182,6 @@ function removeCategory(name){
   showUndo(`"${name}" rimossa`,backup,b=>{if(activeCountry==='GB')state.categoriesGB=b;else state.categoriesIT=b;saveState();renderCategories();initSelects();try{updateChart();}catch(e){}showToast('↩️','Annullato!');});
 }
 
-// ===== CALENDARIO =====
 function showCalTooltip(event,ds,data){
   const tip=document.getElementById('calTooltip');
   const d=parseDateLocal(ds);
@@ -1201,7 +1266,6 @@ function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCale
 function goToToday(){const n=new Date();calYear=n.getFullYear();calMonth=n.getMonth();renderCalendar();renderUpcomingRecurring();}
 function syncCalendarToForm(){const v=document.getElementById('taskDate').value;if(!v)return;const[y,m]=v.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();}
 
-// ===== CHARTS =====
 function setChartDataType(type){
   chartDataType=type;
   document.getElementById('chartTypeExpense').className='text-[9px] font-bold px-3 py-1 rounded-md transition-all '+(type==='expense'?'bg-slate-800 text-red-400':'text-slate-500');
@@ -1263,7 +1327,6 @@ function updateExpiredBanner(){
 }
 function clearCatError(){document.getElementById('taskCategory').classList.remove('input-error');document.getElementById('catError').style.display='none';}
 
-// ===== FORM SUBMIT =====
 document.getElementById('mainForm').onsubmit=(e)=>{
   e.preventDefault();
   const editId=document.getElementById('editTaskId').value;
@@ -1289,7 +1352,6 @@ document.getElementById('mainForm').onsubmit=(e)=>{
   saveState();fullRefresh();resetForm();showToast('✓',editId?'Aggiornato!':'Salvato!');
 };
 
-// ===== TOGGLE STATUS =====
 function toggleTaskStatus(id){
   const idx=state.tasks.findIndex(t=>t.id===id);if(idx===-1)return;
   const task=state.tasks[idx];task.done=!task.done;
@@ -1304,7 +1366,6 @@ function toggleTaskStatus(id){
   saveState();fullRefresh();
 }
 
-// ===== STORICO =====
 function showHistoryModal(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
   const list=document.getElementById('historyList');const empty=document.getElementById('historyEmpty');
@@ -1316,7 +1377,6 @@ function showHistoryModal(id){
 function closeHistoryModal(){document.getElementById('historyModal').classList.add('hidden');}
 document.getElementById('historyModal').onclick=function(e){if(e.target===this)closeHistoryModal();};
 
-// ===== DRAG & DROP =====
 function onDragStart(e,id){dragSrcId=id;e.dataTransfer.effectAllowed='move';setTimeout(()=>{const el=e.target.closest('.card-task');if(el)el.classList.add('dragging');},0);}
 function onDragEnd(e){e.target.closest('.card-task')?.classList.remove('dragging');}
 function onDragOver(e,id){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}
@@ -1332,7 +1392,6 @@ function onDrop(e,targetId){
 }
 function onGridDrop(e){e.preventDefault();document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));}
 
-// ===== PAGINAZIONE =====
 function changePage(dir){currentPage=Math.max(0,currentPage+dir);renderTasks();}
 function renderPagination(total,pg,pageSize){
   const bar=document.getElementById('paginationBar');const totalPages=Math.ceil(total/pageSize);
@@ -1344,7 +1403,6 @@ function renderPagination(total,pg,pageSize){
   for(let i=0;i<totalPages;i++){const btn=document.createElement('button');btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);}
 }
 
-// ===== RENDER TASKS =====
 function renderTasks(){
   const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
   const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
@@ -1425,7 +1483,6 @@ function renderTasks(){
 function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();}
 function duplicateTask(id){const t=state.tasks.find(t=>t.id===id);if(!t)return;const newId=Date.now();const clone={...t,id:newId,done:false,date:todayStr(),country:activeCountry,history:[{ts:newId,action:'Duplicato da '+t.category,note:''}]};state.tasks.push(clone);state.taskOrder.push(newId);saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);}
 
-// ===== SUMMARIES =====
 function calculateSummaries(){
   const ts=todayStr(),today=parseDateLocal(ts);const fs=document.getElementById('filterStart').value,fe=document.getElementById('filterEnd').value;
   const msDay=86400000;const cur=getActiveCurrency();let daily=0,weekly=0,inc30=0,exp30=0,period=0;
@@ -1443,7 +1500,6 @@ function calculateSummaries(){
   updateGlobalBudgetBar();updateHeroKPIs();
 }
 
-// ===== EDIT / DELETE =====
 function editTask(id){
   const t=state.tasks.find(t=>t.id===id);if(!t)return;
   document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';document.getElementById('taskRecurrenceType').value=t.recurrence||'none';document.getElementById('taskRecurrenceInterval').value=t.recurrenceInterval||1;onRecTypeChange();document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
@@ -1512,7 +1568,6 @@ function showToast(icon,msg){
   t.classList.remove('opacity-0','translate-y-4');t.classList.add('opacity-100','translate-y-0');clearTimeout(t._timeout);t._timeout=setTimeout(()=>{t.classList.add('opacity-0','translate-y-4');t.classList.remove('opacity-100','translate-y-0');},2600);
 }
 
-// ===== VOICE ANALYSIS =====
 function showVoiceAnalysis(category){
   currentVoiceCategory=category;currentVoiceTab='list';
   const cats=getCategories();const catObj=cats.find(c=>c.name===category);const color=catObj?catObj.color:'#6366f1';
@@ -1555,20 +1610,16 @@ function renderVoiceContent(){
   content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Periodo</th><th class="text-center">#</th><th class="text-right">Spese</th><th class="text-right">Entrate</th><th class="text-right">Netto</th></tr></thead><tbody>${sorted.map(([key,v])=>`<tr><td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td><td class="text-center text-[10px] text-slate-500">${v.count}</td><td class="text-right text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmtCur(v.exp,cur):'—'}</td><td class="text-right text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmtCur(v.inc,cur):'—'}</td><td class="text-right text-[11px] mono font-bold whitespace-nowrap ${(v.inc-v.exp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(v.inc-v.exp,cur)}</td></tr>`).join('')}</tbody></table>`;
 }
 
-// ===== HELPERS =====
 function recurrenceLabel(t){const n=t.recurrenceInterval||1;if(t.recurrence==='weekly')return n===1?'Ogni settimana':`Ogni ${n} settimane`;if(t.recurrence==='monthly')return n===1?'Ogni mese':`Ogni ${n} mesi`;if(t.recurrence==='yearly')return n===1?'Ogni anno':`Ogni ${n} anni`;return '';}
 
-// ===== FONT SIZE =====
 function changeFontSize(dir){currentFontSize=Math.max(70,Math.min(160,currentFontSize+dir*10));applyFontSize();safeSet('app_fontSize',currentFontSize);}
 function applyFontSize(){document.documentElement.style.fontSize=currentFontSize+'%';const l=document.getElementById('fontSizeLabel');if(l)l.textContent=currentFontSize+'%';}
 
-// ===== RECURRENCE TYPE CHANGE =====
 function onRecTypeChange(){
   const type=document.getElementById('taskRecurrenceType').value;const wrap=document.getElementById('recIntervalWrap');const unit=document.getElementById('recIntervalUnit');
   if(type==='none'){wrap.classList.add('hidden');return;}wrap.classList.remove('hidden');const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};if(unit)unit.textContent=units[type]||'';
 }
 
-// ===== VIRTUAL RECURRING =====
 function getVirtualRecurrences(year,month){
   const occ=[];const daysInMonth=new Date(year,month+1,0).getDate();
   getCountryTasks().forEach(t=>{
@@ -1589,7 +1640,6 @@ function getNextOccurrence(masterTask){
   return null;
 }
 
-// ===== SIDEBAR RECURRING LIST — COLORED =====
 function renderRecurringList(){
   const list=document.getElementById('recurringList');if(!list)return;
   const tasks=getCountryTasks().filter(t=>t.recurrence&&t.recurrence!=='none');
@@ -1633,7 +1683,6 @@ function deleteRecurring(id){
   showUndo(`Ricorrenza eliminata`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 
-// ===== RIGHT PANEL UPCOMING RECURRING =====
 function renderUpcomingRecurring(){
   const section=document.getElementById('upcomingRecSection');const grid=document.getElementById('upcomingRecGrid');const countEl=document.getElementById('upcomingRecCount');const subtitle=document.getElementById('upcomingRecSubtitle');const monthLbl=document.getElementById('upcomingCalMonth');
   if(!section||!grid)return;
@@ -1682,7 +1731,6 @@ function renderUpcomingRecurring(){
   });
 }
 
-// ===== RECURRENCE DROPDOWN =====
 function toggleRecDrop(){const menu=document.getElementById('recDropMenu');const chev=document.getElementById('recDropChevron');menu.classList.toggle('hidden');chev.style.transform=menu.classList.contains('hidden')?'':'rotate(180deg)';}
 function setRecFilter(type){
   currentRecurrenceFilter=type;document.getElementById('recDropMenu').classList.add('hidden');document.getElementById('recDropChevron').style.transform='';
