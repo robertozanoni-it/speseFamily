@@ -75,6 +75,23 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;hei
 .cat-link-icon{opacity:0;transition:opacity .15s;font-size:9px;margin-left:4px;color:var(--accent)}
 .cat-link:hover .cat-link-icon{opacity:1}
 
+/* ===== MOVE MODAL ===== */
+#moveTaskModal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+#moveTaskModal.visible{display:flex}
+.move-arrow{font-size:28px;animation:arrowPulse 1.2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+.move-country-box{border-radius:16px;padding:16px 22px;text-align:center;flex:1;max-width:160px}
+.move-country-box.from{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.move-country-box.to{border:2px solid var(--accent);background:rgba(59,130,246,.08)}
+body.country-GB .move-country-box.to{border-color:#7c3aed;background:rgba(124,58,237,.08)}
+.btn-move-confirm{background:var(--accent);color:white;border:none;border-radius:12px;padding:12px 28px;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px var(--accent-glow)}
+.btn-move-confirm:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-move-cancel{background:transparent;color:#64748b;border:1px solid #334155;border-radius:12px;padding:12px 24px;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
+.btn-move-cancel:hover{color:#e2e8f0;border-color:#475569}
+/* Move button on card */
+.btn-move-task{font-size:11px;padding:2px 5px;border-radius:6px;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.08);color:#a5b4fc;cursor:pointer;transition:all .15s;line-height:1.4}
+.btn-move-task:hover{background:rgba(99,102,241,.22);border-color:#a5b4fc;transform:scale(1.05)}
+
 /* ===== COUNTRY SWITCHER ===== */
 :root{
   --accent:#3b82f6;
@@ -130,7 +147,6 @@ body.country-GB{
 .hero-stripe{position:absolute;inset:0;pointer-events:none;opacity:.04}
 .hero-stripe::before{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:var(--accent);filter:blur(60px)}
 
-/* ===== FOCUS RING ===== */
 *:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* Light mode */
@@ -164,9 +180,12 @@ html:not(.dark) .country-hero{background:linear-gradient(135deg,#dbeafe,#ede9fe)
 html:not(.dark) .country-btn-wrap{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .country-btn{color:#94a3b8}
 html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-color:rgba(0,0,0,.1)}
+html:not(.dark) #moveTaskModal .bg-slate-900{background:#f8fafc!important}
+html:not(.dark) .move-country-box.from{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
+html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
 
 @media print{
-  #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,.country-hero{display:none!important}
+  #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,.country-hero{display:none!important}
   body{background:white!important;color:black!important}
   .card-task{break-inside:avoid;border:1px solid #ccc!important;box-shadow:none!important}
   main{display:block!important}
@@ -215,6 +234,56 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
   </div>
 </div>
 
+<!-- ===== MOVE TASK MODAL ===== -->
+<div id="moveTaskModal">
+  <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+    <div class="text-center mb-5">
+      <div class="text-3xl mb-2">🔀</div>
+      <h3 class="text-base font-black text-white">Sposta Task</h3>
+      <p class="text-[10px] text-slate-500 mt-1">Il task verrà spostato nel dataset dell'altro paese</p>
+    </div>
+
+    <!-- Task preview -->
+    <div id="moveTaskPreview" class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span id="moveTaskTypeBadge" class="text-[9px] font-bold px-2 py-0.5 rounded"></span>
+        <span id="moveTaskDate" class="mono text-[10px] text-slate-400"></span>
+      </div>
+      <div class="flex items-center gap-2 mb-1">
+        <span id="moveTaskCatDot" class="w-2 h-2 rounded-full flex-shrink-0"></span>
+        <span id="moveTaskCat" class="text-sm font-bold text-white"></span>
+      </div>
+      <div id="moveTaskAmount" class="mono text-xl font-black mt-2"></div>
+      <div id="moveTaskNote" class="text-[10px] text-slate-500 mt-1 italic"></div>
+    </div>
+
+    <!-- Country arrows -->
+    <div class="flex items-center justify-center gap-4 mb-6">
+      <div class="move-country-box from" id="moveFromBox">
+        <div id="moveFromFlag" class="text-3xl mb-1"></div>
+        <div id="moveFromLabel" class="text-xs font-bold text-slate-400"></div>
+        <div id="moveFromCur" class="mono text-[10px] text-slate-600 mt-0.5"></div>
+      </div>
+      <div class="move-arrow text-slate-500">→</div>
+      <div class="move-country-box to" id="moveToBox">
+        <div id="moveToFlag" class="text-3xl mb-1"></div>
+        <div id="moveToLabel" class="text-xs font-bold text-white"></div>
+        <div id="moveToCur" class="mono text-[10px] mt-0.5" style="color:var(--accent)"></div>
+      </div>
+    </div>
+
+    <!-- Currency note -->
+    <div id="moveCurrencyNote" class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 mb-5 text-center">
+      <span class="text-[10px] text-amber-400 font-bold">💱 La valuta verrà aggiornata alla valuta del paese di destinazione</span>
+    </div>
+
+    <div class="flex gap-3">
+      <button class="btn-move-cancel flex-1" onclick="closeMoveModal()">Annulla</button>
+      <button class="btn-move-confirm flex-1" onclick="confirmMoveTask()">Sposta →</button>
+    </div>
+  </div>
+</div>
+
 <div id="calTooltip" class="hidden text-slate-200">
   <div id="calTipDate" class="text-[10px] font-black uppercase tracking-wider text-accent mb-1.5"></div>
   <div id="calTipBody" class="space-y-0.5"></div>
@@ -238,7 +307,7 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
       </div>
       <div>
         <h1 class="text-xl font-bold tracking-tight text-white leading-none">Task &amp; Expenses</h1>
-        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6 · 🇮🇹 Italia / 🇬🇧 Inghilterra</p>
+        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6.1 · 🇮🇹 Italia / 🇬🇧 Inghilterra · 🔀 Sposta tra paesi</p>
       </div>
     </div>
     <div class="flex items-center gap-3 flex-wrap justify-center">
@@ -259,8 +328,6 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
   <div class="country-hero" id="countryHero">
     <div class="hero-stripe"></div>
     <div class="country-hero-inner">
-
-      <!-- Left: switcher + label -->
       <div class="flex items-center gap-4 flex-wrap">
         <div class="country-btn-wrap">
           <button class="country-btn active-country" id="btnIT" onclick="switchCountry('IT')">
@@ -278,25 +345,11 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
           </div>
         </div>
       </div>
-
-      <!-- Right: hero KPIs -->
       <div class="country-hero-stats">
-        <div class="hero-kpi">
-          <div class="hero-kpi-label">Task Attivi</div>
-          <div id="heroActive" class="hero-kpi-val text-white">0</div>
-        </div>
-        <div class="hero-kpi">
-          <div class="hero-kpi-label">Spese 30gg</div>
-          <div id="heroExpenses" class="hero-kpi-val text-red-400">—</div>
-        </div>
-        <div class="hero-kpi">
-          <div class="hero-kpi-label">Entrate 30gg</div>
-          <div id="heroIncome" class="hero-kpi-val text-emerald-400">—</div>
-        </div>
-        <div class="hero-kpi">
-          <div class="hero-kpi-label">Saldo Netto</div>
-          <div id="heroNet" class="hero-kpi-val">—</div>
-        </div>
+        <div class="hero-kpi"><div class="hero-kpi-label">Task Attivi</div><div id="heroActive" class="hero-kpi-val text-white">0</div></div>
+        <div class="hero-kpi"><div class="hero-kpi-label">Spese 30gg</div><div id="heroExpenses" class="hero-kpi-val text-red-400">—</div></div>
+        <div class="hero-kpi"><div class="hero-kpi-label">Entrate 30gg</div><div id="heroIncome" class="hero-kpi-val text-emerald-400">—</div></div>
+        <div class="hero-kpi"><div class="hero-kpi-label">Saldo Netto</div><div id="heroNet" class="hero-kpi-val">—</div></div>
       </div>
     </div>
   </div>
@@ -313,8 +366,6 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
             💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
           <div class="space-y-2 pt-3 border-t border-slate-800">
-
-            <!-- Dynamic currency balance -->
             <div class="bg-slate-900/60 p-3 rounded-xl" id="balancePrimaryBox" style="border:1px solid rgba(99,102,241,.2)">
               <div class="flex items-center gap-2 mb-2">
                 <span id="balanceCurBadge" class="cur-badge-eur">€ EUR</span>
@@ -405,12 +456,11 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
           <input type="hidden" id="taskType" value="expense">
           <input type="hidden" id="taskCurrency" value="€">
 
-          <!-- Country indicator in form -->
           <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800 bg-slate-900/60">
             <span id="formCountryFlag" class="text-lg">🇮🇹</span>
             <div>
               <div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div>
-              <div class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div>
+              <div id="formCountrySaving" class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div>
             </div>
           </div>
 
@@ -439,8 +489,6 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label>
             <select id="taskClient" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent appearance-none cursor-pointer"></select>
           </div>
-
-          <!-- Importo (currency auto from country) -->
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label>
             <div class="relative">
@@ -448,7 +496,6 @@ html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-co
               <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-accent mono">
             </div>
           </div>
-
           <div class="space-y-1">
             <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Ricorrenza</label>
             <select id="taskRecurrenceType" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-accent appearance-none cursor-pointer">
@@ -668,7 +715,7 @@ const COUNTRY_CONFIG = {
     currencyLabel: '€ EUR predefinito',
     accentCss: '#3b82f6',
     pill2: 'Dati separati per paese',
-    savingNote: 'Questo task verrà salvato per l\'Italia',
+    savingNote: "Questo task verrà salvato per l'Italia",
     curHint: '(€ EUR)',
     curBadgeClass: 'cur-badge-eur',
   },
@@ -680,7 +727,7 @@ const COUNTRY_CONFIG = {
     currencyLabel: '£ GBP predefinito',
     accentCss: '#7c3aed',
     pill2: 'Dati separati per paese',
-    savingNote: 'Questo task verrà salvato per l\'Inghilterra',
+    savingNote: "Questo task verrà salvato per l'Inghilterra",
     curHint: '(£ GBP)',
     curBadgeClass: 'cur-badge-gbp',
   }
@@ -718,7 +765,6 @@ function migrateTasks(arr){
   }));
 }
 
-// Separate storage per country
 function loadState(){
   return {
     tasks:      migrateTasks(JSON.parse(safeGet('app_tasks'))||[]),
@@ -732,7 +778,6 @@ function loadState(){
 }
 let state = loadState();
 
-// Helpers to get country-scoped data
 function getCategories(){ return activeCountry==='GB'?state.categoriesGB:state.categoriesIT; }
 function getGlobalBudget(){ return activeCountry==='GB'?state.globalBudgetGB:state.globalBudgetIT; }
 function setGlobalBudgetForCountry(v){
@@ -753,11 +798,125 @@ let dragSrcId=null;
 let activeTagFilter=null;
 let currentVoiceCategory=null, currentVoiceTab='list';
 
+// ===== MOVE TASK STATE =====
+let moveTaskId = null;
+
 function fmtCur(n, cur){
   const c=cur||getActiveCurrency();
   return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;
 }
 function fmtTask(t){ return fmtCur(t.amount||0, t.currency||getActiveCurrency()); }
+
+// ============================================================
+// MOVE TASK BETWEEN COUNTRIES
+// ============================================================
+function openMoveModal(id){
+  const task = state.tasks.find(t=>t.id===id);
+  if(!task) return;
+  moveTaskId = id;
+
+  const fromCountry = task.country;
+  const toCountry = fromCountry === 'IT' ? 'GB' : 'IT';
+  const fromCfg = COUNTRY_CONFIG[fromCountry];
+  const toCfg = COUNTRY_CONFIG[toCountry];
+
+  // Task preview
+  const cats = fromCountry==='IT' ? state.categoriesIT : state.categoriesGB;
+  const catObj = cats.find(c=>c.name===task.category);
+  const catColor = catObj ? catObj.color : '#6366f1';
+  const isIncome = task.type === 'income';
+
+  document.getElementById('moveTaskCatDot').style.background = catColor;
+  document.getElementById('moveTaskCat').textContent = task.category;
+  document.getElementById('moveTaskDate').textContent = parseDateLocal(task.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+
+  const typeBadge = document.getElementById('moveTaskTypeBadge');
+  typeBadge.textContent = isIncome ? '📥 Entrata' : '📤 Spesa';
+  typeBadge.className = 'text-[9px] font-bold px-2 py-0.5 rounded ' + (isIncome ? 'badge-income' : 'badge-expense');
+
+  const amountEl = document.getElementById('moveTaskAmount');
+  if(task.amount != null){
+    amountEl.textContent = (isIncome?'+':'-') + fmtCur(task.amount, task.currency);
+    amountEl.style.color = isIncome ? '#10b981' : '#ef4444';
+  } else {
+    amountEl.textContent = '—';
+    amountEl.style.color = '#64748b';
+  }
+
+  document.getElementById('moveTaskNote').textContent = task.note || '';
+
+  // Country arrows
+  document.getElementById('moveFromFlag').textContent = fromCfg.flag;
+  document.getElementById('moveFromLabel').textContent = fromCfg.flagText;
+  document.getElementById('moveFromCur').textContent = fromCfg.currency + ' ' + (fromCountry==='IT'?'EUR':'GBP');
+
+  document.getElementById('moveToFlag').textContent = toCfg.flag;
+  document.getElementById('moveToLabel').textContent = toCfg.flagText;
+  document.getElementById('moveToCur').textContent = toCfg.currency + ' ' + (toCountry==='IT'?'EUR':'GBP');
+
+  // Currency note: show only if currency changes
+  const curNote = document.getElementById('moveCurrencyNote');
+  curNote.style.display = (task.currency !== toCfg.currency) ? '' : 'none';
+
+  document.getElementById('moveTaskModal').classList.add('visible');
+}
+
+function closeMoveModal(){
+  document.getElementById('moveTaskModal').classList.remove('visible');
+  moveTaskId = null;
+}
+
+function confirmMoveTask(){
+  if(moveTaskId === null) return;
+  const idx = state.tasks.findIndex(t=>t.id===moveTaskId);
+  if(idx === -1){ closeMoveModal(); return; }
+
+  const task = state.tasks[idx];
+  const fromCountry = task.country;
+  const toCountry = fromCountry === 'IT' ? 'GB' : 'IT';
+  const toCfg = COUNTRY_CONFIG[toCountry];
+
+  const backup = state.tasks.map(t=>({...t}));
+
+  // Update country and currency
+  state.tasks[idx] = {
+    ...task,
+    country: toCountry,
+    currency: toCfg.currency,
+    history: [...(task.history||[]), {
+      ts: Date.now(),
+      action: `Spostato → ${toCfg.flagText}`,
+      note: `Valuta aggiornata: ${task.currency} → ${toCfg.currency}`
+    }].slice(-10)
+  };
+
+  saveState();
+  closeMoveModal();
+  fullRefresh();
+
+  showToast('🔀', `"${task.category}" → ${toCfg.flag} ${toCfg.flagText}`);
+
+  // Undo
+  showUndo(`Spostato in ${toCfg.flagText}`, backup, b=>{
+    state.tasks = b;
+    saveState();
+    fullRefresh();
+    showToast('↩️','Spostamento annullato!');
+  });
+}
+
+// Close move modal on backdrop click
+document.getElementById('moveTaskModal').addEventListener('click', function(e){
+  if(e.target === this) closeMoveModal();
+});
+// ESC key
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    closeMoveModal();
+    closeHistoryModal();
+    closeVoiceModal();
+  }
+});
 
 // ============================================================
 // SWITCH COUNTRY
@@ -782,15 +941,11 @@ function switchCountry(c){
 
 function applyCountryTheme(){
   const cfg=COUNTRY_CONFIG[activeCountry];
-  // toggle body class
   document.body.classList.toggle('country-GB', activeCountry==='GB');
-  // update buttons
   document.getElementById('btnIT').classList.toggle('active-country', activeCountry==='IT');
   document.getElementById('btnGB').classList.toggle('active-country', activeCountry==='GB');
-  // hero labels
   document.getElementById('countryLabel').textContent = cfg.label;
   document.getElementById('countryPill1').textContent = cfg.currencyLabel;
-  // form currency
   document.getElementById('amountSymbol').textContent = cfg.currency;
   document.getElementById('taskCurrency').value = cfg.currency;
 }
@@ -799,14 +954,14 @@ function updateFormCountryIndicator(){
   const cfg=COUNTRY_CONFIG[activeCountry];
   document.getElementById('formCountryFlag').textContent = cfg.flag;
   document.getElementById('formCountryLabel').textContent = cfg.flagText;
-  document.querySelector('[id="formCountryLabel"]').nextElementSibling && (document.querySelector('[id="formCountryLabel"]').parentElement.children[1].textContent = cfg.savingNote);
+  document.getElementById('formCountrySaving').textContent = cfg.savingNote;
   document.getElementById('formCurHint').textContent = cfg.curHint;
   document.getElementById('amountSymbol').textContent = cfg.currency;
   document.getElementById('taskCurrency').value = cfg.currency;
 }
 
 // ============================================================
-// TEMA APP
+// TEMA
 // ============================================================
 function applyTheme(dark){
   document.documentElement.classList.toggle('dark',dark);
@@ -816,7 +971,7 @@ function applyTheme(dark){
 function toggleTheme(){applyTheme(!document.documentElement.classList.contains('dark'));}
 
 // ============================================================
-// BUDGET GLOBALE (per country)
+// BUDGET
 // ============================================================
 function setGlobalBudget(v){
   const val=parseFloat(v)||0;
@@ -986,7 +1141,7 @@ function applyAmountFilter(){
 function clearAmountFilter(){amountFilterActive=false;document.getElementById('rangeMin').value=0;document.getElementById('rangeMax').value=5000;onRangeChange();renderTasks();}
 
 // ============================================================
-// PERSONE (shared across countries)
+// PERSONE
 // ============================================================
 function addClient(){
   const ni=document.getElementById('newClientName'),ci=document.getElementById('newClientColor');
@@ -1022,7 +1177,7 @@ function renderClientManagement(){
 }
 
 // ============================================================
-// CATEGORIE (country-scoped)
+// CATEGORIE
 // ============================================================
 function renderCategories(){
   const list=document.getElementById('categoryListDisplay');list.innerHTML='';
@@ -1129,7 +1284,7 @@ function goToToday(){const n=new Date();calYear=n.getFullYear();calMonth=n.getMo
 function syncCalendarToForm(){const v=document.getElementById('taskDate').value;if(!v)return;const[y,m]=v.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();}
 
 // ============================================================
-// CHARTS (country-scoped)
+// CHARTS
 // ============================================================
 function setChartDataType(type){
   chartDataType=type;
@@ -1299,14 +1454,14 @@ function renderPagination(total,pg,pageSize){
 }
 
 // ============================================================
-// RENDER TASKS (country-scoped)
+// RENDER TASKS
 // ============================================================
 function renderTasks(){
   const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
   const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
   grid.innerHTML='';
   const ts=todayStr(),today=parseDateLocal(ts);
-  let filtered=getCountryTasks(); // already country-filtered
+  let filtered=getCountryTasks();
 
   if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
   else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
@@ -1348,6 +1503,10 @@ function renderTasks(){
   const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
   const cats=getCategories();
 
+  // Determine the OTHER country for the move button label
+  const otherCountry = activeCountry === 'IT' ? 'GB' : 'IT';
+  const otherCfg = COUNTRY_CONFIG[otherCountry];
+
   paginated.forEach(t=>{
     const client=state.clients.find(c=>c.id===t.clientId);
     const cColor=client?client.color:'#475569';
@@ -1383,7 +1542,8 @@ function renderTasks(){
           ${recTag}
           <span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑':'↓'}</span>
         </div>
-        <div class="flex gap-1">
+        <div class="flex gap-1 items-center">
+          <button onclick="openMoveModal(${t.id})" class="btn-move-task" title="Sposta in ${otherCfg.flagText}">${otherCfg.flag}</button>
           <button onclick="showHistoryModal(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors" title="Storico">🕐</button>
           <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-600 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
           <button onclick="editTask(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors">✏️</button>
@@ -1423,7 +1583,7 @@ function duplicateTask(id){
 }
 
 // ============================================================
-// SUMMARIES (country-scoped)
+// SUMMARIES
 // ============================================================
 function calculateSummaries(){
   const ts=todayStr(),today=parseDateLocal(ts);
@@ -1444,7 +1604,6 @@ function calculateSummaries(){
   document.getElementById('summaryDaily').textContent=fmtCur(daily,cur);
   document.getElementById('summaryWeekly').textContent=fmtCur(weekly,cur);
 
-  // currency badge
   const badge=document.getElementById('balanceCurBadge');
   badge.className=cur==='£'?'cur-badge-gbp':'cur-badge-eur';
   badge.textContent=cur==='£'?'£ GBP':'€ EUR';
@@ -1566,7 +1725,7 @@ function showToast(icon,msg){
 }
 
 // ============================================================
-// VOICE ANALYSIS (country-scoped)
+// VOICE ANALYSIS
 // ============================================================
 function showVoiceAnalysis(category){
   currentVoiceCategory=category;currentVoiceTab='list';
