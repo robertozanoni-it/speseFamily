@@ -211,7 +211,7 @@ html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
 .vrec-action-btn.del{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.08);color:#f87171}
 .vrec-action-btn.del:hover{background:rgba(239,68,68,.22)}
 
-/* Left sidebar recurring items — full colored background */
+/* ===== COLORED SIDEBAR ITEMS ===== */
 .rec-sidebar-item{transition:filter .15s;border-radius:12px}
 .rec-sidebar-item:hover{filter:brightness(1.18)}
 
@@ -280,8 +280,6 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
       <h3 class="text-base font-black text-white">Sposta Task</h3>
       <p class="text-[10px] text-slate-500 mt-1">Il task verrà spostato nel dataset dell'altro paese</p>
     </div>
-
-    <!-- Task preview -->
     <div id="moveTaskPreview" class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-5">
       <div class="flex items-center gap-2 mb-2">
         <span id="moveTaskTypeBadge" class="text-[9px] font-bold px-2 py-0.5 rounded"></span>
@@ -294,8 +292,6 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
       <div id="moveTaskAmount" class="mono text-xl font-black mt-2"></div>
       <div id="moveTaskNote" class="text-[10px] text-slate-500 mt-1 italic"></div>
     </div>
-
-    <!-- Country arrows -->
     <div class="flex items-center justify-center gap-4 mb-6">
       <div class="move-country-box from" id="moveFromBox">
         <div id="moveFromFlag" class="text-3xl mb-1"></div>
@@ -309,12 +305,9 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         <div id="moveToCur" class="mono text-[10px] mt-0.5" style="color:var(--accent)"></div>
       </div>
     </div>
-
-    <!-- Currency note -->
     <div id="moveCurrencyNote" class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 mb-5 text-center">
       <span class="text-[10px] text-amber-400 font-bold">💱 La valuta verrà aggiornata alla valuta del paese di destinazione</span>
     </div>
-
     <div class="flex gap-3">
       <button class="btn-move-cancel flex-1" onclick="closeMoveModal()">Annulla</button>
       <button class="btn-move-confirm flex-1" onclick="confirmMoveTask()">Sposta →</button>
@@ -345,7 +338,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
       </div>
       <div>
         <h1 class="text-xl font-bold tracking-tight text-white leading-none">Task &amp; Expenses</h1>
-        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6.1 · 🇮🇹 Italia / 🇬🇧 Inghilterra · 🔀 Sposta tra paesi</p>
+        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6.2 · 🇮🇹 Italia / 🇬🇧 Inghilterra · 🔀 Sposta tra paesi</p>
       </div>
     </div>
     <div class="flex items-center gap-3 flex-wrap justify-center">
@@ -401,6 +394,40 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
 
     <!-- ===== SIDEBAR ===== -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
+
+      <!-- ✅ CALENDARIO — PRIMO IN CIMA -->
+      <div id="calendarSection" class="section-card" style="border-top:3px solid var(--accent)">
+        <details class="group" open>
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+            📅 Calendario <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
+          </summary>
+          <div class="pt-3 border-t border-slate-800">
+            <div class="flex items-center justify-between mb-2">
+              <button onclick="prevMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">‹</button>
+              <div class="flex items-center gap-2">
+                <span id="calMonthLabel" class="text-xs font-bold uppercase tracking-widest text-slate-300"></span>
+                <button onclick="goToToday()" id="todayBtn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-accent/20 text-accent hover:bg-accent/40 transition-colors">oggi</button>
+              </div>
+              <button onclick="nextMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">›</button>
+            </div>
+            <div class="grid grid-cols-7 gap-0.5 mb-1">
+              <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Lu</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ma</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Me</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Gi</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ve</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Sa</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Do</div>
+            </div>
+            <div id="calGrid" class="grid grid-cols-7 gap-0.5"></div>
+            <div id="calDaySummary" class="hidden mt-3 pt-3 border-t border-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <p id="calDayLabel" class="text-[10px] font-bold uppercase tracking-widest text-accent"></p>
+                <button onclick="clearCalendarFilter()" class="text-[9px] text-slate-500 hover:text-slate-300 underline">tutti</button>
+              </div>
+              <div id="calDayItems" class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
+              <div class="mt-2 pt-2 border-t border-slate-800 flex justify-between items-center">
+                <span class="text-[10px] text-slate-500">Saldo giorno</span>
+                <span id="calDayTotal" class="mono text-sm font-bold">0.00</span>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
 
       <!-- Riepilogo & Saldo -->
       <div class="section-card" id="summaryCard" style="border-top:3px solid var(--accent)">
@@ -571,41 +598,6 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </form>
         </details>
       </div>
-
-      <!-- Calendario -->
-      <div id="calendarSection" class="section-card">
-        <details class="group">
-          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
-            📅 Calendario <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
-          </summary>
-          <div class="pt-3 border-t border-slate-800">
-            <div class="flex items-center justify-between mb-2">
-              <button onclick="prevMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">‹</button>
-              <div class="flex items-center gap-2">
-                <span id="calMonthLabel" class="text-xs font-bold uppercase tracking-widest text-slate-300"></span>
-                <button onclick="goToToday()" id="todayBtn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-accent/20 text-accent hover:bg-accent/40 transition-colors">oggi</button>
-              </div>
-              <button onclick="nextMonth()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-sm transition-colors">›</button>
-            </div>
-            <div class="grid grid-cols-7 gap-0.5 mb-1">
-              <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Lu</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ma</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Me</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Gi</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ve</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Sa</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Do</div>
-            </div>
-            <div id="calGrid" class="grid grid-cols-7 gap-0.5"></div>
-            <div id="calDaySummary" class="hidden mt-3 pt-3 border-t border-slate-800">
-              <div class="flex items-center justify-between mb-2">
-                <p id="calDayLabel" class="text-[10px] font-bold uppercase tracking-widest text-accent"></p>
-                <button onclick="clearCalendarFilter()" class="text-[9px] text-slate-500 hover:text-slate-300 underline">tutti</button>
-              </div>
-              <div id="calDayItems" class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
-              <div class="mt-2 pt-2 border-t border-slate-800 flex justify-between items-center">
-                <span class="text-[10px] text-slate-500">Saldo giorno</span>
-                <span id="calDayTotal" class="mono text-sm font-bold">0.00</span>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-
 
       <!-- 🔄 Ricorrenze -->
       <div class="section-card" style="border-top:3px solid var(--accent)">
@@ -797,34 +789,9 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
 function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 
-// ============================================================
-// COUNTRY CONFIG
-// ============================================================
 const COUNTRY_CONFIG = {
-  IT: {
-    label: 'Italia — Gestione €',
-    flag: '🇮🇹',
-    flagText: 'Italia',
-    currency: '€',
-    currencyLabel: '€ EUR predefinito',
-    accentCss: '#3b82f6',
-    pill2: 'Dati separati per paese',
-    savingNote: "Questo task verrà salvato per l'Italia",
-    curHint: '(€ EUR)',
-    curBadgeClass: 'cur-badge-eur',
-  },
-  GB: {
-    label: 'Inghilterra — Gestione £',
-    flag: '🇬🇧',
-    flagText: 'Inghilterra',
-    currency: '£',
-    currencyLabel: '£ GBP predefinito',
-    accentCss: '#7c3aed',
-    pill2: 'Dati separati per paese',
-    savingNote: "Questo task verrà salvato per l'Inghilterra",
-    curHint: '(£ GBP)',
-    curBadgeClass: 'cur-badge-gbp',
-  }
+  IT: {label:'Italia — Gestione €',flag:'🇮🇹',flagText:'Italia',currency:'€',currencyLabel:'€ EUR predefinito',accentCss:'#3b82f6',pill2:'Dati separati per paese',savingNote:"Questo task verrà salvato per l'Italia",curHint:'(€ EUR)',curBadgeClass:'cur-badge-eur'},
+  GB: {label:'Inghilterra — Gestione £',flag:'🇬🇧',flagText:'Inghilterra',currency:'£',currencyLabel:'£ GBP predefinito',accentCss:'#7c3aed',pill2:'Dati separati per paese',savingNote:"Questo task verrà salvato per l'Inghilterra",curHint:'(£ GBP)',curBadgeClass:'cur-badge-gbp'}
 };
 
 let activeCountry = (safeGet('app_activeCountry') || 'IT');
@@ -844,49 +811,24 @@ const DEFAULT_CATEGORIES_GB = [
   {name:'NHS',color:'#06b6d4',budget:0},{name:'Insurance',color:'#84cc16',budget:0},{name:'Courses',color:'#8b5cf6',budget:0}
 ];
 
-function migrateCats(raw, country){
-  if(!Array.isArray(raw)||!raw.length) return country==='GB'?DEFAULT_CATEGORIES_GB:[...DEFAULT_CATEGORIES_IT];
-  return raw.map(c=>typeof c==='string'?{name:c,color:'#6366f1',budget:0}:{budget:0,...c});
-}
-function migrateTasks(arr){
-  return arr.map(t=>({
-    type:'expense',...t,
-    recurrenceInterval:t.recurrenceInterval||1,
-    currency: t.currency||'€',
-    country: t.country||'IT',
-    clientId:t.clientId!=null?Number(t.clientId):null,
-    tags:Array.isArray(t.tags)?t.tags:[],
-    history:Array.isArray(t.history)?t.history:[]
-  }));
-}
+function migrateCats(raw,country){if(!Array.isArray(raw)||!raw.length)return country==='GB'?DEFAULT_CATEGORIES_GB:[...DEFAULT_CATEGORIES_IT];return raw.map(c=>typeof c==='string'?{name:c,color:'#6366f1',budget:0}:{budget:0,...c});}
+function migrateTasks(arr){return arr.map(t=>({type:'expense',...t,recurrenceInterval:t.recurrenceInterval||1,currency:t.currency||'€',country:t.country||'IT',clientId:t.clientId!=null?Number(t.clientId):null,tags:Array.isArray(t.tags)?t.tags:[],history:Array.isArray(t.history)?t.history:[]}));}
 
-function loadState(){
-  return {
-    tasks:      migrateTasks(JSON.parse(safeGet('app_tasks'))||[]),
-    clients:    JSON.parse(safeGet('app_clients'))||[{id:1,name:'Roberto',color:'#ef4444'},{id:2,name:'Kate',color:'#ec4899'},{id:3,name:'Family',color:'#10b981'}],
-    categoriesIT: migrateCats(JSON.parse(safeGet('app_cats_IT')), 'IT'),
-    categoriesGB: migrateCats(JSON.parse(safeGet('app_cats_GB')), 'GB'),
-    globalBudgetIT: parseFloat(safeGet('app_budget_IT'))||0,
-    globalBudgetGB: parseFloat(safeGet('app_budget_GB'))||0,
-    taskOrder:  JSON.parse(safeGet('app_taskOrder'))||[]
-  };
-}
+function loadState(){return {tasks:migrateTasks(JSON.parse(safeGet('app_tasks'))||[]),clients:JSON.parse(safeGet('app_clients'))||[{id:1,name:'Roberto',color:'#ef4444'},{id:2,name:'Kate',color:'#ec4899'},{id:3,name:'Family',color:'#10b981'}],categoriesIT:migrateCats(JSON.parse(safeGet('app_cats_IT')),'IT'),categoriesGB:migrateCats(JSON.parse(safeGet('app_cats_GB')),'GB'),globalBudgetIT:parseFloat(safeGet('app_budget_IT'))||0,globalBudgetGB:parseFloat(safeGet('app_budget_GB'))||0,taskOrder:JSON.parse(safeGet('app_taskOrder'))||[]};}
 let state = loadState();
 
-function getCategories(){ return activeCountry==='GB'?state.categoriesGB:state.categoriesIT; }
-function getGlobalBudget(){ return activeCountry==='GB'?state.globalBudgetGB:state.globalBudgetIT; }
-function setGlobalBudgetForCountry(v){
-  if(activeCountry==='GB')state.globalBudgetGB=v; else state.globalBudgetIT=v;
-}
-function getActiveCurrency(){ return COUNTRY_CONFIG[activeCountry].currency; }
-function getCountryTasks(){ return state.tasks.filter(t=>t.country===activeCountry); }
+function getCategories(){return activeCountry==='GB'?state.categoriesGB:state.categoriesIT;}
+function getGlobalBudget(){return activeCountry==='GB'?state.globalBudgetGB:state.globalBudgetIT;}
+function setGlobalBudgetForCountry(v){if(activeCountry==='GB')state.globalBudgetGB=v;else state.globalBudgetIT=v;}
+function getActiveCurrency(){return COUNTRY_CONFIG[activeCountry].currency;}
+function getCountryTasks(){return state.tasks.filter(t=>t.country===activeCountry);}
 
-let currentFilter='all', currentSort='date';
-let myChart=null, monthlyChart=null, balanceChartObj=null;
-let chartMode='category', chartTab='dist', chartDataType='expense';
-let calYear=new Date().getFullYear(), calMonth=new Date().getMonth(), selectedCalDate=null;
-let amountFilterActive=false, amountMin=0, amountMax=5000;
-let searchTimeout=null, undoTimeout=null, undoData=null;
+let currentFilter='all',currentSort='date';
+let myChart=null,monthlyChart=null,balanceChartObj=null;
+let chartMode='category',chartTab='dist',chartDataType='expense';
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),selectedCalDate=null;
+let amountFilterActive=false,amountMin=0,amountMax=5000;
+let searchTimeout=null,undoTimeout=null,undoData=null;
 let currentPage=0;
 const PAGE_SIZE=20;
 let dragSrcId=null;
@@ -894,136 +836,68 @@ let activeTagFilter=null;
 let currentRecurrenceFilter='none';
 let virtualOccCache={};
 let currentFontSize=parseInt(safeGet('app_fontSize'))||115;
-let currentVoiceCategory=null, currentVoiceTab='list';
+let currentVoiceCategory=null,currentVoiceTab='list';
+let moveTaskId=null;
 
-// ===== MOVE TASK STATE =====
-let moveTaskId = null;
+function fmtCur(n,cur){const c=cur||getActiveCurrency();return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;}
+function fmtTask(t){return fmtCur(t.amount||0,t.currency||getActiveCurrency());}
 
-function fmtCur(n, cur){
-  const c=cur||getActiveCurrency();
-  return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;
+// ===== HELPER: hex to rgba =====
+function hexToRgba(hex,alpha){
+  let h=hex.replace('#','');
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const r=parseInt(h.slice(0,2),16);const g=parseInt(h.slice(2,4),16);const b=parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
-function fmtTask(t){ return fmtCur(t.amount||0, t.currency||getActiveCurrency()); }
 
-// ============================================================
-// MOVE TASK BETWEEN COUNTRIES
-// ============================================================
+// ===== MOVE TASK =====
 function openMoveModal(id){
-  const task = state.tasks.find(t=>t.id===id);
-  if(!task) return;
-  moveTaskId = id;
-
-  const fromCountry = task.country;
-  const toCountry = fromCountry === 'IT' ? 'GB' : 'IT';
-  const fromCfg = COUNTRY_CONFIG[fromCountry];
-  const toCfg = COUNTRY_CONFIG[toCountry];
-
-  // Task preview
-  const cats = fromCountry==='IT' ? state.categoriesIT : state.categoriesGB;
-  const catObj = cats.find(c=>c.name===task.category);
-  const catColor = catObj ? catObj.color : '#6366f1';
-  const isIncome = task.type === 'income';
-
-  document.getElementById('moveTaskCatDot').style.background = catColor;
-  document.getElementById('moveTaskCat').textContent = task.category;
-  document.getElementById('moveTaskDate').textContent = parseDateLocal(task.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
-
-  const typeBadge = document.getElementById('moveTaskTypeBadge');
-  typeBadge.textContent = isIncome ? '📥 Entrata' : '📤 Spesa';
-  typeBadge.className = 'text-[9px] font-bold px-2 py-0.5 rounded ' + (isIncome ? 'badge-income' : 'badge-expense');
-
-  const amountEl = document.getElementById('moveTaskAmount');
-  if(task.amount != null){
-    amountEl.textContent = (isIncome?'+':'-') + fmtCur(task.amount, task.currency);
-    amountEl.style.color = isIncome ? '#10b981' : '#ef4444';
-  } else {
-    amountEl.textContent = '—';
-    amountEl.style.color = '#64748b';
-  }
-
-  document.getElementById('moveTaskNote').textContent = task.note || '';
-
-  // Country arrows
-  document.getElementById('moveFromFlag').textContent = fromCfg.flag;
-  document.getElementById('moveFromLabel').textContent = fromCfg.flagText;
-  document.getElementById('moveFromCur').textContent = fromCfg.currency + ' ' + (fromCountry==='IT'?'EUR':'GBP');
-
-  document.getElementById('moveToFlag').textContent = toCfg.flag;
-  document.getElementById('moveToLabel').textContent = toCfg.flagText;
-  document.getElementById('moveToCur').textContent = toCfg.currency + ' ' + (toCountry==='IT'?'EUR':'GBP');
-
-  // Currency note: show only if currency changes
-  const curNote = document.getElementById('moveCurrencyNote');
-  curNote.style.display = (task.currency !== toCfg.currency) ? '' : 'none';
-
+  const task=state.tasks.find(t=>t.id===id);if(!task)return;
+  moveTaskId=id;
+  const fromCountry=task.country;const toCountry=fromCountry==='IT'?'GB':'IT';
+  const fromCfg=COUNTRY_CONFIG[fromCountry];const toCfg=COUNTRY_CONFIG[toCountry];
+  const cats=fromCountry==='IT'?state.categoriesIT:state.categoriesGB;
+  const catObj=cats.find(c=>c.name===task.category);
+  const catColor=catObj?catObj.color:'#6366f1';
+  const isIncome=task.type==='income';
+  document.getElementById('moveTaskCatDot').style.background=catColor;
+  document.getElementById('moveTaskCat').textContent=task.category;
+  document.getElementById('moveTaskDate').textContent=parseDateLocal(task.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+  const typeBadge=document.getElementById('moveTaskTypeBadge');
+  typeBadge.textContent=isIncome?'📥 Entrata':'📤 Spesa';
+  typeBadge.className='text-[9px] font-bold px-2 py-0.5 rounded '+(isIncome?'badge-income':'badge-expense');
+  const amountEl=document.getElementById('moveTaskAmount');
+  if(task.amount!=null){amountEl.textContent=(isIncome?'+':'-')+fmtCur(task.amount,task.currency);amountEl.style.color=isIncome?'#10b981':'#ef4444';}
+  else{amountEl.textContent='—';amountEl.style.color='#64748b';}
+  document.getElementById('moveTaskNote').textContent=task.note||'';
+  document.getElementById('moveFromFlag').textContent=fromCfg.flag;
+  document.getElementById('moveFromLabel').textContent=fromCfg.flagText;
+  document.getElementById('moveFromCur').textContent=fromCfg.currency+' '+(fromCountry==='IT'?'EUR':'GBP');
+  document.getElementById('moveToFlag').textContent=toCfg.flag;
+  document.getElementById('moveToLabel').textContent=toCfg.flagText;
+  document.getElementById('moveToCur').textContent=toCfg.currency+' '+(toCountry==='IT'?'EUR':'GBP');
+  const curNote=document.getElementById('moveCurrencyNote');
+  curNote.style.display=(task.currency!==toCfg.currency)?'':'none';
   document.getElementById('moveTaskModal').classList.add('visible');
 }
-
-function closeMoveModal(){
-  document.getElementById('moveTaskModal').classList.remove('visible');
-  moveTaskId = null;
-}
-
+function closeMoveModal(){document.getElementById('moveTaskModal').classList.remove('visible');moveTaskId=null;}
 function confirmMoveTask(){
-  if(moveTaskId === null) return;
-  const idx = state.tasks.findIndex(t=>t.id===moveTaskId);
-  if(idx === -1){ closeMoveModal(); return; }
-
-  const task = state.tasks[idx];
-  const fromCountry = task.country;
-  const toCountry = fromCountry === 'IT' ? 'GB' : 'IT';
-  const toCfg = COUNTRY_CONFIG[toCountry];
-
-  const backup = state.tasks.map(t=>({...t}));
-
-  // Update country and currency
-  state.tasks[idx] = {
-    ...task,
-    country: toCountry,
-    currency: toCfg.currency,
-    history: [...(task.history||[]), {
-      ts: Date.now(),
-      action: `Spostato → ${toCfg.flagText}`,
-      note: `Valuta aggiornata: ${task.currency} → ${toCfg.currency}`
-    }].slice(-10)
-  };
-
-  saveState();
-  closeMoveModal();
-  fullRefresh();
-
-  showToast('🔀', `"${task.category}" → ${toCfg.flag} ${toCfg.flagText}`);
-
-  // Undo
-  showUndo(`Spostato in ${toCfg.flagText}`, backup, b=>{
-    state.tasks = b;
-    saveState();
-    fullRefresh();
-    showToast('↩️','Spostamento annullato!');
-  });
+  if(moveTaskId===null)return;
+  const idx=state.tasks.findIndex(t=>t.id===moveTaskId);
+  if(idx===-1){closeMoveModal();return;}
+  const task=state.tasks[idx];const fromCountry=task.country;const toCountry=fromCountry==='IT'?'GB':'IT';const toCfg=COUNTRY_CONFIG[toCountry];
+  const backup=state.tasks.map(t=>({...t}));
+  state.tasks[idx]={...task,country:toCountry,currency:toCfg.currency,history:[...(task.history||[]),{ts:Date.now(),action:`Spostato → ${toCfg.flagText}`,note:`Valuta aggiornata: ${task.currency} → ${toCfg.currency}`}].slice(-10)};
+  saveState();closeMoveModal();fullRefresh();
+  showToast('🔀',`"${task.category}" → ${toCfg.flag} ${toCfg.flagText}`);
+  showUndo(`Spostato in ${toCfg.flagText}`,backup,b=>{state.tasks=b;saveState();fullRefresh();showToast('↩️','Spostamento annullato!');});
 }
+document.getElementById('moveTaskModal').addEventListener('click',function(e){if(e.target===this)closeMoveModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMoveModal();closeHistoryModal();closeVoiceModal();}});
 
-// Close move modal on backdrop click
-document.getElementById('moveTaskModal').addEventListener('click', function(e){
-  if(e.target === this) closeMoveModal();
-});
-// ESC key
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){
-    closeMoveModal();
-    closeHistoryModal();
-    closeVoiceModal();
-  }
-});
-
-// ============================================================
-// SWITCH COUNTRY
-// ============================================================
+// ===== SWITCH COUNTRY =====
 function switchCountry(c){
-  activeCountry = c;
-  safeSet('app_activeCountry', c);
-  applyCountryTheme();
-  updateFormCountryIndicator();
+  activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();
   currentFilter='all';currentPage=0;selectedCalDate=null;activeTagFilter=null;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   const fa=document.getElementById('filter-all');if(fa)fa.classList.add('active');
@@ -1034,96 +908,59 @@ function switchCountry(c){
   renderCalendar();renderTasks();calculateSummaries();
   try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
   updateGlobalBudgetBar();
-  showToast(COUNTRY_CONFIG[c].flag, `Passato a: ${COUNTRY_CONFIG[c].flagText}`);
+  showToast(COUNTRY_CONFIG[c].flag,`Passato a: ${COUNTRY_CONFIG[c].flagText}`);
 }
-
 function applyCountryTheme(){
   const cfg=COUNTRY_CONFIG[activeCountry];
-  document.body.classList.toggle('country-GB', activeCountry==='GB');
-  document.getElementById('btnIT').classList.toggle('active-country', activeCountry==='IT');
-  document.getElementById('btnGB').classList.toggle('active-country', activeCountry==='GB');
-  document.getElementById('countryLabel').textContent = cfg.label;
-  document.getElementById('countryPill1').textContent = cfg.currencyLabel;
-  document.getElementById('amountSymbol').textContent = cfg.currency;
-  document.getElementById('taskCurrency').value = cfg.currency;
+  document.body.classList.toggle('country-GB',activeCountry==='GB');
+  document.getElementById('btnIT').classList.toggle('active-country',activeCountry==='IT');
+  document.getElementById('btnGB').classList.toggle('active-country',activeCountry==='GB');
+  document.getElementById('countryLabel').textContent=cfg.label;
+  document.getElementById('countryPill1').textContent=cfg.currencyLabel;
+  document.getElementById('amountSymbol').textContent=cfg.currency;
+  document.getElementById('taskCurrency').value=cfg.currency;
 }
-
 function updateFormCountryIndicator(){
   const cfg=COUNTRY_CONFIG[activeCountry];
-  document.getElementById('formCountryFlag').textContent = cfg.flag;
-  document.getElementById('formCountryLabel').textContent = cfg.flagText;
-  document.getElementById('formCountrySaving').textContent = cfg.savingNote;
-  document.getElementById('formCurHint').textContent = cfg.curHint;
-  document.getElementById('amountSymbol').textContent = cfg.currency;
-  document.getElementById('taskCurrency').value = cfg.currency;
+  document.getElementById('formCountryFlag').textContent=cfg.flag;
+  document.getElementById('formCountryLabel').textContent=cfg.flagText;
+  document.getElementById('formCountrySaving').textContent=cfg.savingNote;
+  document.getElementById('formCurHint').textContent=cfg.curHint;
+  document.getElementById('amountSymbol').textContent=cfg.currency;
+  document.getElementById('taskCurrency').value=cfg.currency;
 }
 
-// ============================================================
-// TEMA
-// ============================================================
-function applyTheme(dark){
-  document.documentElement.classList.toggle('dark',dark);
-  document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';
-  safeSet('app_theme',dark?'dark':'light');
-}
+// ===== TEMA =====
+function applyTheme(dark){document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';safeSet('app_theme',dark?'dark':'light');}
 function toggleTheme(){applyTheme(!document.documentElement.classList.contains('dark'));}
 
-// ============================================================
-// BUDGET
-// ============================================================
-function setGlobalBudget(v){
-  const val=parseFloat(v)||0;
-  setGlobalBudgetForCountry(val);
-  safeSet(activeCountry==='GB'?'app_budget_GB':'app_budget_IT', val);
-  updateGlobalBudgetBar();
-}
+// ===== BUDGET =====
+function setGlobalBudget(v){const val=parseFloat(v)||0;setGlobalBudgetForCountry(val);safeSet(activeCountry==='GB'?'app_budget_GB':'app_budget_IT',val);updateGlobalBudgetBar();}
 function updateGlobalBudgetBar(){
-  const budget=getGlobalBudget();
-  const inp=document.getElementById('globalBudgetInput');if(inp)inp.value=budget||'';
-  const cur=getActiveCurrency();
-  const now=new Date();
+  const budget=getGlobalBudget();const inp=document.getElementById('globalBudgetInput');if(inp)inp.value=budget||'';
+  const cur=getActiveCurrency();const now=new Date();
   const exp=getCountryTasks().filter(t=>{if(t.done||t.type==='income'||!t.amount)return false;const td=parseDateLocal(t.date);return td.getMonth()===now.getMonth()&&td.getFullYear()===now.getFullYear();}).reduce((s,t)=>s+t.amount,0);
   const bar=document.getElementById('globalBudgetBar'),lbl=document.getElementById('globalBudgetLabel');if(!bar||!lbl)return;
   if(budget>0){const pct=Math.min((exp/budget)*100,100);const col=pct>90?'#ef4444':pct>70?'#f59e0b':COUNTRY_CONFIG[activeCountry].accentCss;bar.style.width=pct+'%';bar.style.background=col;lbl.textContent=`${fmtCur(exp,cur)} / ${fmtCur(budget,cur)} (${pct.toFixed(0)}%)`;lbl.style.color=col;}
   else{bar.style.width='0%';lbl.textContent='';}
 }
 
-// ============================================================
-// HERO KPIs
-// ============================================================
+// ===== HERO KPIs =====
 function updateHeroKPIs(){
-  const tasks=getCountryTasks();
-  const active=tasks.filter(t=>!t.done).length;
+  const tasks=getCountryTasks();const active=tasks.filter(t=>!t.done).length;
   const now=new Date();const msDay=86400000;const ts=todayStr();
   let exp30=0,inc30=0;
-  tasks.forEach(t=>{
-    if(t.done||!t.amount||t.amount<=0)return;
-    const diff=Math.round((parseDateLocal(ts)-parseDateLocal(t.date))/msDay);
-    if(diff>=0&&diff<30){if(t.type==='income')inc30+=t.amount;else exp30+=t.amount;}
-  });
-  const net=inc30-exp30;
-  const cur=getActiveCurrency();
+  tasks.forEach(t=>{if(t.done||!t.amount||t.amount<=0)return;const diff=Math.round((parseDateLocal(ts)-parseDateLocal(t.date))/msDay);if(diff>=0&&diff<30){if(t.type==='income')inc30+=t.amount;else exp30+=t.amount;}});
+  const net=inc30-exp30;const cur=getActiveCurrency();
   document.getElementById('heroActive').textContent=active;
   document.getElementById('heroExpenses').textContent=fmtCur(exp30,cur);
   document.getElementById('heroIncome').textContent=fmtCur(inc30,cur);
-  const netEl=document.getElementById('heroNet');
-  netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);
-  netEl.style.color=net>=0?'#10b981':'#ef4444';
+  const netEl=document.getElementById('heroNet');netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
 
-// ============================================================
-// INIT
-// ============================================================
+// ===== INIT =====
 window.onload=()=>{
-  try{
-    applyTheme(safeGet('app_theme')!=='light');
-    applyCountryTheme();
-    updateFormCountryIndicator();
-    document.getElementById('taskDate').value=todayStr();
-    updateGlobalBudgetBar();initSelects();renderTagFilters();
-    renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();
-    updateHeroKPIs();renderRecurringList();renderUpcomingRecurring();applyFontSize();
-  }catch(e){console.error('Init:',e);}
+  try{applyTheme(safeGet('app_theme')!=='light');applyCountryTheme();updateFormCountryIndicator();document.getElementById('taskDate').value=todayStr();updateGlobalBudgetBar();initSelects();renderTagFilters();renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();updateHeroKPIs();renderRecurringList();renderUpcomingRecurring();applyFontSize();}catch(e){console.error('Init:',e);}
   try{initChart();}catch(e){}try{initMonthlyChart();}catch(e){}try{initBalanceChart();}catch(e){}try{switchChartTab('dist');}catch(e){}
   checkTodayNotifications();
 };
@@ -1133,26 +970,12 @@ function getLocalDateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).
 function parseDateLocal(str){const[y,m,d]=str.split('-').map(Number);return new Date(y,m-1,d);}
 function debouncedSearch(){clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>{currentPage=0;renderTasks();},200);}
 
-// ============================================================
-// UNDO
-// ============================================================
-function showUndo(msg,data,onUndo){
-  hideUndo();undoData={data,onUndo};
-  document.getElementById('undoMsg').textContent=msg;document.getElementById('undoToast').classList.add('visible');
-  document.getElementById('undoBtn').onclick=()=>{if(undoData)undoData.onUndo(undoData.data);hideUndo();};
-  undoTimeout=setTimeout(()=>hideUndo(),5000);
-}
+// ===== UNDO =====
+function showUndo(msg,data,onUndo){hideUndo();undoData={data,onUndo};document.getElementById('undoMsg').textContent=msg;document.getElementById('undoToast').classList.add('visible');document.getElementById('undoBtn').onclick=()=>{if(undoData)undoData.onUndo(undoData.data);hideUndo();};undoTimeout=setTimeout(()=>hideUndo(),5000);}
 function hideUndo(){clearTimeout(undoTimeout);undoData=null;document.getElementById('undoToast').classList.remove('visible');}
 
-function requestNotifications(){
-  if(!('Notification'in window)){showToast('⚠️','Non supportate');return;}
-  Notification.requestPermission().then(p=>{if(p==='granted'){showToast('🔔','Attivate!');checkTodayNotifications();}else showToast('⚠️','Rifiutate');});
-}
-function checkTodayNotifications(){
-  if(!('Notification'in window)||Notification.permission!=='granted')return;
-  const t=getCountryTasks().filter(tk=>tk.date===todayStr()&&!tk.done);
-  if(t.length>0)new Notification(`📋 Task di oggi (${COUNTRY_CONFIG[activeCountry].flagText})`,{body:`${t.length} task oggi`});
-}
+function requestNotifications(){if(!('Notification'in window)){showToast('⚠️','Non supportate');return;}Notification.requestPermission().then(p=>{if(p==='granted'){showToast('🔔','Attivate!');checkTodayNotifications();}else showToast('⚠️','Rifiutate');});}
+function checkTodayNotifications(){if(!('Notification'in window)||Notification.permission!=='granted')return;const t=getCountryTasks().filter(tk=>tk.date===todayStr()&&!tk.done);if(t.length>0)new Notification(`📋 Task di oggi (${COUNTRY_CONFIG[activeCountry].flagText})`,{body:`${t.length} task oggi`});}
 
 function setTaskType(type){
   document.getElementById('taskType').value=type;
@@ -1175,20 +998,10 @@ function initSelects(){
 function getAllTags(){const set=new Set();getCountryTasks().forEach(t=>(t.tags||[]).forEach(tag=>{if(tag)set.add(tag);}));return [...set].sort();}
 function renderTagFilters(){
   const list=document.getElementById('tagFilterList');list.innerHTML='';
-  getAllTags().forEach(tag=>{
-    const btn=document.createElement('button');
-    btn.className='task-tag transition-all'+(activeTagFilter===tag?' ring-2 ring-indigo-400':'');
-    btn.textContent='#'+tag;
-    btn.onclick=()=>{activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();};
-    list.appendChild(btn);
-  });
+  getAllTags().forEach(tag=>{const btn=document.createElement('button');btn.className='task-tag transition-all'+(activeTagFilter===tag?' ring-2 ring-indigo-400':'');btn.textContent='#'+tag;btn.onclick=()=>{activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();};list.appendChild(btn);});
 }
 
-function setSort(mode){
-  currentSort=mode;currentPage=0;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`sort-${mode}`).classList.add('active');renderTasks();
-}
+function setSort(mode){currentSort=mode;currentPage=0;document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`sort-${mode}`).classList.add('active');renderTasks();}
 function setFilter(filter){
   currentFilter=filter;currentPage=0;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -1203,44 +1016,18 @@ function setFilter(filter){
 function renderClientFilters(){
   const list=document.getElementById('clientFilterList');list.innerHTML='';
   state.clients.forEach(c=>{
-    const btn=document.createElement('button');
-    btn.id=`filter-client-${c.id}`;btn.className='filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';
-    btn.style.color=c.color;btn.textContent=c.name;
-    btn.onclick=()=>{
-      currentFilter=c.id;currentPage=0;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-      selectedCalDate=null;document.getElementById('filter-period').classList.add('hidden');
-      document.getElementById('mainTitle').textContent=`👤 ${c.name}`;document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;
-      renderCalendar();updateExpiredBanner();renderTasks();
-    };
+    const btn=document.createElement('button');btn.id=`filter-client-${c.id}`;btn.className='filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';btn.style.color=c.color;btn.textContent=c.name;
+    btn.onclick=()=>{currentFilter=c.id;currentPage=0;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedCalDate=null;document.getElementById('filter-period').classList.add('hidden');document.getElementById('mainTitle').textContent=`👤 ${c.name}`;document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;renderCalendar();updateExpiredBanner();renderTasks();};
     list.appendChild(btn);
   });
 }
-function applyPeriodFilter(){
-  const s=document.getElementById('filterStart').value,e=document.getElementById('filterEnd').value;
-  if(!s||!e){showToast('⚠️','Seleziona entrambe le date!');return;}
-  if(s>e){showToast('⚠️','Data inizio dopo la fine!');return;}
-  document.getElementById('filter-period').classList.remove('hidden');setFilter('period');
-}
-function clearPeriodFilter(){
-  document.getElementById('filterStart').value='';document.getElementById('filterEnd').value='';
-  document.getElementById('periodTotalContainer').classList.add('hidden');
-  document.getElementById('filter-period').classList.add('hidden');calculateSummaries();setFilter('all');
-}
-function onRangeChange(){
-  document.getElementById('rangeMinLabel').textContent=document.getElementById('rangeMin').value;
-  document.getElementById('rangeMaxLabel').textContent=document.getElementById('rangeMax').value;
-}
-function applyAmountFilter(){
-  amountMin=parseInt(document.getElementById('rangeMin').value);amountMax=parseInt(document.getElementById('rangeMax').value);
-  if(amountMin>amountMax){showToast('⚠️','Min > Max!');return;}
-  amountFilterActive=true;currentPage=0;showToast('✓',`${amountMin}—${amountMax}`);renderTasks();
-}
+function applyPeriodFilter(){const s=document.getElementById('filterStart').value,e=document.getElementById('filterEnd').value;if(!s||!e){showToast('⚠️','Seleziona entrambe le date!');return;}if(s>e){showToast('⚠️','Data inizio dopo la fine!');return;}document.getElementById('filter-period').classList.remove('hidden');setFilter('period');}
+function clearPeriodFilter(){document.getElementById('filterStart').value='';document.getElementById('filterEnd').value='';document.getElementById('periodTotalContainer').classList.add('hidden');document.getElementById('filter-period').classList.add('hidden');calculateSummaries();setFilter('all');}
+function onRangeChange(){document.getElementById('rangeMinLabel').textContent=document.getElementById('rangeMin').value;document.getElementById('rangeMaxLabel').textContent=document.getElementById('rangeMax').value;}
+function applyAmountFilter(){amountMin=parseInt(document.getElementById('rangeMin').value);amountMax=parseInt(document.getElementById('rangeMax').value);if(amountMin>amountMax){showToast('⚠️','Min > Max!');return;}amountFilterActive=true;currentPage=0;showToast('✓',`${amountMin}—${amountMax}`);renderTasks();}
 function clearAmountFilter(){amountFilterActive=false;document.getElementById('rangeMin').value=0;document.getElementById('rangeMax').value=5000;onRangeChange();renderTasks();}
 
-// ============================================================
-// PERSONE
-// ============================================================
+// ===== PERSONE — COLORED CARDS =====
 function addClient(){
   const ni=document.getElementById('newClientName'),ci=document.getElementById('newClientColor');
   const v=ni.value.trim();if(!v){showToast('⚠️','Inserisci un nome!');return;}
@@ -1260,41 +1047,56 @@ function removeClient(id){
 function renderClientManagement(){
   const list=document.getElementById('clientListDisplay');list.innerHTML='';
   if(!state.clients.length){list.innerHTML='<p class="text-[10px] text-slate-600 italic">Nessuna persona</p>';return;}
-  const cur=getActiveCurrency();
-  const now=new Date();const m=now.getMonth(),y=now.getFullYear();
+  const cur=getActiveCurrency();const now=new Date();const m=now.getMonth(),y=now.getFullYear();
   state.clients.forEach(c=>{
     const tasks=getCountryTasks().filter(t=>t.clientId===c.id);
     const monthTasks=tasks.filter(t=>{const td=parseDateLocal(t.date);return td.getMonth()===m&&td.getFullYear()===y&&!t.done;});
     const inc=monthTasks.filter(t=>t.type==='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
     const exp=monthTasks.filter(t=>t.type!=='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
-    const div=document.createElement('div');div.className='p-2.5 rounded-xl bg-slate-900 border border-slate-800 group';
-    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${c.color}"></span><span class="text-xs font-bold" style="color:${c.color}">${c.name}</span><span class="text-[9px] text-slate-600 mono">${tasks.length}</span></div><button type="button" onclick="removeClient(${c.id})" class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">✕</button></div>
-    ${inc>0||exp>0?`<div class="mt-1 pl-4 text-[8px] text-slate-500 mono">+${fmtCur(inc,cur)} / -${fmtCur(exp,cur)}</div>`:''}`;
+    const div=document.createElement('div');
+    div.className='p-2.5 rounded-xl group rec-sidebar-item';
+    div.style.background=hexToRgba(c.color,0.30);
+    div.style.border='1px solid '+hexToRgba(c.color,0.55);
+    div.innerHTML=`<div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:rgba(255,255,255,0.85)"></span>
+        <span class="text-xs font-black text-white">${c.name}</span>
+        <span class="text-[9px] mono font-bold" style="color:rgba(255,255,255,0.5)">${tasks.length}</span>
+      </div>
+      <button type="button" onclick="removeClient(${c.id})" class="font-bold opacity-0 group-hover:opacity-100 transition-opacity text-[10px]" style="color:rgba(255,255,255,0.65)">✕</button>
+    </div>
+    ${inc>0||exp>0?`<div class="mt-1 pl-4 text-[8px] mono font-bold" style="color:rgba(255,255,255,0.55)">+${fmtCur(inc,cur)} / -${fmtCur(exp,cur)}</div>`:''}`;
     list.appendChild(div);
   });
 }
 
-// ============================================================
-// CATEGORIE
-// ============================================================
+// ===== CATEGORIE — COLORED CARDS =====
 function renderCategories(){
   const list=document.getElementById('categoryListDisplay');list.innerHTML='';
-  const cur=getActiveCurrency();
-  const now=new Date();const m=now.getMonth(),y=now.getFullYear();
+  const cur=getActiveCurrency();const now=new Date();const m=now.getMonth(),y=now.getFullYear();
   const cats=getCategories();
   [...cats].sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
     const spent=getCountryTasks().filter(t=>{if(t.done||t.type==='income'||!t.amount)return false;const td=parseDateLocal(t.date);return t.category===c.name&&td.getMonth()===m&&td.getFullYear()===y;}).reduce((s,t)=>s+t.amount,0);
-    const div=document.createElement('div');div.className='p-2 rounded-xl bg-slate-900 border border-slate-800 group';
+    const div=document.createElement('div');
+    div.className='p-2 rounded-xl group rec-sidebar-item';
+    div.style.background=hexToRgba(c.color,0.30);
+    div.style.border='1px solid '+hexToRgba(c.color,0.55);
     let budgetHtml='';
-    if(c.budget>0){const pct=Math.min((spent/c.budget)*100,100);const col=pct>90?'#ef4444':pct>70?'#f59e0b':c.color;budgetHtml=`<div class="mt-1.5"><div class="flex justify-between text-[8px] mb-0.5"><span class="text-slate-500">${spent.toFixed(0)}/${c.budget}</span><span style="color:${col}">${pct.toFixed(0)}%</span></div><div class="budget-bar"><div class="budget-bar-fill" style="width:${pct}%;background:${col}"></div></div></div>`;}
-    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5">
-      <span class="w-2 h-2 rounded-full" style="background:${c.color}"></span>
-      <button onclick="showVoiceAnalysis('${c.name.replace(/'/g,"\\'")}')" class="text-[10px] font-bold hover:text-accent transition-colors" style="color:${c.color}">${c.name} <span class="text-[8px] opacity-50">📊</span></button>
-    </div>
-    <div class="flex items-center gap-1.5">
-      ${spent>0?`<span class="text-[8px] font-bold mono" style="color:${c.color}">${fmtCur(spent,cur)}</span>`:''}
-      <button type="button" onclick="removeCategory('${c.name.replace(/'/g,"\\'")}') " class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[9px]">✕</button>
-    </div></div>${budgetHtml}`;
+    if(c.budget>0){
+      const pct=Math.min((spent/c.budget)*100,100);
+      const col=pct>90?'rgba(255,100,100,0.9)':pct>70?'rgba(255,200,80,0.9)':'rgba(255,255,255,0.7)';
+      budgetHtml=`<div class="mt-1.5"><div class="flex justify-between text-[8px] mb-0.5"><span style="color:rgba(255,255,255,0.5)">${spent.toFixed(0)}/${c.budget}</span><span style="color:${col}">${pct.toFixed(0)}%</span></div><div style="height:4px;border-radius:2px;background:rgba(0,0,0,0.3);overflow:hidden"><div style="height:100%;border-radius:2px;width:${pct}%;background:rgba(255,255,255,0.65)"></div></div></div>`;
+    }
+    div.innerHTML=`<div class="flex items-center justify-between">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:rgba(255,255,255,0.8)"></span>
+        <button onclick="showVoiceAnalysis('${c.name.replace(/'/g,"\\'")}') " class="text-[10px] font-black text-white hover:text-white/80 transition-colors text-left">${c.name} <span class="text-[8px]" style="color:rgba(255,255,255,0.35)">📊</span></button>
+      </div>
+      <div class="flex items-center gap-1.5">
+        ${spent>0?`<span class="text-[8px] font-bold mono" style="color:rgba(255,255,255,0.7)">${fmtCur(spent,cur)}</span>`:''}
+        <button type="button" onclick="removeCategory('${c.name.replace(/'/g,"\\'")}') " class="opacity-0 group-hover:opacity-100 transition-opacity text-[9px] font-bold" style="color:rgba(255,255,255,0.6)">✕</button>
+      </div>
+    </div>${budgetHtml}`;
     list.appendChild(div);
   });
 }
@@ -1314,15 +1116,12 @@ function removeCategory(name){
   showUndo(`"${name}" rimossa`,backup,b=>{if(activeCountry==='GB')state.categoriesGB=b;else state.categoriesIT=b;saveState();renderCategories();initSelects();try{updateChart();}catch(e){}showToast('↩️','Annullato!');});
 }
 
-// ============================================================
-// CALENDARIO
-// ============================================================
+// ===== CALENDARIO =====
 function showCalTooltip(event,ds,data){
   const tip=document.getElementById('calTooltip');
   const d=parseDateLocal(ds);
   document.getElementById('calTipDate').textContent=d.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
-  const cur=getActiveCurrency();
-  const expA=data.expense||0,incA=data.income||0;
+  const cur=getActiveCurrency();const expA=data.expense||0,incA=data.income||0;
   let html='';
   if(expA>0)html+=`<div class="flex justify-between gap-4 text-[10px]"><span class="text-slate-500">Spese</span><span class="text-red-400 font-bold mono">-${fmtCur(expA,cur)}</span></div>`;
   if(incA>0)html+=`<div class="flex justify-between gap-4 text-[10px]"><span class="text-slate-500">Entrate</span><span class="text-emerald-400 font-bold mono">+${fmtCur(incA,cur)}</span></div>`;
@@ -1342,24 +1141,16 @@ function renderCalendar(){
   getCountryTasks().forEach(t=>{
     if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false,hasRec:{},hasVrec:false};
     dateMap[t.date].hasTasks=true;
-    if(!t.done&&t.amount>0){
-      if(t.type==='income')dateMap[t.date].income+=t.amount;
-      else dateMap[t.date].expense+=t.amount;
-    }
-    if(t.recurrence&&t.recurrence!=='none')
-      dateMap[t.date].hasRec[t.recurrence]=(dateMap[t.date].hasRec[t.recurrence]||0)+1;
+    if(!t.done&&t.amount>0){if(t.type==='income')dateMap[t.date].income+=t.amount;else dateMap[t.date].expense+=t.amount;}
+    if(t.recurrence&&t.recurrence!=='none')dateMap[t.date].hasRec[t.recurrence]=(dateMap[t.date].hasRec[t.recurrence]||0)+1;
   });
-  // Expand virtual recurring occurrences for this month
   virtualOccCache={};
   getVirtualRecurrences(calYear,calMonth).forEach(t=>{
     if(!virtualOccCache[t.date])virtualOccCache[t.date]=[];
     virtualOccCache[t.date].push(t);
     if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false,hasRec:{},hasVrec:false};
     dateMap[t.date].hasVrec=true;
-    if(t.amount&&t.amount>0){
-      if(t.type==='income')dateMap[t.date].income+=t.amount;
-      else dateMap[t.date].expense+=t.amount;
-    }
+    if(t.amount&&t.amount>0){if(t.type==='income')dateMap[t.date].income+=t.amount;else dateMap[t.date].expense+=t.amount;}
   });
   let maxExp=0;for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(dateMap[ds])maxExp=Math.max(maxExp,dateMap[ds].expense);}
   for(let i=startDow-1;i>=0;i--){const day=daysInPrev-i;const p=new Date(calYear,calMonth-1,1);const ds=`${p.getFullYear()}-${String(p.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;grid.appendChild(makeCalDay(day,ds,dateMap,ts,maxExp,true));}
@@ -1373,11 +1164,7 @@ function makeCalDay(num,ds,dateMap,ts,maxExp,other){
   if(other)el.classList.add('other-month');if(ds===ts)el.classList.add('today');if(ds===selectedCalDate)el.classList.add('selected');
   const data=dateMap[ds];
   if(!other&&data&&currentRecurrenceFilter!=='none'&&(data.hasRec||{})[currentRecurrenceFilter])el.classList.add('rec-hi');
-  if(!other&&data&&data.hasVrec){
-    el.classList.add('has-vrec');
-    const names=(virtualOccCache[ds]||[]).map(v=>v.category).join(', ');
-    if(names)el.title='🔄 '+names;
-  }
+  if(!other&&data&&data.hasVrec){el.classList.add('has-vrec');const names=(virtualOccCache[ds]||[]).map(v=>v.category).join(', ');if(names)el.title='🔄 '+names;}
   if(!other&&data){const exp=data.expense||0;if(exp>0&&maxExp>0){const r=exp/maxExp;el.classList.add(r<=.2?'heat-1':r<=.4?'heat-2':r<=.6?'heat-3':r<=.8?'heat-4':'heat-5');}else if(data.hasTasks)el.classList.add('has-dot');
     el.addEventListener('mouseenter',e=>showCalTooltip(e,ds,data));el.addEventListener('mouseleave',hideCalTooltip);el.addEventListener('mousemove',moveCalTooltip);}
   el.onclick=()=>selectCalDay(ds);return el;
@@ -1394,20 +1181,11 @@ function updateCalDaySummary(){
   else dayTasks.forEach(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const col=cl?cl.color:'#475569';const isIn=t.type==='income';const row=document.createElement('div');row.className='flex items-center justify-between gap-2';row.innerHTML=`<div class="flex items-center gap-1.5 min-w-0"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] truncate ${t.done?'line-through text-slate-600':'text-slate-300'}">${t.category}</span></div><span class="mono text-[10px] font-bold flex-shrink-0 ${isIn?'text-emerald-400':'text-red-400'}">${t.amount?(isIn?'+':'-')+fmtCur(t.amount,cur):'—'}</span>`;items.appendChild(row);});
   const vItems=virtualOccCache[selectedCalDate]||[];
   if(vItems.length){
-    const sep=document.createElement('div');
-    sep.className='mt-2 mb-1 text-[8px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1';
-    sep.innerHTML='🔄 Ricorrenti';items.appendChild(sep);
+    const sep=document.createElement('div');sep.className='mt-2 mb-1 text-[8px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1';sep.innerHTML='🔄 Ricorrenti';items.appendChild(sep);
     vItems.forEach(vt=>{
-      const isIn=vt.type==='income';
-      const co=getCategories().find(c=>c.name===vt.category);
-      const col=co?co.color:'#6366f1';
-      const interval=vt.recurrenceInterval||1;
+      const isIn=vt.type==='income';const co=getCategories().find(c=>c.name===vt.category);const col=co?co.color:'#6366f1';
       const row=document.createElement('div');row.className='flex items-center gap-1 py-0.5 flex-wrap';
-      row.innerHTML=`<span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span>
-        <span class="text-[9px] truncate text-indigo-300 flex-1">${vt.category}<span class="text-[8px] text-slate-500 ml-1">(${recurrenceLabel(vt)})</span></span>
-        <span class="mono text-[9px] font-bold flex-shrink-0 ${isIn?'text-emerald-400':'text-red-400'}">${vt.amount?(isIn?'+':'-')+fmtCur(vt.amount,getActiveCurrency()):'—'}</span>
-        <button onclick="editTask(${vt.originalId})" class="vrec-action-btn" style="font-size:8px;padding:1px 4px">✏️</button>
-        <button onclick="deleteRecurring(${vt.originalId})" class="vrec-action-btn del" style="font-size:8px;padding:1px 4px">✕</button>`;
+      row.innerHTML=`<span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[9px] truncate text-indigo-300 flex-1">${vt.category}<span class="text-[8px] text-slate-500 ml-1">(${recurrenceLabel(vt)})</span></span><span class="mono text-[9px] font-bold flex-shrink-0 ${isIn?'text-emerald-400':'text-red-400'}">${vt.amount?(isIn?'+':'-')+fmtCur(vt.amount,getActiveCurrency()):'—'}</span><button onclick="editTask(${vt.originalId})" class="vrec-action-btn" style="font-size:8px;padding:1px 4px">✏️</button><button onclick="deleteRecurring(${vt.originalId})" class="vrec-action-btn del" style="font-size:8px;padding:1px 4px">✕</button>`;
       items.appendChild(row);
     });
   }
@@ -1415,19 +1193,15 @@ function updateCalDaySummary(){
   const exp=dayTasks.filter(t=>t.type!=='income'&&!t.done&&t.amount).reduce((s,t)=>s+t.amount,0);
   const vInc=vItems.filter(t=>t.type==='income').reduce((s,t)=>s+(t.amount||0),0);
   const vExp=vItems.filter(t=>t.type!=='income').reduce((s,t)=>s+(t.amount||0),0);
-  const netEl=document.getElementById('calDayTotal');
-  const net=(inc+vInc)-(exp+vExp);
-  netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);
-  netEl.style.color=net>=0?'#10b981':'#ef4444';
+  const netEl=document.getElementById('calDayTotal');const net=(inc+vInc)-(exp+vExp);
+  netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
 function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();renderUpcomingRecurring();}
 function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();renderUpcomingRecurring();}
 function goToToday(){const n=new Date();calYear=n.getFullYear();calMonth=n.getMonth();renderCalendar();renderUpcomingRecurring();}
 function syncCalendarToForm(){const v=document.getElementById('taskDate').value;if(!v)return;const[y,m]=v.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();}
 
-// ============================================================
-// CHARTS
-// ============================================================
+// ===== CHARTS =====
 function setChartDataType(type){
   chartDataType=type;
   document.getElementById('chartTypeExpense').className='text-[9px] font-bold px-3 py-1 rounded-md transition-all '+(type==='expense'?'bg-slate-800 text-red-400':'text-slate-500');
@@ -1445,13 +1219,11 @@ function updateChart(mode=null){
   document.querySelectorAll('.chart-mode-btn').forEach(b=>b.classList.remove('ring-2','ring-accent','text-accent'));
   document.getElementById(chartMode==='category'?'chartBtnCat':'chartBtnClient').classList.add('ring-2','ring-accent','text-accent');
   const tasks=getCountryTasks().filter(t=>t.amount>0&&!t.done&&t.type===(chartDataType==='income'?'income':'expense'));
-  let labels=[],dataValues=[],colors=[];
-  const cats=getCategories();
+  let labels=[],dataValues=[],colors=[];const cats=getCategories();
   if(chartMode==='category'){const tot={};tasks.forEach(t=>tot[t.category]=(tot[t.category]||0)+t.amount);const s=Object.entries(tot).sort((a,b)=>b[1]-a[1]);labels=s.map(e=>e[0]);dataValues=s.map(e=>e[1]);colors=labels.map(n=>{const c=cats.find(c=>c.name===n);return c?c.color:'#6366f1';});}
   else{const tot={};tasks.forEach(t=>{const cl=state.clients.find(c=>c.id===t.clientId);tot[cl?cl.name:'Generico']=(tot[cl?cl.name:'Generico']||0)+t.amount;});const s=Object.entries(tot).sort((a,b)=>b[1]-a[1]);labels=s.map(e=>e[0]);dataValues=s.map(e=>e[1]);colors=labels.map(n=>{const c=state.clients.find(c=>c.name===n);return c?c.color:'#475569';});}
   myChart.data.labels=labels;myChart.data.datasets[0].data=dataValues;myChart.data.datasets[0].backgroundColor=colors;myChart.update();
-  const legend=document.getElementById('chartLegend');legend.innerHTML='';const total=dataValues.reduce((s,v)=>s+v,0);
-  const cur=getActiveCurrency();
+  const legend=document.getElementById('chartLegend');legend.innerHTML='';const total=dataValues.reduce((s,v)=>s+v,0);const cur=getActiveCurrency();
   if(!labels.length){legend.innerHTML=`<span class="text-[9px] text-slate-600 italic w-full text-center block">Nessun dato</span>`;return;}
   labels.forEach((lbl,i)=>{const pct=total>0?((dataValues[i]/total)*100).toFixed(0):0;const item=document.createElement('div');item.className='legend-item';item.style.color=colors[i];item.innerHTML=`<span class="legend-dot" style="background:${colors[i]}"></span><span>${lbl}</span><span class="opacity-60">${fmtCur(dataValues[i],cur)}</span><span class="opacity-40">${pct}%</span>`;legend.appendChild(item);});
 }
@@ -1467,8 +1239,7 @@ function updateMonthlyChart(){
 }
 function initBalanceChart(){
   if(typeof Chart==='undefined')return;
-  const ctx=document.getElementById('balanceChart').getContext('2d');
-  const ac=COUNTRY_CONFIG[activeCountry].accentCss;
+  const ctx=document.getElementById('balanceChart').getContext('2d');const ac=COUNTRY_CONFIG[activeCountry].accentCss;
   balanceChartObj=new Chart(ctx,{type:'line',data:{labels:[],datasets:[{label:'Saldo',data:[],borderColor:ac+'cc',backgroundColor:ac+'18',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:ac}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#64748b',font:{size:8}}},x:{grid:{display:false},ticks:{color:'#64748b',font:{size:9}}}}}});
 }
 function updateBalanceChart(){
@@ -1485,18 +1256,14 @@ function switchChartTab(tab){
 }
 
 function updateExpiredBanner(){
-  const today=parseDateLocal(todayStr());
-  const count=getCountryTasks().filter(t=>!t.done&&parseDateLocal(t.date)<today).length;
+  const today=parseDateLocal(todayStr());const count=getCountryTasks().filter(t=>!t.done&&parseDateLocal(t.date)<today).length;
   const banner=document.getElementById('expiredBanner');
   if(count>0&&currentFilter!=='expired'){banner.classList.add('visible');document.getElementById('expiredBannerCount').textContent=count;}
   else banner.classList.remove('visible');
 }
-
 function clearCatError(){document.getElementById('taskCategory').classList.remove('input-error');document.getElementById('catError').style.display='none';}
 
-// ============================================================
-// FORM SUBMIT
-// ============================================================
+// ===== FORM SUBMIT =====
 document.getElementById('mainForm').onsubmit=(e)=>{
   e.preventDefault();
   const editId=document.getElementById('editTaskId').value;
@@ -1511,29 +1278,18 @@ document.getElementById('mainForm').onsubmit=(e)=>{
   const currency=getActiveCurrency();
   const tagsRaw=document.getElementById('taskTags').value;
   const tags=tagsRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
-
   if(!date){showToast('⚠️','Inserisci una data!');return;}
   if(!cat){const sel=document.getElementById('taskCategory');sel.classList.add('input-error','shake');document.getElementById('catError').style.display='block';sel.focus();setTimeout(()=>sel.classList.remove('shake'),350);return;}
   const parsedAmount=amountVal!==''?parseFloat(amountVal):null;
   if(parsedAmount!==null&&parsedAmount<0){showToast('⚠️','Importo negativo!');return;}
-
   const now=Date.now();
   const histEntry={ts:now,action:editId?'Modificato':'Creato',note:cat+(parsedAmount!=null?' — '+fmtCur(parsedAmount,currency):'')};
-
-  if(editId){
-    const idx=state.tasks.findIndex(t=>t.id===parseInt(editId));
-    if(idx!==-1){const prev=state.tasks[idx];state.tasks[idx]={...prev,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,history:[...(prev.history||[]),histEntry].slice(-10)};}
-  }else{
-    const taskData={id:now,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,done:false,history:[histEntry]};
-    state.tasks.push(taskData);state.taskOrder.push(taskData.id);
-    if(currentFilter!=='all'){currentFilter='all';selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');document.getElementById('filter-period').classList.add('hidden');document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline';}
-  }
+  if(editId){const idx=state.tasks.findIndex(t=>t.id===parseInt(editId));if(idx!==-1){const prev=state.tasks[idx];state.tasks[idx]={...prev,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,history:[...(prev.history||[]),histEntry].slice(-10)};}}
+  else{const taskData={id:now,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,done:false,history:[histEntry]};state.tasks.push(taskData);state.taskOrder.push(taskData.id);if(currentFilter!=='all'){currentFilter='all';selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');document.getElementById('filter-period').classList.add('hidden');document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline';}}
   saveState();fullRefresh();resetForm();showToast('✓',editId?'Aggiornato!':'Salvato!');
 };
 
-// ============================================================
-// TOGGLE STATUS + RICORRENZA
-// ============================================================
+// ===== TOGGLE STATUS =====
 function toggleTaskStatus(id){
   const idx=state.tasks.findIndex(t=>t.id===id);if(idx===-1)return;
   const task=state.tasks[idx];task.done=!task.done;
@@ -1543,16 +1299,12 @@ function toggleTaskStatus(id){
     if(task.recurrence==='weekly')nd.setDate(nd.getDate()+7);
     else if(task.recurrence==='monthly')nd.setMonth(nd.getMonth()+1);
     else if(task.recurrence==='yearly')nd.setFullYear(nd.getFullYear()+1);
-    const newId=Date.now();
-    state.tasks.push({...task,id:newId,date:getLocalDateStr(nd),done:false,history:[{ts:newId,action:'Creato (ricorrenza)',note:''}]});
-    state.taskOrder.push(newId);showToast('🔄',`Ricorrenza → ${getLocalDateStr(nd)}`);
+    const newId=Date.now();state.tasks.push({...task,id:newId,date:getLocalDateStr(nd),done:false,history:[{ts:newId,action:'Creato (ricorrenza)',note:''}]});state.taskOrder.push(newId);showToast('🔄',`Ricorrenza → ${getLocalDateStr(nd)}`);
   }
   saveState();fullRefresh();
 }
 
-// ============================================================
-// STORICO
-// ============================================================
+// ===== STORICO =====
 function showHistoryModal(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
   const list=document.getElementById('historyList');const empty=document.getElementById('historyEmpty');
@@ -1564,9 +1316,7 @@ function showHistoryModal(id){
 function closeHistoryModal(){document.getElementById('historyModal').classList.add('hidden');}
 document.getElementById('historyModal').onclick=function(e){if(e.target===this)closeHistoryModal();};
 
-// ============================================================
-// DRAG & DROP
-// ============================================================
+// ===== DRAG & DROP =====
 function onDragStart(e,id){dragSrcId=id;e.dataTransfer.effectAllowed='move';setTimeout(()=>{const el=e.target.closest('.card-task');if(el)el.classList.add('dragging');},0);}
 function onDragEnd(e){e.target.closest('.card-task')?.classList.remove('dragging');}
 function onDragOver(e,id){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}
@@ -1582,9 +1332,7 @@ function onDrop(e,targetId){
 }
 function onGridDrop(e){e.preventDefault();document.querySelectorAll('.card-task').forEach(c=>c.classList.remove('drag-over'));}
 
-// ============================================================
-// PAGINAZIONE
-// ============================================================
+// ===== PAGINAZIONE =====
 function changePage(dir){currentPage=Math.max(0,currentPage+dir);renderTasks();}
 function renderPagination(total,pg,pageSize){
   const bar=document.getElementById('paginationBar');const totalPages=Math.ceil(total/pageSize);
@@ -1596,95 +1344,57 @@ function renderPagination(total,pg,pageSize){
   for(let i=0;i<totalPages;i++){const btn=document.createElement('button');btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);}
 }
 
-// ============================================================
-// RENDER TASKS
-// ============================================================
+// ===== RENDER TASKS =====
 function renderTasks(){
   const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
   const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
   grid.innerHTML='';
   const ts=todayStr(),today=parseDateLocal(ts);
   let filtered=getCountryTasks();
-
   if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
   else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
   else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
   else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
   else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
   else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
-
   if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
   if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
   if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
-
-  if(search){
-    const searchNum=parseFloat(search);
-    filtered=filtered.filter(t=>{
-      const cl=state.clients.find(c=>c.id===t.clientId);
-      return t.category.toLowerCase().includes(search)||(t.note||'').toLowerCase().includes(search)||(cl?cl.name.toLowerCase().includes(search):'generico'.includes(search))||(t.tags||[]).some(tag=>tag.includes(search))||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);
-    });
-  }
-
+  if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return t.category.toLowerCase().includes(search)||(t.note||'').toLowerCase().includes(search)||(cl?cl.name.toLowerCase().includes(search):'generico'.includes(search))||(t.tags||[]).some(tag=>tag.includes(search))||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
   if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
   else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
   else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
-  else if(currentSort==='custom'){
-    state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});
-    filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});
-  }
-
-  const totalCount=filtered.length;
-  empty.style.display=totalCount===0?'flex':'none';
-
+  else if(currentSort==='custom'){state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});}
+  const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
   const cur=getActiveCurrency();
   const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
-  if(currentFilter!=='all'){
-    const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-    ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
-  }else ftBox.classList.add('hidden');
-
+  if(currentFilter!=='all'){const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';}else ftBox.classList.add('hidden');
   renderPagination(totalCount,currentPage,PAGE_SIZE);
   const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
   const cats=getCategories();
-
-  // Determine the OTHER country for the move button label
-  const otherCountry = activeCountry === 'IT' ? 'GB' : 'IT';
-  const otherCfg = COUNTRY_CONFIG[otherCountry];
-
+  const otherCountry=activeCountry==='IT'?'GB':'IT';const otherCfg=COUNTRY_CONFIG[otherCountry];
   paginated.forEach(t=>{
-    const client=state.clients.find(c=>c.id===t.clientId);
-    const cColor=client?client.color:'#475569';
+    const client=state.clients.find(c=>c.id===t.clientId);const cColor=client?client.color:'#475569';
     const isPast=parseDateLocal(t.date)<today&&!t.done;
     const dateLabel=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
-    const isIncome=t.type==='income';
-    const catObj=cats.find(c=>c.name===t.category);
-    const catColor=catObj?catObj.color:'#6366f1';
-    const cur=t.currency||getActiveCurrency();
-
+    const isIncome=t.type==='income';const catObj=cats.find(c=>c.name===t.category);const catColor=catObj?catObj.color:'#6366f1';const cur=t.currency||getActiveCurrency();
     let recTag='';
     if(t.recurrence==='weekly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">7g</span>';
     else if(t.recurrence==='monthly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1M</span>';
     else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1A</span>';
     const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag" onclick="setActiveTag('${tag}')">#${tag}</span>`).join('');
     const safeCat=t.category.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-
     const card=document.createElement('div');
     card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;
-    card.style.borderLeftColor=cColor;
-    card.draggable=true;
-    card.addEventListener('dragstart',e=>onDragStart(e,t.id));
-    card.addEventListener('dragend',e=>onDragEnd(e));
-    card.addEventListener('dragover',e=>onDragOver(e,t.id));
-    card.addEventListener('drop',e=>onDrop(e,t.id));
-
+    card.style.borderLeftColor=cColor;card.draggable=true;
+    card.addEventListener('dragstart',e=>onDragStart(e,t.id));card.addEventListener('dragend',e=>onDragEnd(e));card.addEventListener('dragover',e=>onDragOver(e,t.id));card.addEventListener('drop',e=>onDrop(e,t.id));
     card.innerHTML=`
       <div class="flex justify-between items-start mb-3">
         <div class="flex items-center gap-2 flex-wrap">
           <span class="drag-handle text-slate-600 text-sm select-none">⠿</span>
           <button onclick="toggleTaskStatus(${t.id})" class="w-5 h-5 rounded-md border-2 border-slate-700 flex items-center justify-center transition-all text-[10px] ${t.done?'bg-green-500 border-green-500 text-white':'hover:border-accent'}">${t.done?'✓':''}</button>
           <span class="text-[10px] font-black uppercase tracking-widest mono px-2 py-0.5 rounded-full border ${isPast?'text-red-400 bg-red-400/10 border-red-400/20':'text-slate-400 bg-slate-800 border-slate-700'}">${dateLabel}</span>
-          ${recTag}
-          <span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑':'↓'}</span>
+          ${recTag}<span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑':'↓'}</span>
         </div>
         <div class="flex gap-1 items-center">
           <button onclick="openMoveModal(${t.id})" class="btn-move-task" title="Sposta in ${otherCfg.flagText}">${otherCfg.flag}</button>
@@ -1696,16 +1406,12 @@ function renderTasks(){
       </div>
       <div class="flex items-center gap-2 mb-1">
         <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
-        <button onclick="showVoiceAnalysis('${safeCat}')" class="cat-link font-bold text-base leading-tight text-left ${t.done?'line-through text-slate-500':'text-white'}">
-          ${t.category}<span class="cat-link-icon">📊</span>
-        </button>
+        <button onclick="showVoiceAnalysis('${safeCat}')" class="cat-link font-bold text-base leading-tight text-left ${t.done?'line-through text-slate-500':'text-white'}">${t.category}<span class="cat-link-icon">📊</span></button>
       </div>
       <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${t.note||'—'}</p>
       ${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
       <div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50">
-        <div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">
-          ${t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,cur):''}
-        </div>
+        <div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,cur):''}</div>
         <div class="flex items-center gap-2">
           <span class="text-[8px] font-bold mono px-1.5 py-0.5 rounded" style="background:${catColor}18;color:${catColor};border:1px solid ${catColor}30">${cur}</span>
           <div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${cColor}">${client?client.name:'Generico'}</div>
@@ -1713,99 +1419,50 @@ function renderTasks(){
       </div>`;
     grid.appendChild(card);
   });
-
   updateExpiredBanner();
 }
 
 function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();}
+function duplicateTask(id){const t=state.tasks.find(t=>t.id===id);if(!t)return;const newId=Date.now();const clone={...t,id:newId,done:false,date:todayStr(),country:activeCountry,history:[{ts:newId,action:'Duplicato da '+t.category,note:''}]};state.tasks.push(clone);state.taskOrder.push(newId);saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);}
 
-function duplicateTask(id){
-  const t=state.tasks.find(t=>t.id===id);if(!t)return;
-  const newId=Date.now();
-  const clone={...t,id:newId,done:false,date:todayStr(),country:activeCountry,history:[{ts:newId,action:'Duplicato da '+t.category,note:''}]};
-  state.tasks.push(clone);state.taskOrder.push(newId);saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);
-}
-
-// ============================================================
-// SUMMARIES
-// ============================================================
+// ===== SUMMARIES =====
 function calculateSummaries(){
-  const ts=todayStr(),today=parseDateLocal(ts);
-  const fs=document.getElementById('filterStart').value,fe=document.getElementById('filterEnd').value;
-  const msDay=86400000;const cur=getActiveCurrency();
-  let daily=0,weekly=0,inc30=0,exp30=0,period=0;
-
+  const ts=todayStr(),today=parseDateLocal(ts);const fs=document.getElementById('filterStart').value,fe=document.getElementById('filterEnd').value;
+  const msDay=86400000;const cur=getActiveCurrency();let daily=0,weekly=0,inc30=0,exp30=0,period=0;
   getCountryTasks().forEach(t=>{
-    if(t.done||!t.amount||t.amount<=0)return;
-    const td=parseDateLocal(t.date),diff=Math.round((today-td)/msDay),isInc=t.type==='income';
-
-    if(t.date===ts&&!isInc)daily+=t.amount;
-    if(diff>=0&&diff<7&&!isInc)weekly+=t.amount;
+    if(t.done||!t.amount||t.amount<=0)return;const td=parseDateLocal(t.date),diff=Math.round((today-td)/msDay),isInc=t.type==='income';
+    if(t.date===ts&&!isInc)daily+=t.amount;if(diff>=0&&diff<7&&!isInc)weekly+=t.amount;
     if(diff>=0&&diff<30){if(isInc)inc30+=t.amount;else exp30+=t.amount;}
     if(fs&&fe){const s=parseDateLocal(fs),en=parseDateLocal(fe);if(td>=s&&td<=en&&!isInc)period+=t.amount;}
   });
-
-  document.getElementById('summaryDaily').textContent=fmtCur(daily,cur);
-  document.getElementById('summaryWeekly').textContent=fmtCur(weekly,cur);
-
-  const badge=document.getElementById('balanceCurBadge');
-  badge.className=cur==='£'?'cur-badge-gbp':'cur-badge-eur';
-  badge.textContent=cur==='£'?'£ GBP':'€ EUR';
-
-  document.getElementById('balanceIncome').textContent=fmtCur(inc30,cur);
-  document.getElementById('balanceExpense').textContent=fmtCur(exp30,cur);
-  const net=inc30-exp30;const netEl=document.getElementById('balanceNet');
-  netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
-
-  const pc=document.getElementById('periodTotalContainer');
-  if(fs&&fe){pc.classList.remove('hidden');document.getElementById('summaryPeriod').textContent=fmtCur(period,cur);}
-  else pc.classList.add('hidden');
-
-  updateGlobalBudgetBar();
-  updateHeroKPIs();
+  document.getElementById('summaryDaily').textContent=fmtCur(daily,cur);document.getElementById('summaryWeekly').textContent=fmtCur(weekly,cur);
+  const badge=document.getElementById('balanceCurBadge');badge.className=cur==='£'?'cur-badge-gbp':'cur-badge-eur';badge.textContent=cur==='£'?'£ GBP':'€ EUR';
+  document.getElementById('balanceIncome').textContent=fmtCur(inc30,cur);document.getElementById('balanceExpense').textContent=fmtCur(exp30,cur);
+  const net=inc30-exp30;const netEl=document.getElementById('balanceNet');netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
+  const pc=document.getElementById('periodTotalContainer');if(fs&&fe){pc.classList.remove('hidden');document.getElementById('summaryPeriod').textContent=fmtCur(period,cur);}else pc.classList.add('hidden');
+  updateGlobalBudgetBar();updateHeroKPIs();
 }
 
-// ============================================================
-// EDIT / DELETE
-// ============================================================
+// ===== EDIT / DELETE =====
 function editTask(id){
   const t=state.tasks.find(t=>t.id===id);if(!t)return;
-  document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;
-  document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';
-  document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';
-  document.getElementById('taskRecurrenceType').value=t.recurrence||'none';
-  document.getElementById('taskRecurrenceInterval').value=t.recurrenceInterval||1;
-  onRecTypeChange();
-  document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
-  document.getElementById('formDetails').open=true;
-  document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';
-  document.getElementById('submitBtn').textContent='Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');
-  setTaskType(t.type||'expense');clearCatError();
-  const[y,m]=t.date.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';document.getElementById('taskRecurrenceType').value=t.recurrence||'none';document.getElementById('taskRecurrenceInterval').value=t.recurrenceInterval||1;onRecTypeChange();document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
+  document.getElementById('formDetails').open=true;document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';document.getElementById('submitBtn').textContent='Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');
+  setTaskType(t.type||'expense');clearCatError();const[y,m]=t.date.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();window.scrollTo({top:0,behavior:'smooth'});
 }
 function resetForm(){
-  document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';
-  document.getElementById('taskDate').value=todayStr();
+  document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';document.getElementById('taskDate').value=todayStr();
   document.getElementById('formTitle').innerHTML=`<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span> Nuovo Task / Spesa`;
-  document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');
-  document.getElementById('formDetails').open=false;setTaskType('expense');
-  document.getElementById('taskRecurrenceInterval').value=1;
-  document.getElementById('recIntervalWrap').classList.add('hidden');
-  document.getElementById('taskCurrency').value=getActiveCurrency();
-  document.getElementById('amountSymbol').textContent=getActiveCurrency();
-  clearCatError();
+  document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');document.getElementById('formDetails').open=false;setTaskType('expense');
+  document.getElementById('taskRecurrenceInterval').value=1;document.getElementById('recIntervalWrap').classList.add('hidden');document.getElementById('taskCurrency').value=getActiveCurrency();document.getElementById('amountSymbol').textContent=getActiveCurrency();clearCatError();
 }
 function deleteTask(id){
-  const task=state.tasks.find(t=>t.id===id);if(!task)return;
-  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
-  state.tasks=state.tasks.filter(t=>t.id!==id);state.taskOrder=state.taskOrder.filter(x=>x!==id);
-  saveState();fullRefresh();
+  const task=state.tasks.find(t=>t.id===id);if(!task)return;const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
+  state.tasks=state.tasks.filter(t=>t.id!==id);state.taskOrder=state.taskOrder.filter(x=>x!==id);saveState();fullRefresh();
   showUndo(`"${task.category}" eliminato`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 function clearPastTasks(){
-  const today=parseDateLocal(todayStr());
-  const removed=getCountryTasks().filter(t=>parseDateLocal(t.date)<today&&!t.done);
+  const today=parseDateLocal(todayStr());const removed=getCountryTasks().filter(t=>parseDateLocal(t.date)<today&&!t.done);
   if(!removed.length){showToast('✓','Nessun task passato');return;}
   const backup=[...state.tasks];const orderBackup=[...state.taskOrder];const removedIds=removed.map(t=>t.id);
   state.tasks=state.tasks.filter(t=>!removedIds.includes(t.id));state.taskOrder=state.taskOrder.filter(x=>!removedIds.includes(x));
@@ -1823,8 +1480,7 @@ function printSummary(){
   const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
   const cur=getActiveCurrency();const cfg=COUNTRY_CONFIG[activeCountry];
   const monthTasks=getCountryTasks().filter(t=>{const td=parseDateLocal(t.date);return td.getMonth()===m&&td.getFullYear()===y;});
-  const inc=monthTasks.filter(t=>!t.done&&t.type==='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
-  const exp=monthTasks.filter(t=>!t.done&&t.type!=='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
+  const inc=monthTasks.filter(t=>!t.done&&t.type==='income'&&t.amount).reduce((s,t)=>s+t.amount,0);const exp=monthTasks.filter(t=>!t.done&&t.type!=='income'&&t.amount).reduce((s,t)=>s+t.amount,0);
   const rows=monthTasks.sort((a,b)=>a.date.localeCompare(b.date)).map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const isInc=t.type==='income';return `<tr style="border-bottom:1px solid #eee"><td style="padding:6px 8px;font-size:12px">${parseDateLocal(t.date).toLocaleDateString('it-IT')}</td><td style="padding:6px 8px;font-size:12px">${t.category}</td><td style="padding:6px 8px;font-size:12px">${cl?cl.name:'Generico'}</td><td style="padding:6px 8px;font-size:12px;text-align:right;color:${isInc?'#10b981':'#ef4444'};font-weight:700">${t.amount!=null?(isInc?'+':'-')+fmtCur(t.amount,cur):''}</td><td style="padding:6px 8px;font-size:11px;color:#888">${(t.tags||[]).map(tg=>'#'+tg).join(' ')}</td><td style="padding:6px 8px;font-size:11px">${t.done?'✓':''}</td></tr>`;}).join('');
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${cfg.flagText} — ${MONTHS[m]} ${y}</title><style>body{font-family:sans-serif;padding:32px;color:#1e293b}h1{font-size:20px}table{width:100%;border-collapse:collapse}th{text-align:left;padding:8px;font-size:11px;text-transform:uppercase;color:#64748b;border-bottom:2px solid #e2e8f0}.summary{display:flex;gap:24px;margin-bottom:24px;background:#f8fafc;padding:16px;border-radius:12px}.kpi{text-align:center}.kpi-label{font-size:10px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px}.kpi-val{font-size:20px;font-weight:800}</style></head><body><h1>${cfg.flag} ${cfg.flagText} — ${MONTHS[m]} ${y}</h1><div class="summary"><div class="kpi"><div class="kpi-label">Entrate</div><div class="kpi-val" style="color:#10b981">${fmtCur(inc,cur)}</div></div><div class="kpi"><div class="kpi-label">Spese</div><div class="kpi-val" style="color:#ef4444">${fmtCur(exp,cur)}</div></div><div class="kpi"><div class="kpi-label">Netto</div><div class="kpi-val" style="color:${(inc-exp)>=0?'#10b981':'#ef4444'}">${fmtCur(inc-exp,cur)}</div></div><div class="kpi"><div class="kpi-label">Task totali</div><div class="kpi-val">${monthTasks.length}</div></div></div><table><thead><tr><th>Data</th><th>Categoria</th><th>Persona</th><th style="text-align:right">Importo</th><th>Tag</th><th>✓</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
   const w=window.open('','_blank');if(!w){showToast('⚠️','Popup bloccato');return;}w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);
@@ -1836,76 +1492,41 @@ function fullRefresh(){
 }
 
 function exportCSV(){
-  const tasks=getCountryTasks();if(!tasks.length){showToast('⚠️','Nessun task');return;}
-  const cur=getActiveCurrency();
+  const tasks=getCountryTasks();if(!tasks.length){showToast('⚠️','Nessun task');return;}const cur=getActiveCurrency();
   const h=['Data','Tipo','Valuta','Categoria','Persona','Importo','Ricorrenza','Tag','Note','Completato'];
   const rows=tasks.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return[t.date,t.type==='income'?'Entrata':'Spesa',t.currency||cur,`"${t.category}"`,cl?`"${cl.name}"`:'Generico',t.amount!=null?t.amount.toFixed(2):'',t.recurrence||'none',`"${(t.tags||[]).join(',')}"`,`"${(t.note||'').replace(/"/g,"''")}"`,t.done?'Sì':'No'];});
-  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
-  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
 }
-function exportBackup(){
-  const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
-  const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');
-}
+function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');}
 function importBackup(event){
   const file=event.target.files[0];if(!file)return;
   if(!window.confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){event.target.value='';return;}
-  const reader=new FileReader();
-  reader.onload=(e)=>{try{const imp=JSON.parse(e.target.result);if(imp.tasks&&imp.clients){imp.tasks=migrateTasks(imp.tasks);imp.categoriesIT=migrateCats(imp.categoriesIT||imp.categories,'IT');imp.categoriesGB=migrateCats(imp.categoriesGB,'GB');state=imp;if(!state.taskOrder)state.taskOrder=state.tasks.map(t=>t.id);saveState();location.reload();}else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore JSON');}};
-  reader.readAsText(file);
+  const reader=new FileReader();reader.onload=(e)=>{try{const imp=JSON.parse(e.target.result);if(imp.tasks&&imp.clients){imp.tasks=migrateTasks(imp.tasks);imp.categoriesIT=migrateCats(imp.categoriesIT||imp.categories,'IT');imp.categoriesGB=migrateCats(imp.categoriesGB,'GB');state=imp;if(!state.taskOrder)state.taskOrder=state.tasks.map(t=>t.id);saveState();location.reload();}else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore JSON');}};reader.readAsText(file);
 }
 
 function saveState(){
-  safeSet('app_tasks',JSON.stringify(state.tasks));
-  safeSet('app_clients',JSON.stringify(state.clients));
-  safeSet('app_cats_IT',JSON.stringify(state.categoriesIT));
-  safeSet('app_cats_GB',JSON.stringify(state.categoriesGB));
-  safeSet('app_budget_IT',state.globalBudgetIT);
-  safeSet('app_budget_GB',state.globalBudgetGB);
-  safeSet('app_taskOrder',JSON.stringify(state.taskOrder));
+  safeSet('app_tasks',JSON.stringify(state.tasks));safeSet('app_clients',JSON.stringify(state.clients));safeSet('app_cats_IT',JSON.stringify(state.categoriesIT));safeSet('app_cats_GB',JSON.stringify(state.categoriesGB));safeSet('app_budget_IT',state.globalBudgetIT);safeSet('app_budget_GB',state.globalBudgetGB);safeSet('app_taskOrder',JSON.stringify(state.taskOrder));
 }
 function showToast(icon,msg){
-  const t=document.getElementById('toast');
-  document.getElementById('toastIcon').textContent=icon;document.getElementById('toastMsg').textContent=msg;
-  t.classList.remove('opacity-0','translate-y-4');t.classList.add('opacity-100','translate-y-0');
-  clearTimeout(t._timeout);t._timeout=setTimeout(()=>{t.classList.add('opacity-0','translate-y-4');t.classList.remove('opacity-100','translate-y-0');},2600);
+  const t=document.getElementById('toast');document.getElementById('toastIcon').textContent=icon;document.getElementById('toastMsg').textContent=msg;
+  t.classList.remove('opacity-0','translate-y-4');t.classList.add('opacity-100','translate-y-0');clearTimeout(t._timeout);t._timeout=setTimeout(()=>{t.classList.add('opacity-0','translate-y-4');t.classList.remove('opacity-100','translate-y-0');},2600);
 }
 
-// ============================================================
-// VOICE ANALYSIS
-// ============================================================
+// ===== VOICE ANALYSIS =====
 function showVoiceAnalysis(category){
   currentVoiceCategory=category;currentVoiceTab='list';
-  const cats=getCategories();const catObj=cats.find(c=>c.name===category);
-  const color=catObj?catObj.color:'#6366f1';
-  document.getElementById('vaCatDot').style.background=color;
-  document.getElementById('vaCatName').textContent=category;
-  document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));
-  document.getElementById('vtab-list').classList.add('active-vtab');
-  renderVoiceGrandTotal();renderVoiceContent();
-  document.getElementById('voiceAnalysisModal').classList.remove('hidden');
+  const cats=getCategories();const catObj=cats.find(c=>c.name===category);const color=catObj?catObj.color:'#6366f1';
+  document.getElementById('vaCatDot').style.background=color;document.getElementById('vaCatName').textContent=category;
+  document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));document.getElementById('vtab-list').classList.add('active-vtab');
+  renderVoiceGrandTotal();renderVoiceContent();document.getElementById('voiceAnalysisModal').classList.remove('hidden');
 }
 function closeVoiceModal(){document.getElementById('voiceAnalysisModal').classList.add('hidden');}
 document.getElementById('voiceAnalysisModal').onclick=function(e){if(e.target===this)closeVoiceModal();};
-function switchVoiceTab(tab){
-  currentVoiceTab=tab;
-  document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));
-  document.getElementById(`vtab-${tab}`).classList.add('active-vtab');
-  renderVoiceContent();
-}
+function switchVoiceTab(tab){currentVoiceTab=tab;document.querySelectorAll('.voice-tab').forEach(b=>b.classList.remove('active-vtab'));document.getElementById(`vtab-${tab}`).classList.add('active-vtab');renderVoiceContent();}
 function renderVoiceGrandTotal(){
-  const cat=currentVoiceCategory;const cur=getActiveCurrency();
-  const all=getCountryTasks().filter(t=>t.category===cat);
-  const active=all.filter(t=>!t.done&&t.amount>0);
-  const totExp=active.filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
-  const totInc=active.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const gt=document.getElementById('vaGrandTotal');
-  gt.innerHTML=`
-    <div class="bg-slate-800/60 rounded-xl p-3 text-center border border-slate-700/40"><div class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-1">N° Task</div><div class="mono text-lg font-black text-white">${all.length}</div></div>
-    <div class="bg-red-500/10 rounded-xl p-3 text-center border border-red-500/15"><div class="text-[8px] text-red-400 font-bold uppercase tracking-widest mb-1">Spese</div><div class="mono text-sm font-black text-red-400">${fmtCur(totExp,cur)}</div></div>
-    <div class="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/15"><div class="text-[8px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Entrate</div><div class="mono text-sm font-black text-emerald-400">${fmtCur(totInc,cur)}</div></div>
-    <div class="bg-blue-500/10 rounded-xl p-3 text-center border border-blue-500/15"><div class="text-[8px] text-blue-400 font-bold uppercase tracking-widest mb-1">Netto</div><div class="mono text-sm font-black ${(totInc-totExp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(totInc-totExp,cur)}</div></div>`;
+  const cat=currentVoiceCategory;const cur=getActiveCurrency();const all=getCountryTasks().filter(t=>t.category===cat);const active=all.filter(t=>!t.done&&t.amount>0);
+  const totExp=active.filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);const totInc=active.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);const gt=document.getElementById('vaGrandTotal');
+  gt.innerHTML=`<div class="bg-slate-800/60 rounded-xl p-3 text-center border border-slate-700/40"><div class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-1">N° Task</div><div class="mono text-lg font-black text-white">${all.length}</div></div><div class="bg-red-500/10 rounded-xl p-3 text-center border border-red-500/15"><div class="text-[8px] text-red-400 font-bold uppercase tracking-widest mb-1">Spese</div><div class="mono text-sm font-black text-red-400">${fmtCur(totExp,cur)}</div></div><div class="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/15"><div class="text-[8px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Entrate</div><div class="mono text-sm font-black text-emerald-400">${fmtCur(totInc,cur)}</div></div><div class="bg-blue-500/10 rounded-xl p-3 text-center border border-blue-500/15"><div class="text-[8px] text-blue-400 font-bold uppercase tracking-widest mb-1">Netto</div><div class="mono text-sm font-black ${(totInc-totExp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(totInc-totExp,cur)}</div></div>`;
 }
 function getISOWeek(d){const tmp=new Date(d);tmp.setHours(0,0,0,0);tmp.setDate(tmp.getDate()+3-(tmp.getDay()+6)%7);const week1=new Date(tmp.getFullYear(),0,4);const wn=1+Math.round(((tmp-week1)/86400000-3+(week1.getDay()+6)%7)/7);return `${tmp.getFullYear()}-W${String(wn).padStart(2,'0')}`;}
 function fmtPeriodLabel(key,tab){
@@ -1916,177 +1537,72 @@ function fmtPeriodLabel(key,tab){
   return key;
 }
 function renderVoiceContent(){
-  const cat=currentVoiceCategory;const cur=getActiveCurrency();
-  const tasks=getCountryTasks().filter(t=>t.category===cat);
-  const content=document.getElementById('vaContent');
+  const cat=currentVoiceCategory;const cur=getActiveCurrency();const tasks=getCountryTasks().filter(t=>t.category===cat);const content=document.getElementById('vaContent');
   if(currentVoiceTab==='list'){
     if(!tasks.length){content.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-10">Nessun task</p>';return;}
     const sorted=[...tasks].sort((a,b)=>b.date.localeCompare(a.date));
-    content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Data</th><th class="text-left">Persona</th><th class="text-right">Importo</th><th class="text-center">✓</th></tr></thead><tbody>${sorted.map(t=>{
-      const cl=state.clients.find(c=>c.id===t.clientId);const isInc=t.type==='income';
-      const d=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'});
-      return `<tr class="${t.done?'opacity-40':''}"><td class="mono text-[10px] text-slate-400 whitespace-nowrap">${d}</td><td class="text-[10px] text-slate-400">${cl?cl.name:'Generico'}</td><td class="text-right mono text-[11px] font-bold whitespace-nowrap ${isInc?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isInc?'+':'-')+fmtCur(t.amount,cur):'—'}</td><td class="text-center text-[10px] ${t.done?'text-emerald-400':'text-slate-700'}">${t.done?'✓':'·'}</td></tr>`;
-    }).join('')}</tbody></table>`;
+    content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Data</th><th class="text-left">Persona</th><th class="text-right">Importo</th><th class="text-center">✓</th></tr></thead><tbody>${sorted.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const isInc=t.type==='income';const d=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'});return `<tr class="${t.done?'opacity-40':''}"><td class="mono text-[10px] text-slate-400 whitespace-nowrap">${d}</td><td class="text-[10px] text-slate-400">${cl?cl.name:'Generico'}</td><td class="text-right mono text-[11px] font-bold whitespace-nowrap ${isInc?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isInc?'+':'-')+fmtCur(t.amount,cur):'—'}</td><td class="text-center text-[10px] ${t.done?'text-emerald-400':'text-slate-700'}">${t.done?'✓':'·'}</td></tr>`;}).join('')}</tbody></table>`;
     return;
   }
   const groups={};
   tasks.forEach(t=>{
-    if(t.done||!t.amount||t.amount<=0)return;
-    const d=parseDateLocal(t.date);let key;
-    if(currentVoiceTab==='year')key=`${d.getFullYear()}`;
-    else if(currentVoiceTab==='month')key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    else if(currentVoiceTab==='week')key=getISOWeek(d);
-    else if(currentVoiceTab==='day')key=t.date;
-    if(!groups[key])groups[key]={exp:0,inc:0,count:0};
-    if(t.type==='income')groups[key].inc+=t.amount;else groups[key].exp+=t.amount;
-    groups[key].count++;
+    if(t.done||!t.amount||t.amount<=0)return;const d=parseDateLocal(t.date);let key;
+    if(currentVoiceTab==='year')key=`${d.getFullYear()}`;else if(currentVoiceTab==='month')key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;else if(currentVoiceTab==='week')key=getISOWeek(d);else if(currentVoiceTab==='day')key=t.date;
+    if(!groups[key])groups[key]={exp:0,inc:0,count:0};if(t.type==='income')groups[key].inc+=t.amount;else groups[key].exp+=t.amount;groups[key].count++;
   });
   const sorted=Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0]));
   if(!sorted.length){content.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-10">Nessun dato</p>';return;}
-  content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Periodo</th><th class="text-center">#</th><th class="text-right">Spese</th><th class="text-right">Entrate</th><th class="text-right">Netto</th></tr></thead><tbody>${sorted.map(([key,v])=>{
-    return `<tr><td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td><td class="text-center text-[10px] text-slate-500">${v.count}</td><td class="text-right text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmtCur(v.exp,cur):'—'}</td><td class="text-right text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmtCur(v.inc,cur):'—'}</td><td class="text-right text-[11px] mono font-bold whitespace-nowrap ${(v.inc-v.exp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(v.inc-v.exp,cur)}</td></tr>`;
-  }).join('')}</tbody></table>`;
+  content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Periodo</th><th class="text-center">#</th><th class="text-right">Spese</th><th class="text-right">Entrate</th><th class="text-right">Netto</th></tr></thead><tbody>${sorted.map(([key,v])=>`<tr><td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td><td class="text-center text-[10px] text-slate-500">${v.count}</td><td class="text-right text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmtCur(v.exp,cur):'—'}</td><td class="text-right text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmtCur(v.inc,cur):'—'}</td><td class="text-right text-[11px] mono font-bold whitespace-nowrap ${(v.inc-v.exp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(v.inc-v.exp,cur)}</td></tr>`).join('')}</tbody></table>`;
 }
 
+// ===== HELPERS =====
+function recurrenceLabel(t){const n=t.recurrenceInterval||1;if(t.recurrence==='weekly')return n===1?'Ogni settimana':`Ogni ${n} settimane`;if(t.recurrence==='monthly')return n===1?'Ogni mese':`Ogni ${n} mesi`;if(t.recurrence==='yearly')return n===1?'Ogni anno':`Ogni ${n} anni`;return '';}
 
-// ============================================================
-// HELPERS
-// ============================================================
-function hexToRgba(hex,alpha){
-  // Handle shorthand #rgb
-  let h=hex.replace('#','');
-  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  const r=parseInt(h.slice(0,2),16);
-  const g=parseInt(h.slice(2,4),16);
-  const b=parseInt(h.slice(4,6),16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-function recurrenceLabel(t){
-  const n=t.recurrenceInterval||1;
-  if(t.recurrence==='weekly') return n===1?'Ogni settimana':`Ogni ${n} settimane`;
-  if(t.recurrence==='monthly')return n===1?'Ogni mese':`Ogni ${n} mesi`;
-  if(t.recurrence==='yearly') return n===1?'Ogni anno':`Ogni ${n} anni`;
-  return '';
-}
+// ===== FONT SIZE =====
+function changeFontSize(dir){currentFontSize=Math.max(70,Math.min(160,currentFontSize+dir*10));applyFontSize();safeSet('app_fontSize',currentFontSize);}
+function applyFontSize(){document.documentElement.style.fontSize=currentFontSize+'%';const l=document.getElementById('fontSizeLabel');if(l)l.textContent=currentFontSize+'%';}
 
-// ============================================================
-// FONT SIZE
-// ============================================================
-function changeFontSize(dir){
-  currentFontSize=Math.max(70,Math.min(160,currentFontSize+dir*10));
-  applyFontSize();safeSet('app_fontSize',currentFontSize);
-}
-function applyFontSize(){
-  document.documentElement.style.fontSize=currentFontSize+'%';
-  const l=document.getElementById('fontSizeLabel');if(l)l.textContent=currentFontSize+'%';
-}
-
-// ============================================================
-// FORM: recurrence type change → show/hide interval
-// ============================================================
+// ===== RECURRENCE TYPE CHANGE =====
 function onRecTypeChange(){
-  const type=document.getElementById('taskRecurrenceType').value;
-  const wrap=document.getElementById('recIntervalWrap');
-  const unit=document.getElementById('recIntervalUnit');
-  if(type==='none'){wrap.classList.add('hidden');return;}
-  wrap.classList.remove('hidden');
-  const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};
-  if(unit)unit.textContent=units[type]||'';
+  const type=document.getElementById('taskRecurrenceType').value;const wrap=document.getElementById('recIntervalWrap');const unit=document.getElementById('recIntervalUnit');
+  if(type==='none'){wrap.classList.add('hidden');return;}wrap.classList.remove('hidden');const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};if(unit)unit.textContent=units[type]||'';
 }
 
-// ============================================================
-// VIRTUAL RECURRING — infinite expansion for calendar
-// ============================================================
+// ===== VIRTUAL RECURRING =====
 function getVirtualRecurrences(year,month){
-  const occ=[];
-  const daysInMonth=new Date(year,month+1,0).getDate();
+  const occ=[];const daysInMonth=new Date(year,month+1,0).getDate();
   getCountryTasks().forEach(t=>{
     if(!t.recurrence||t.recurrence==='none')return;
-    const start=parseDateLocal(t.date);
-    const sy=start.getFullYear(),sm=start.getMonth(),sd=start.getDate();
-    const n=Math.max(1,parseInt(t.recurrenceInterval)||1);
-
-    if(t.recurrence==='monthly'){
-      const monthsDiff=(year-sy)*12+(month-sm);
-      if(monthsDiff>0&&monthsDiff%n===0){
-        const day=Math.min(sd,daysInMonth);
-        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-        occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
-      }
-    } else if(t.recurrence==='weekly'){
-      const step=n*7;
-      for(let d=1;d<=daysInMonth;d++){
-        const check=new Date(year,month,d);
-        const diff=Math.round((check-start)/86400000);
-        if(diff>0&&diff%step===0){
-          const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-          occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
-        }
-      }
-    } else if(t.recurrence==='yearly'){
-      const yearsDiff=year-sy;
-      if(yearsDiff>0&&yearsDiff%n===0&&start.getMonth()===month){
-        const day=Math.min(sd,daysInMonth);
-        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-        occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
-      }
-    }
+    const start=parseDateLocal(t.date);const sy=start.getFullYear(),sm=start.getMonth(),sd=start.getDate();const n=Math.max(1,parseInt(t.recurrenceInterval)||1);
+    if(t.recurrence==='monthly'){const monthsDiff=(year-sy)*12+(month-sm);if(monthsDiff>0&&monthsDiff%n===0){const day=Math.min(sd,daysInMonth);const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;occ.push({...t,date:ds,isVirtual:true,originalId:t.id});}}
+    else if(t.recurrence==='weekly'){const step=n*7;for(let d=1;d<=daysInMonth;d++){const check=new Date(year,month,d);const diff=Math.round((check-start)/86400000);if(diff>0&&diff%step===0){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;occ.push({...t,date:ds,isVirtual:true,originalId:t.id});}}}
+    else if(t.recurrence==='yearly'){const yearsDiff=year-sy;if(yearsDiff>0&&yearsDiff%n===0&&start.getMonth()===month){const day=Math.min(sd,daysInMonth);const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;occ.push({...t,date:ds,isVirtual:true,originalId:t.id});}}
   });
   return occ;
 }
 
-// ============================================================
-// NEXT OCCURRENCE — absolute next date (for sidebar left list)
-// ============================================================
 function getNextOccurrence(masterTask){
-  const today=parseDateLocal(todayStr());
-  const start=parseDateLocal(masterTask.date);
-  const n=Math.max(1,parseInt(masterTask.recurrenceInterval)||1);
-  if(masterTask.recurrence==='weekly'){
-    const step=n*7;
-    let cur=new Date(start);cur.setDate(cur.getDate()+step);
-    while(cur<=today)cur.setDate(cur.getDate()+step);
-    return getLocalDateStr(cur);
-  }
-  if(masterTask.recurrence==='monthly'){
-    let y=start.getFullYear(),m=start.getMonth(),d=start.getDate();
-    m+=n;while(m>11){m-=12;y++;}
-    let days=new Date(y,m+1,0).getDate();
-    let cur=new Date(y,m,Math.min(d,days));
-    while(cur<=today){m+=n;while(m>11){m-=12;y++;}days=new Date(y,m+1,0).getDate();cur=new Date(y,m,Math.min(d,days));}
-    return getLocalDateStr(cur);
-  }
-  if(masterTask.recurrence==='yearly'){
-    let y=start.getFullYear()+n;
-    let cur=new Date(y,start.getMonth(),start.getDate());
-    while(cur<=today){y+=n;cur=new Date(y,start.getMonth(),start.getDate());}
-    return getLocalDateStr(cur);
-  }
+  const today=parseDateLocal(todayStr());const start=parseDateLocal(masterTask.date);const n=Math.max(1,parseInt(masterTask.recurrenceInterval)||1);
+  if(masterTask.recurrence==='weekly'){const step=n*7;let cur=new Date(start);cur.setDate(cur.getDate()+step);while(cur<=today)cur.setDate(cur.getDate()+step);return getLocalDateStr(cur);}
+  if(masterTask.recurrence==='monthly'){let y=start.getFullYear(),m=start.getMonth(),d=start.getDate();m+=n;while(m>11){m-=12;y++;}let days=new Date(y,m+1,0).getDate();let cur=new Date(y,m,Math.min(d,days));while(cur<=today){m+=n;while(m>11){m-=12;y++;}days=new Date(y,m+1,0).getDate();cur=new Date(y,m,Math.min(d,days));}return getLocalDateStr(cur);}
+  if(masterTask.recurrence==='yearly'){let y=start.getFullYear()+n;let cur=new Date(y,start.getMonth(),start.getDate());while(cur<=today){y+=n;cur=new Date(y,start.getMonth(),start.getDate());}return getLocalDateStr(cur);}
   return null;
 }
 
-// ============================================================
-// LEFT SIDEBAR: recurring list management
-// ============================================================
+// ===== SIDEBAR RECURRING LIST — COLORED =====
 function renderRecurringList(){
   const list=document.getElementById('recurringList');if(!list)return;
   const tasks=getCountryTasks().filter(t=>t.recurrence&&t.recurrence!=='none');
-  if(!tasks.length){
-    list.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ricorrenza attiva</p>';return;
-  }
+  if(!tasks.length){list.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ricorrenza attiva</p>';return;}
   const cur=getActiveCurrency();const cats=getCategories();
   list.innerHTML='';
   [...tasks].sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{
-    const co=cats.find(c=>c.name===t.category);
-    const color=co?co.color:'#6366f1';
-    const isIncome=t.type==='income';
-    const nextDate=getNextOccurrence(t);
+    const co=cats.find(c=>c.name===t.category);const color=co?co.color:'#6366f1';
+    const isIncome=t.type==='income';const nextDate=getNextOccurrence(t);
     const nextLbl=nextDate?parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'}):'—';
     const div=document.createElement('div');
     div.className='rec-sidebar-item group p-2.5 border';
-    // Full colored background using rgba
-    div.style.background=hexToRgba(color,0.22);
-    div.style.borderColor=hexToRgba(color,0.45);
+    div.style.background=hexToRgba(color,0.28);div.style.borderColor=hexToRgba(color,0.5);
     div.innerHTML=`
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-1.5 min-w-0">
@@ -2112,73 +1628,38 @@ function renderRecurringList(){
 function deleteRecurring(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;
   const backup=[...state.tasks],orderBackup=[...state.taskOrder];
-  state.tasks=state.tasks.filter(t=>t.id!==id);
-  state.taskOrder=state.taskOrder.filter(x=>x!==id);
-  saveState();fullRefresh();
-  showToast('🗑️',`"${task.category}" eliminata`);
-  showUndo(`Ricorrenza eliminata`,{backup,orderBackup},b=>{
-    state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');
-  });
+  state.tasks=state.tasks.filter(t=>t.id!==id);state.taskOrder=state.taskOrder.filter(x=>x!==id);
+  saveState();fullRefresh();showToast('🗑️',`"${task.category}" eliminata`);
+  showUndo(`Ricorrenza eliminata`,{backup,orderBackup},b=>{state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');});
 }
 
-// ============================================================
-// RIGHT PANEL: recurring cards synced with calendar month
-// ============================================================
+// ===== RIGHT PANEL UPCOMING RECURRING =====
 function renderUpcomingRecurring(){
-  const section=document.getElementById('upcomingRecSection');
-  const grid=document.getElementById('upcomingRecGrid');
-  const countEl=document.getElementById('upcomingRecCount');
-  const subtitle=document.getElementById('upcomingRecSubtitle');
-  const monthLbl=document.getElementById('upcomingCalMonth');
+  const section=document.getElementById('upcomingRecSection');const grid=document.getElementById('upcomingRecGrid');const countEl=document.getElementById('upcomingRecCount');const subtitle=document.getElementById('upcomingRecSubtitle');const monthLbl=document.getElementById('upcomingCalMonth');
   if(!section||!grid)return;
-
-  // Get virtual occurrences for the CURRENTLY VIEWED calendar month
   let vOcc=getVirtualRecurrences(calYear,calMonth);
-  if(currentRecurrenceFilter!=='none')
-    vOcc=vOcc.filter(t=>t.recurrence===currentRecurrenceFilter);
-
-  // Deduplicate: one card per master task (first occurrence in month)
-  const seen=new Set();
-  const items=vOcc.filter(t=>{
-    if(seen.has(t.originalId))return false;
-    seen.add(t.originalId);return true;
-  });
-
-  // Update header labels
+  if(currentRecurrenceFilter!=='none')vOcc=vOcc.filter(t=>t.recurrence===currentRecurrenceFilter);
+  const seen=new Set();const items=vOcc.filter(t=>{if(seen.has(t.originalId))return false;seen.add(t.originalId);return true;});
   const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
   if(monthLbl)monthLbl.textContent='— '+MONTHS[calMonth]+' '+calYear;
   if(subtitle)subtitle.textContent=items.length?`${items.length} ricorrenz${items.length===1?'a':'e'} questo mese`:'Nessuna ricorrenza questo mese';
-
   if(!items.length){section.classList.add('hidden');return;}
-  section.classList.remove('hidden');
-  items.sort((a,b)=>a.date.localeCompare(b.date));
+  section.classList.remove('hidden');items.sort((a,b)=>a.date.localeCompare(b.date));
   if(countEl)countEl.textContent=items.length+(items.length===1?' attiva':' attive');
-
-  const cats=getCategories();const cur=getActiveCurrency();
-  grid.innerHTML='';
+  const cats=getCategories();const cur=getActiveCurrency();grid.innerHTML='';
   items.forEach(t=>{
-    const co=cats.find(c=>c.name===t.category);
-    const catColor=co?co.color:'#6366f1';
-    const isIncome=t.type==='income';
-    const client=state.clients.find(c=>c.id===t.clientId);
-    const cColor=client?client.color:'#475569';
-    const nd=parseDateLocal(t.date);
-    const dateLbl=nd.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short'});
-    const amt=t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,t.currency||cur):'—';
-    const label=recurrenceLabel(t);
-
-    const card=document.createElement('div');
-    card.className='card-vrec card-task relative flex flex-col bg-darkCard border border-slate-800 rounded-2xl';
+    const co=cats.find(c=>c.name===t.category);const catColor=co?co.color:'#6366f1';const isIncome=t.type==='income';
+    const client=state.clients.find(c=>c.id===t.clientId);const cColor=client?client.color:'#475569';
+    const nd=parseDateLocal(t.date);const dateLbl=nd.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short'});
+    const amt=t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,t.currency||cur):'—';const label=recurrenceLabel(t);
+    const card=document.createElement('div');card.className='card-vrec card-task relative flex flex-col bg-darkCard border border-slate-800 rounded-2xl';
     card.innerHTML=`
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${hexToRgba(catColor,0.2)}">
             <span class="text-sm">${t.recurrence==='weekly'?'📆':t.recurrence==='monthly'?'🗓':'📅'}</span>
           </div>
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-wide" style="color:${catColor}">${label}</div>
-            <div class="mono text-[9px] text-slate-400">${dateLbl}</div>
-          </div>
+          <div><div class="text-[9px] font-black uppercase tracking-wide" style="color:${catColor}">${label}</div><div class="mono text-[9px] text-slate-400">${dateLbl}</div></div>
         </div>
         <div class="flex gap-1 flex-shrink-0">
           <button onclick="editTask(${t.originalId})" class="vrec-action-btn">✏️</button>
@@ -2201,43 +1682,16 @@ function renderUpcomingRecurring(){
   });
 }
 
-// ============================================================
-// RECURRENCE DROPDOWN (filter bar)
-// ============================================================
-function toggleRecDrop(){
-  const menu=document.getElementById('recDropMenu');
-  const chev=document.getElementById('recDropChevron');
-  menu.classList.toggle('hidden');
-  chev.style.transform=menu.classList.contains('hidden')?'':'rotate(180deg)';
-}
+// ===== RECURRENCE DROPDOWN =====
+function toggleRecDrop(){const menu=document.getElementById('recDropMenu');const chev=document.getElementById('recDropChevron');menu.classList.toggle('hidden');chev.style.transform=menu.classList.contains('hidden')?'':'rotate(180deg)';}
 function setRecFilter(type){
-  currentRecurrenceFilter=type;
-  document.getElementById('recDropMenu').classList.add('hidden');
-  document.getElementById('recDropChevron').style.transform='';
-  const LABELS={none:'Ricorrenti',weekly:'📆 Settimanale',monthly:'🗓 Mensile',yearly:'📅 Annuale'};
-  document.getElementById('recDropLabel').textContent=LABELS[type];
-  const btn=document.getElementById('recDropBtn');
-  if(type!=='none'){btn.style.borderColor='var(--accent)';btn.style.color='var(--accent)';btn.style.background='rgba(59,130,246,.08)';}
-  else{btn.style.borderColor='';btn.style.color='';btn.style.background='';}
-  ['none','weekly','monthly','yearly'].forEach(o=>{
-    const el=document.getElementById('rec-opt-'+o);
-    if(el)el.classList.toggle('rec-active',o===type);
-  });
-  currentPage=0;renderTasks();renderUpcomingRecurring();
-  if(type!=='none')showToast('🔄',LABELS[type]);
+  currentRecurrenceFilter=type;document.getElementById('recDropMenu').classList.add('hidden');document.getElementById('recDropChevron').style.transform='';
+  const LABELS={none:'Ricorrenti',weekly:'📆 Settimanale',monthly:'🗓 Mensile',yearly:'📅 Annuale'};document.getElementById('recDropLabel').textContent=LABELS[type];
+  const btn=document.getElementById('recDropBtn');if(type!=='none'){btn.style.borderColor='var(--accent)';btn.style.color='var(--accent)';btn.style.background='rgba(59,130,246,.08)';}else{btn.style.borderColor='';btn.style.color='';btn.style.background='';}
+  ['none','weekly','monthly','yearly'].forEach(o=>{const el=document.getElementById('rec-opt-'+o);if(el)el.classList.toggle('rec-active',o===type);});
+  currentPage=0;renderTasks();renderUpcomingRecurring();if(type!=='none')showToast('🔄',LABELS[type]);
 }
-document.addEventListener('click',function(e){
-  const w=document.getElementById('recDropWrap');
-  if(w&&!w.contains(e.target)){
-    const m=document.getElementById('recDropMenu');
-    if(m&&!m.classList.contains('hidden')){
-      m.classList.add('hidden');
-      const ch=document.getElementById('recDropChevron');
-      if(ch)ch.style.transform='';
-    }
-  }
-});
-
+document.addEventListener('click',function(e){const w=document.getElementById('recDropWrap');if(w&&!w.contains(e.target)){const m=document.getElementById('recDropMenu');if(m&&!m.classList.contains('hidden')){m.classList.add('hidden');const ch=document.getElementById('recDropChevron');if(ch)ch.style.transform='';}}});
 </script>
 </body>
 </html>
