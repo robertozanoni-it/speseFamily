@@ -191,8 +191,16 @@ html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
 .rec-drop-item.rec-active{background:rgba(59,130,246,.15);color:var(--accent)}
 .cal-day.rec-hi{outline:2px solid var(--accent);outline-offset:-2px;z-index:2}
 .cal-day.rec-hi.other-month{outline:none}
+
+/* Virtual recurring occurrences on calendar */
+.cal-day.has-vrec::before{content:'🔄';position:absolute;top:1px;right:1px;font-size:7px;line-height:1;opacity:.7}
+.cal-day.vrec-only{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15)}
+.vrec-badge{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;background:rgba(99,102,241,.12);color:#a78bfa;border:1px solid rgba(99,102,241,.2)}
+.rec-item-card{border-left:3px solid var(--accent);transition:all .15s}
+.rec-item-card:hover{background:#1e293b!important}
 html:not(.dark) .rec-drop-menu{background:#f8fafc;border-color:#e2e8f0}
 html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
+html:not(.dark) .cal-day.vrec-only{background:rgba(99,102,241,.04);border-color:rgba(99,102,241,.12)}
 
 @media print{
   #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,.country-hero{display:none!important}
@@ -562,6 +570,20 @@ html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
         </details>
       </div>
 
+
+      <!-- 🔄 Ricorrenze -->
+      <div class="section-card" style="border-top:3px solid var(--accent)">
+        <details class="group" open>
+          <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:text-accent group-open:mb-4">
+            🔄 Ricorrenze <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
+          </summary>
+          <div class="pt-3 border-t border-slate-800">
+            <p class="text-[8px] text-slate-600 mb-2 italic">Le ricorrenze appaiono automaticamente nel calendario ogni mese/settimana/anno.</p>
+            <div id="recurringList" class="space-y-2 max-h-72 overflow-y-auto custom-scrollbar pr-1"></div>
+          </div>
+        </details>
+      </div>
+
       <!-- Analisi -->
       <div class="section-card">
         <details class="group">
@@ -820,6 +842,7 @@ const PAGE_SIZE=20;
 let dragSrcId=null;
 let activeTagFilter=null;
 let currentRecurrenceFilter='none';
+let virtualOccCache={};
 let currentVoiceCategory=null, currentVoiceTab='list';
 
 // ===== MOVE TASK STATE =====
@@ -1048,7 +1071,7 @@ window.onload=()=>{
     document.getElementById('taskDate').value=todayStr();
     updateGlobalBudgetBar();initSelects();renderTagFilters();
     renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();
-    updateHeroKPIs();
+    updateHeroKPIs();renderRecurringList();
   }catch(e){console.error('Init:',e);}
   try{initChart();}catch(e){}try{initMonthlyChart();}catch(e){}try{initBalanceChart();}catch(e){}try{switchChartTab('dist');}catch(e){}
   checkTodayNotifications();
@@ -1274,6 +1297,20 @@ function renderCalendar(){
     }
     if(t.recurrence&&t.recurrence!=='none'){dateMap[t.date].hasRec[t.recurrence]=(dateMap[t.date].hasRec[t.recurrence]||0)+1;}
   });
+  // Add virtual recurring occurrences
+  virtualOccCache={};
+  const vOcc=getVirtualRecurrences(calYear,calMonth);
+  vOcc.forEach(t=>{
+    if(!virtualOccCache[t.date])virtualOccCache[t.date]=[];
+    virtualOccCache[t.date].push(t);
+    if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false,hasRec:{},isVirtualOnly:true};
+    else dateMap[t.date].isVirtualOnly=false;
+    if(t.amount>0){
+      if(t.type==='income')dateMap[t.date].income+=t.amount;
+      else dateMap[t.date].expense+=t.amount;
+    }
+    if(t.recurrence&&t.recurrence!=='none'){dateMap[t.date].hasRec[t.recurrence]=(dateMap[t.date].hasRec[t.recurrence]||0)+1;}
+  });
   let maxExp=0;for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(dateMap[ds])maxExp=Math.max(maxExp,dateMap[ds].expense);}
   for(let i=startDow-1;i>=0;i--){const day=daysInPrev-i;const p=new Date(calYear,calMonth-1,1);const ds=`${p.getFullYear()}-${String(p.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;grid.appendChild(makeCalDay(day,ds,dateMap,ts,maxExp,true));}
   for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;grid.appendChild(makeCalDay(d,ds,dateMap,ts,maxExp,false));}
@@ -1286,6 +1323,7 @@ function makeCalDay(num,ds,dateMap,ts,maxExp,other){
   if(other)el.classList.add('other-month');if(ds===ts)el.classList.add('today');if(ds===selectedCalDate)el.classList.add('selected');
   const data=dateMap[ds];
   if(!other&&data&&currentRecurrenceFilter!=='none'&&(data.hasRec||{})[currentRecurrenceFilter])el.classList.add('rec-hi');
+  if(!other&&virtualOccCache[ds]&&virtualOccCache[ds].length){el.classList.add('has-vrec');if(data&&data.isVirtualOnly)el.classList.add('vrec-only');}
   if(!other&&data){const exp=data.expense||0;if(exp>0&&maxExp>0){const r=exp/maxExp;el.classList.add(r<=.2?'heat-1':r<=.4?'heat-2':r<=.6?'heat-3':r<=.8?'heat-4':'heat-5');}else if(data.hasTasks)el.classList.add('has-dot');
     el.addEventListener('mouseenter',e=>showCalTooltip(e,ds,data));el.addEventListener('mouseleave',hideCalTooltip);el.addEventListener('mousemove',moveCalTooltip);}
   el.onclick=()=>selectCalDay(ds);return el;
@@ -1300,9 +1338,22 @@ function updateCalDaySummary(){
   const cur=getActiveCurrency();
   if(!dayTasks.length){items.innerHTML='<p class="text-[10px] text-slate-600 italic">Nessun task</p>';}
   else dayTasks.forEach(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const col=cl?cl.color:'#475569';const isIn=t.type==='income';const row=document.createElement('div');row.className='flex items-center justify-between gap-2';row.innerHTML=`<div class="flex items-center gap-1.5 min-w-0"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] truncate ${t.done?'line-through text-slate-600':'text-slate-300'}">${t.category}</span></div><span class="mono text-[10px] font-bold flex-shrink-0 ${isIn?'text-emerald-400':'text-red-400'}">${t.amount?(isIn?'+':'-')+fmtCur(t.amount,cur):'—'}</span>`;items.appendChild(row);});
+  // Show virtual recurring occurrences
+  const vItems=virtualOccCache[selectedCalDate]||[];
+  if(vItems.length){
+    const sep=document.createElement('div');sep.className='mt-1.5 mb-1 text-[8px] font-bold uppercase tracking-widest text-indigo-400 flex items-center gap-1';sep.innerHTML='<span>🔄</span> Ricorrenti';items.appendChild(sep);
+    vItems.forEach(t=>{
+      const isIn=t.type==='income';const row=document.createElement('div');row.className='flex items-center justify-between gap-2';
+      const catObj=getCategories().find(c=>c.name===t.category);const col=catObj?catObj.color:'#6366f1';
+      row.innerHTML=`<div class="flex items-center gap-1.5 min-w-0"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[9px] truncate text-indigo-300">${t.category}</span><span class="vrec-badge ml-0.5">🔄</span></div><span class="mono text-[10px] font-bold flex-shrink-0 ${isIn?'text-emerald-400':'text-red-400'}">${t.amount?(isIn?'+':'-')+fmtCur(t.amount,getActiveCurrency()):'—'}</span>`;
+      items.appendChild(row);
+    });
+  }
   const inc=dayTasks.filter(t=>t.type==='income'&&!t.done&&t.amount).reduce((s,t)=>s+t.amount,0);
   const exp=dayTasks.filter(t=>t.type!=='income'&&!t.done&&t.amount).reduce((s,t)=>s+t.amount,0);
-  const netEl=document.getElementById('calDayTotal');const net=inc-exp;netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
+  const vInc=vItems.filter(t=>t.type==='income').reduce((s,t)=>s+(t.amount||0),0);
+  const vExp=vItems.filter(t=>t.type!=='income').reduce((s,t)=>s+(t.amount||0),0);
+  const netEl=document.getElementById('calDayTotal');const net=(inc+vInc)-(exp+vExp);netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
 function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
@@ -1710,7 +1761,7 @@ function printSummary(){
 }
 
 function fullRefresh(){
-  renderTasks();calculateSummaries();renderCalendar();renderClientManagement();renderCategories();renderTagFilters();updateHeroKPIs();
+  renderTasks();calculateSummaries();renderCalendar();renderClientManagement();renderCategories();renderTagFilters();updateHeroKPIs();renderRecurringList();
   try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
 }
 
@@ -1825,6 +1876,104 @@ function renderVoiceContent(){
   content.innerHTML=`<table class="va-table w-full"><thead><tr><th class="text-left">Periodo</th><th class="text-center">#</th><th class="text-right">Spese</th><th class="text-right">Entrate</th><th class="text-right">Netto</th></tr></thead><tbody>${sorted.map(([key,v])=>{
     return `<tr><td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td><td class="text-center text-[10px] text-slate-500">${v.count}</td><td class="text-right text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmtCur(v.exp,cur):'—'}</td><td class="text-right text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmtCur(v.inc,cur):'—'}</td><td class="text-right text-[11px] mono font-bold whitespace-nowrap ${(v.inc-v.exp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(v.inc-v.exp,cur)}</td></tr>`;
   }).join('')}</tbody></table>`;
+}
+
+
+// ============================================================
+// VIRTUAL RECURRING OCCURRENCES
+// ============================================================
+function getVirtualRecurrences(year, month){
+  const occ=[];
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  getCountryTasks().forEach(t=>{
+    if(!t.recurrence||t.recurrence==='none'||!t.amount||t.amount<=0)return;
+    const start=parseDateLocal(t.date);
+    const sy=start.getFullYear(),sm=start.getMonth(),sd=start.getDate();
+
+    if(t.recurrence==='monthly'){
+      // Same day every month after start
+      if(year>sy||(year===sy&&month>sm)){
+        const day=Math.min(sd,daysInMonth);
+        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        // Skip if a real (completed-generated) task already exists on this exact date & category
+        const alreadyReal=state.tasks.some(r=>r.id!==t.id&&r.category===t.category&&r.date===ds&&r.country===t.country&&r.recurFromId===t.id);
+        if(!alreadyReal)occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
+      }
+    } else if(t.recurrence==='weekly'){
+      for(let d=1;d<=daysInMonth;d++){
+        const check=new Date(year,month,d);
+        const diffDays=Math.round((check-start)/86400000);
+        if(diffDays>0&&diffDays%7===0){
+          const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+          occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
+        }
+      }
+    } else if(t.recurrence==='yearly'){
+      if(year>sy&&start.getMonth()===month){
+        const day=Math.min(sd,daysInMonth);
+        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        occ.push({...t,date:ds,isVirtual:true,originalId:t.id});
+      }
+    }
+  });
+  return occ;
+}
+
+// ============================================================
+// RECURRING LIST MANAGEMENT
+// ============================================================
+function renderRecurringList(){
+  const list=document.getElementById('recurringList');
+  if(!list)return;
+  const recTasks=getCountryTasks().filter(t=>t.recurrence&&t.recurrence!=='none');
+  if(!recTasks.length){
+    list.innerHTML='<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ricorrenza attiva</p>';return;
+  }
+  const REC_ICONS={weekly:'📆',monthly:'🗓',yearly:'📅'};
+  const REC_LABELS={weekly:'Sett.',monthly:'Mens.',yearly:'Ann.'};
+  const cur=getActiveCurrency();
+  const cats=getCategories();
+  list.innerHTML='';
+  [...recTasks].sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{
+    const catObj=cats.find(c=>c.name===t.category);
+    const catColor=catObj?catObj.color:'#6366f1';
+    const isIncome=t.type==='income';
+    const startLabel=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'});
+    const div=document.createElement('div');
+    div.className='rec-item-card group p-2.5 rounded-xl bg-slate-900/70 border border-slate-800';
+    div.style.borderLeftColor=catColor;
+    div.innerHTML=`
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
+          <span class="text-[10px] font-bold truncate" style="color:${catColor}">${t.category}</span>
+        </div>
+        <div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+          <button onclick="editTask(${t.id})" title="Modifica" class="p-1 text-slate-500 hover:text-blue-400 transition-colors text-xs">✏️</button>
+          <button onclick="deleteRecurring(${t.id})" title="Elimina" class="p-1 text-slate-500 hover:text-red-400 transition-colors text-xs">✕</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-1.5 pl-3.5">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="vrec-badge">${REC_ICONS[t.recurrence]||''} ${REC_LABELS[t.recurrence]||t.recurrence}</span>
+          <span class="text-[8px] text-slate-600 mono">dal ${startLabel}</span>
+        </div>
+        <span class="mono text-[11px] font-bold flex-shrink-0 ${isIncome?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,cur):'—'}</span>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function deleteRecurring(id){
+  const task=state.tasks.find(t=>t.id===id);if(!task)return;
+  const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
+  state.tasks=state.tasks.filter(t=>t.id!==id);
+  state.taskOrder=state.taskOrder.filter(x=>x!==id);
+  saveState();fullRefresh();
+  showToast('🗑️',`Ricorrenza "${task.category}" eliminata`);
+  showUndo(`"${task.category}" eliminato`,{backup,orderBackup},b=>{
+    state.tasks=b.backup;state.taskOrder=b.orderBackup;saveState();fullRefresh();showToast('↩️','Annullato!');
+  });
 }
 
 // ============================================================
