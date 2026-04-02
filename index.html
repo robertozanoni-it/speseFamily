@@ -184,6 +184,16 @@ html:not(.dark) #moveTaskModal .bg-slate-900{background:#f8fafc!important}
 html:not(.dark) .move-country-box.from{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
 
+
+.rec-drop-menu{min-width:158px;box-shadow:0 16px 40px rgba(0,0,0,.6)}
+.rec-drop-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 12px;font-size:11px;font-weight:700;border-radius:8px;border:none;cursor:pointer;background:transparent;color:#94a3b8;transition:background .12s,color .12s}
+.rec-drop-item:hover{background:#1e293b;color:#e2e8f0}
+.rec-drop-item.rec-active{background:rgba(59,130,246,.15);color:var(--accent)}
+.cal-day.rec-hi{outline:2px solid var(--accent);outline-offset:-2px;z-index:2}
+.cal-day.rec-hi.other-month{outline:none}
+html:not(.dark) .rec-drop-menu{background:#f8fafc;border-color:#e2e8f0}
+html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
+
 @media print{
   #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,.country-hero{display:none!important}
   body{background:white!important;color:black!important}
@@ -662,6 +672,19 @@ html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
         <div class="h-4 w-px bg-slate-800 mx-1"></div>
         <div id="clientFilterList" class="flex flex-wrap gap-2"></div>
         <div id="tagFilterList" class="flex flex-wrap gap-1.5"></div>
+        <div class="relative flex-shrink-0" id="recDropWrap">
+          <button onclick="toggleRecDrop()" id="recDropBtn"
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent whitespace-nowrap">
+            🔄 <span id="recDropLabel">Ricorrenti</span>
+            <svg id="recDropChevron" class="w-3 h-3 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="recDropMenu" class="hidden absolute top-full left-0 mt-1.5 bg-slate-900 border border-slate-700 rounded-xl p-1 z-50 rec-drop-menu">
+            <button onclick="setRecFilter('none')"    class="rec-drop-item" id="rec-opt-none">— Tutti</button>
+            <button onclick="setRecFilter('weekly')"  class="rec-drop-item" id="rec-opt-weekly">📆 Settimanale</button>
+            <button onclick="setRecFilter('monthly')" class="rec-drop-item" id="rec-opt-monthly">🗓 Mensile</button>
+            <button onclick="setRecFilter('yearly')"  class="rec-drop-item" id="rec-opt-yearly">📅 Annuale</button>
+          </div>
+        </div>
       </div>
 
       <div class="flex justify-between items-end mb-5">
@@ -796,6 +819,7 @@ let currentPage=0;
 const PAGE_SIZE=20;
 let dragSrcId=null;
 let activeTagFilter=null;
+let currentRecurrenceFilter='none';
 let currentVoiceCategory=null, currentVoiceTab='list';
 
 // ===== MOVE TASK STATE =====
@@ -1242,12 +1266,13 @@ function renderCalendar(){
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate(),daysInPrev=new Date(calYear,calMonth,0).getDate();
   const ts=todayStr(),dateMap={};
   getCountryTasks().forEach(t=>{
-    if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false};
+    if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false,hasRec:{}};
     dateMap[t.date].hasTasks=true;
     if(!t.done&&t.amount>0){
       if(t.type==='income')dateMap[t.date].income+=t.amount;
       else dateMap[t.date].expense+=t.amount;
     }
+    if(t.recurrence&&t.recurrence!=='none'){dateMap[t.date].hasRec[t.recurrence]=(dateMap[t.date].hasRec[t.recurrence]||0)+1;}
   });
   let maxExp=0;for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(dateMap[ds])maxExp=Math.max(maxExp,dateMap[ds].expense);}
   for(let i=startDow-1;i>=0;i--){const day=daysInPrev-i;const p=new Date(calYear,calMonth-1,1);const ds=`${p.getFullYear()}-${String(p.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;grid.appendChild(makeCalDay(day,ds,dateMap,ts,maxExp,true));}
@@ -1260,6 +1285,7 @@ function makeCalDay(num,ds,dateMap,ts,maxExp,other){
   const el=document.createElement('div');el.className='cal-day';el.textContent=num;
   if(other)el.classList.add('other-month');if(ds===ts)el.classList.add('today');if(ds===selectedCalDate)el.classList.add('selected');
   const data=dateMap[ds];
+  if(!other&&data&&currentRecurrenceFilter!=='none'&&(data.hasRec||{})[currentRecurrenceFilter])el.classList.add('rec-hi');
   if(!other&&data){const exp=data.expense||0;if(exp>0&&maxExp>0){const r=exp/maxExp;el.classList.add(r<=.2?'heat-1':r<=.4?'heat-2':r<=.6?'heat-3':r<=.8?'heat-4':'heat-5');}else if(data.hasTasks)el.classList.add('has-dot');
     el.addEventListener('mouseenter',e=>showCalTooltip(e,ds,data));el.addEventListener('mouseleave',hideCalTooltip);el.addEventListener('mousemove',moveCalTooltip);}
   el.onclick=()=>selectCalDay(ds);return el;
@@ -1471,6 +1497,7 @@ function renderTasks(){
   else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
 
   if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
+  if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
   if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
 
   if(search){
@@ -1799,6 +1826,46 @@ function renderVoiceContent(){
     return `<tr><td class="text-[10px] font-bold text-slate-300 whitespace-nowrap">${fmtPeriodLabel(key,currentVoiceTab)}</td><td class="text-center text-[10px] text-slate-500">${v.count}</td><td class="text-right text-[11px] mono font-bold text-red-400 whitespace-nowrap">${v.exp>0?'-'+fmtCur(v.exp,cur):'—'}</td><td class="text-right text-[11px] mono font-bold text-emerald-400 whitespace-nowrap">${v.inc>0?'+'+fmtCur(v.inc,cur):'—'}</td><td class="text-right text-[11px] mono font-bold whitespace-nowrap ${(v.inc-v.exp)>=0?'text-emerald-400':'text-red-400'}">${fmtCur(v.inc-v.exp,cur)}</td></tr>`;
   }).join('')}</tbody></table>`;
 }
+
+// ============================================================
+// RECURRENCE DROPDOWN
+// ============================================================
+function toggleRecDrop(){
+  const menu=document.getElementById('recDropMenu');
+  const chevron=document.getElementById('recDropChevron');
+  menu.classList.toggle('hidden');
+  chevron.style.transform=menu.classList.contains('hidden')?'':'rotate(180deg)';
+}
+function setRecFilter(type){
+  currentRecurrenceFilter=type;
+  document.getElementById('recDropMenu').classList.add('hidden');
+  document.getElementById('recDropChevron').style.transform='';
+  const LABELS={none:'Ricorrenti',weekly:'📆 Settimanale',monthly:'🗓 Mensile',yearly:'📅 Annuale'};
+  document.getElementById('recDropLabel').textContent=LABELS[type];
+  const btn=document.getElementById('recDropBtn');
+  if(type!=='none'){
+    btn.style.borderColor='var(--accent)';btn.style.color='var(--accent)';btn.style.background='rgba(59,130,246,.08)';
+  }else{
+    btn.style.borderColor='';btn.style.color='';btn.style.background='';
+  }
+  ['none','weekly','monthly','yearly'].forEach(o=>{
+    const el=document.getElementById('rec-opt-'+o);
+    if(el)el.classList.toggle('rec-active',o===type);
+  });
+  currentPage=0;renderTasks();renderCalendar();
+  if(type!=='none')showToast('🔄',LABELS[type]);
+}
+document.addEventListener('click',function(e){
+  const w=document.getElementById('recDropWrap');
+  if(w&&!w.contains(e.target)){
+    const m=document.getElementById('recDropMenu');
+    if(m&&!m.classList.contains('hidden')){
+      m.classList.add('hidden');
+      const ch=document.getElementById('recDropChevron');
+      if(ch)ch.style.transform='';
+    }
+  }
+});
 </script>
 </body>
 </html>
