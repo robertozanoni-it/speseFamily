@@ -149,24 +149,18 @@ body.country-GB{
 *:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ===== COLORED SIDEBAR SECTION CARDS ===== */
-
-/* 📅 Calendario — cyan/teal */
 #calendarSection {
   background: linear-gradient(145deg, rgba(14,148,167,0.20) 0%, rgba(8,30,35,0.92) 100%) !important;
   border: 1px solid rgba(20,184,196,0.40) !important;
   border-top: 3px solid #14b8c4 !important;
   box-shadow: 0 4px 24px rgba(20,184,196,0.14), inset 0 1px 0 rgba(20,184,196,0.10);
 }
-
-/* 💰 Riepilogo & Saldo — emerald */
 #summaryCard {
   background: linear-gradient(145deg, rgba(16,185,129,0.17) 0%, rgba(5,22,15,0.92) 100%) !important;
   border: 1px solid rgba(16,185,129,0.38) !important;
   border-top: 3px solid #10b981 !important;
   box-shadow: 0 4px 24px rgba(16,185,129,0.13), inset 0 1px 0 rgba(16,185,129,0.09);
 }
-
-/* ✨ Nuovo Task — blue accent */
 #formSection {
   background: linear-gradient(145deg, rgba(59,130,246,0.17) 0%, rgba(8,12,35,0.92) 100%) !important;
   border: 1px solid rgba(59,130,246,0.38) !important;
@@ -176,32 +170,24 @@ body.country-GB{
 body.country-GB #formSection {
   background: linear-gradient(145deg, rgba(124,58,237,0.18) 0%, rgba(12,6,30,0.92) 100%) !important;
 }
-
-/* 🔄 Ricorrenze — indigo */
 #recurringSection {
   background: linear-gradient(145deg, rgba(99,102,241,0.18) 0%, rgba(10,8,32,0.92) 100%) !important;
   border: 1px solid rgba(99,102,241,0.38) !important;
   border-top: 3px solid #6366f1 !important;
   box-shadow: 0 4px 24px rgba(99,102,241,0.13), inset 0 1px 0 rgba(99,102,241,0.09);
 }
-
-/* 📊 Analisi — amber/orange */
 #analysisSection {
   background: linear-gradient(145deg, rgba(245,158,11,0.16) 0%, rgba(22,14,4,0.92) 100%) !important;
   border: 1px solid rgba(245,158,11,0.36) !important;
   border-top: 3px solid #f59e0b !important;
   box-shadow: 0 4px 24px rgba(245,158,11,0.11), inset 0 1px 0 rgba(245,158,11,0.08);
 }
-
-/* 👥 Persone — rose/pink */
 #personeSection {
   background: linear-gradient(145deg, rgba(236,72,153,0.16) 0%, rgba(25,5,18,0.92) 100%) !important;
   border: 1px solid rgba(236,72,153,0.36) !important;
   border-top: 3px solid #ec4899 !important;
   box-shadow: 0 4px 24px rgba(236,72,153,0.11), inset 0 1px 0 rgba(236,72,153,0.08);
 }
-
-/* 🏷️ Categorie & Budget — violet */
 #categorieSection {
   background: linear-gradient(145deg, rgba(139,92,246,0.17) 0%, rgba(13,5,28,0.92) 100%) !important;
   border: 1px solid rgba(139,92,246,0.38) !important;
@@ -209,7 +195,6 @@ body.country-GB #formSection {
   box-shadow: 0 4px 24px rgba(139,92,246,0.12), inset 0 1px 0 rgba(139,92,246,0.09);
 }
 
-/* Summary label colors per sezione */
 #calendarSection details summary { color: #14b8c4 !important; }
 #recurringSection details summary { color: #6366f1 !important; }
 #analysisSection details summary { color: #f59e0b !important; }
@@ -217,7 +202,6 @@ body.country-GB #formSection {
 #categorieSection details summary { color: #8b5cf6 !important; }
 #formSection details summary { color: var(--accent) !important; }
 
-/* Light mode overrides for colored sections */
 html:not(.dark) #calendarSection { background: linear-gradient(145deg, rgba(14,148,167,0.12) 0%, rgba(220,245,248,0.95) 100%) !important; }
 html:not(.dark) #summaryCard { background: linear-gradient(145deg, rgba(16,185,129,0.10) 0%, rgba(220,248,238,0.95) 100%) !important; }
 html:not(.dark) #formSection { background: linear-gradient(145deg, rgba(59,130,246,0.10) 0%, rgba(220,232,255,0.95) 100%) !important; }
@@ -226,7 +210,6 @@ html:not(.dark) #analysisSection { background: linear-gradient(145deg, rgba(245,
 html:not(.dark) #personeSection { background: linear-gradient(145deg, rgba(236,72,153,0.10) 0%, rgba(255,220,240,0.95) 100%) !important; }
 html:not(.dark) #categorieSection { background: linear-gradient(145deg, rgba(139,92,246,0.10) 0%, rgba(240,225,255,0.95) 100%) !important; }
 
-/* Light mode borders */
 html:not(.dark) .section-card{background:#fff;border-color:#e2e8f0}
 html:not(.dark) .bg-darkCard{background:#fff!important;border-color:#e2e8f0!important}
 html:not(.dark) .bg-darkBg{background:#f1f5f9!important}
@@ -260,14 +243,12 @@ html:not(.dark) #moveTaskModal .bg-slate-900{background:#f8fafc!important}
 html:not(.dark) .move-country-box.from{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .btn-move-cancel{color:#475569;border-color:#cbd5e1}
 
-/* Font size */
 html{transition:font-size .18s ease}
 .font-ctrl-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;border-radius:7px;font-weight:900;color:#64748b;transition:all .15s;font-family:'DM Sans',sans-serif}
 .font-ctrl-btn:hover{background:rgba(255,255,255,.09);color:#e2e8f0}
 .font-ctrl-btn:active{transform:scale(.88)}
 html:not(.dark) .font-ctrl-btn:hover{background:rgba(0,0,0,.07);color:#1e293b}
 
-/* Recurrence dropdown */
 .rec-drop-menu{min-width:160px;box-shadow:0 16px 40px rgba(0,0,0,.65)}
 .rec-drop-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 12px;font-size:11px;font-weight:700;border-radius:8px;border:none;cursor:pointer;background:transparent;color:#94a3b8;transition:background .12s,color .12s}
 .rec-drop-item:hover{background:#1e293b;color:#e2e8f0}
@@ -275,27 +256,27 @@ html:not(.dark) .font-ctrl-btn:hover{background:rgba(0,0,0,.07);color:#1e293b}
 html:not(.dark) .rec-drop-menu{background:#f8fafc;border-color:#e2e8f0}
 html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
 
-/* Calendar virtual recurring */
 .cal-day.rec-hi{outline:2px solid var(--accent);outline-offset:-2px;z-index:2}
 .cal-day.rec-hi.other-month{outline:none}
 .cal-day.has-vrec::after{content:'🔄';position:absolute;top:1px;right:1px;font-size:6px;line-height:1;opacity:.7}
 
-/* Recurring popup action buttons */
 .vrec-action-btn{font-size:9px;padding:2px 5px;border-radius:5px;border:1px solid rgba(99,102,241,.3);background:rgba(99,102,241,.1);color:#a78bfa;cursor:pointer;transition:all .15s;font-weight:700;line-height:1.4}
 .vrec-action-btn:hover{background:rgba(99,102,241,.28)}
 .vrec-action-btn.del{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.08);color:#f87171}
 .vrec-action-btn.del:hover{background:rgba(239,68,68,.22)}
 
-/* ===== COLORED SIDEBAR ITEMS ===== */
 .rec-sidebar-item{transition:filter .15s;border-radius:12px}
 .rec-sidebar-item:hover{filter:brightness(1.18)}
 
-/* Right panel compact recurring cards */
 .card-vrec{border-left:3px solid #7c3aed!important;background:rgba(99,102,241,.05)!important;padding:12px 14px!important}
 .card-vrec:hover{box-shadow:0 8px 20px -4px rgba(124,58,237,.3)!important;transform:translateY(-1px)!important}
 .vrec-pill{font-size:8px;font-weight:800;padding:1px 7px;border-radius:99px;background:rgba(99,102,241,.18);color:#a78bfa;border:1px solid rgba(99,102,241,.28);letter-spacing:.04em;white-space:nowrap;flex-shrink:0}
 .upcoming-header{display:flex;align-items:center;gap:10px;margin-top:28px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #1f2937}
 html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
+
+/* FIX: recIntervalWrap — use flex only when visible */
+#recIntervalWrap{display:none;align-items:center;gap:8px;margin-top:6px}
+#recIntervalWrap.visible{display:flex}
 
 @media print{
   #noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,.country-hero{display:none!important}
@@ -347,7 +328,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
   </div>
 </div>
 
-<!-- ===== MOVE TASK MODAL ===== -->
+<!-- MOVE TASK MODAL -->
 <div id="moveTaskModal">
   <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
     <div class="text-center mb-5">
@@ -413,7 +394,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
       </div>
       <div>
         <h1 class="text-xl font-bold tracking-tight text-white leading-none">Task &amp; Expenses</h1>
-        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6.2 · 🇮🇹 Italia / 🇬🇧 Inghilterra · 🔀 Sposta tra paesi</p>
+        <p class="text-[10px] text-slate-500 mono mt-0.5">Manager Pro v6.3 · 🇮🇹 Italia / 🇬🇧 Inghilterra · 🔀 Sposta tra paesi</p>
       </div>
     </div>
     <div class="flex items-center gap-3 flex-wrap justify-center">
@@ -435,7 +416,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
     </div>
   </header>
 
-  <!-- ===== COUNTRY HERO SWITCHER ===== -->
+  <!-- COUNTRY HERO SWITCHER -->
   <div class="country-hero" id="countryHero">
     <div class="hero-stripe"></div>
     <div class="country-hero-inner">
@@ -470,9 +451,9 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
     <!-- ===== SIDEBAR ===== -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
 
-      <!-- ✅ CALENDARIO -->
+      <!-- ✅ CALENDARIO — chiuso di default -->
       <div id="calendarSection" class="section-card">
-        <details class="group" open>
+        <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4">
             📅 Calendario <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
           </summary>
@@ -504,9 +485,97 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- 💰 Riepilogo & Saldo -->
+      <!-- ✨ Form Nuovo Task — APERTO di default -->
+      <div id="formSection" class="section-card">
+        <details id="formDetails" class="group">
+          <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4 select-none">
+            <span id="formTitle" class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>Nuovo Task / Spesa
+            </span>
+            <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
+          </summary>
+        <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800/60">
+          <input type="hidden" id="editTaskId">
+          <input type="hidden" id="taskType" value="expense">
+          <input type="hidden" id="taskCurrency" value="€">
+
+          <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/60 bg-slate-900/60">
+            <span id="formCountryFlag" class="text-lg">🇮🇹</span>
+            <div>
+              <div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div>
+              <div id="formCountrySaving" class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Data</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none">📅</span>
+              <input type="date" id="taskDate" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-9 text-sm focus:outline-none focus:border-blue-400 transition-colors cursor-pointer" onchange="syncCalendarToForm()">
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tipo</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="typeExpenseBtn" onclick="setTaskType('expense')" class="py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense">📤 Spesa</button>
+              <button type="button" id="typeIncomeBtn" onclick="setTaskType('income')" class="py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all">📥 Entrata</button>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Categoria</label>
+            <select id="taskCategory" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer transition-colors" onchange="clearCatError()">
+              <option value="">Seleziona…</option>
+            </select>
+            <p id="catError" class="text-[10px] text-red-400 font-semibold pl-1" style="display:none">⚠ Seleziona una categoria</p>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label>
+            <select id="taskClient" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"></select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label>
+            <div class="relative">
+              <span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span>
+              <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono">
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Ricorrenza</label>
+            <div class="flex items-center gap-2">
+              <select id="taskRecurrenceType" onchange="onRecTypeChange()" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer">
+                <option value="none">— Nessuna</option>
+                <option value="weekly">settimane</option>
+                <option value="monthly">mesi</option>
+                <option value="yearly">anni</option>
+              </select>
+            </div>
+            <!-- FIX: removed conflicting 'flex' class, controlled via CSS .visible -->
+            <div id="recIntervalWrap">
+              <span class="text-[10px] text-slate-500 font-bold">Ogni</span>
+              <input type="number" id="taskRecurrenceInterval" min="1" max="99" value="1"
+                class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-center mono focus:outline-none focus:border-blue-400">
+              <span id="recIntervalUnit" class="text-[10px] text-slate-400"></span>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
+            <input type="text" id="taskTags" placeholder="lavoro, urgente, casa…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400">
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Descrizione</label>
+            <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea>
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button type="submit" id="submitBtn" class="flex-1 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-sm" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">Salva</button>
+            <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800/80 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
+          </div>
+        </form>
+        </details>
+      </div>
+
+      <!-- 💰 Riepilogo & Saldo — spostato qui sotto il form, chiuso di default -->
       <div class="section-card" id="summaryCard">
-        <details class="group" open>
+        <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-emerald-400 group-open:mb-4">
             💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
           </summary>
@@ -587,94 +656,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- ✨ Form Nuovo Task -->
-      <div id="formSection" class="section-card">
-        <details id="formDetails" class="group">
-          <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4 select-none">
-            <span id="formTitle" class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>Nuovo Task / Spesa
-            </span>
-            <span class="transition-transform duration-200 group-open:rotate-180 text-[10px]">▼</span>
-          </summary>
-        <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800/60">
-          <input type="hidden" id="editTaskId">
-          <input type="hidden" id="taskType" value="expense">
-          <input type="hidden" id="taskCurrency" value="€">
-
-          <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/60 bg-slate-900/60">
-            <span id="formCountryFlag" class="text-lg">🇮🇹</span>
-            <div>
-              <div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div>
-              <div id="formCountrySaving" class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div>
-            </div>
-          </div>
-
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Data</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none">📅</span>
-              <input type="date" id="taskDate" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-9 text-sm focus:outline-none focus:border-blue-400 transition-colors cursor-pointer" onchange="syncCalendarToForm()">
-            </div>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tipo</label>
-            <div class="grid grid-cols-2 gap-2">
-              <button type="button" id="typeExpenseBtn" onclick="setTaskType('expense')" class="py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense">📤 Spesa</button>
-              <button type="button" id="typeIncomeBtn" onclick="setTaskType('income')" class="py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all">📥 Entrata</button>
-            </div>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Categoria</label>
-            <select id="taskCategory" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer transition-colors" onchange="clearCatError()">
-              <option value="">Seleziona…</option>
-            </select>
-            <p id="catError" class="text-[10px] text-red-400 font-semibold pl-1" style="display:none">⚠ Seleziona una categoria</p>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label>
-            <select id="taskClient" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"></select>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label>
-            <div class="relative">
-              <span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span>
-              <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono">
-            </div>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Ricorrenza</label>
-            <div class="flex items-center gap-2">
-              <select id="taskRecurrenceType" onchange="onRecTypeChange()" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer">
-                <option value="none">— Nessuna</option>
-                <option value="weekly">settimane</option>
-                <option value="monthly">mesi</option>
-                <option value="yearly">anni</option>
-              </select>
-            </div>
-            <div id="recIntervalWrap" class="hidden flex items-center gap-2 mt-1.5">
-              <span class="text-[10px] text-slate-500 font-bold">Ogni</span>
-              <input type="number" id="taskRecurrenceInterval" min="1" max="99" value="1"
-                class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-center mono focus:outline-none focus:border-blue-400">
-              <span id="recIntervalUnit" class="text-[10px] text-slate-400"></span>
-            </div>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
-            <input type="text" id="taskTags" placeholder="lavoro, urgente, casa…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400">
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Descrizione</label>
-            <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea>
-          </div>
-          <div class="flex gap-2 pt-1">
-            <button type="submit" id="submitBtn" class="flex-1 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-sm" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">Salva</button>
-            <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800/80 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
-          </div>
-        </form>
-        </details>
-      </div>
-
-      <!-- 🔄 Ricorrenze -->
+      <!-- 🔄 Ricorrenze — chiuso di default -->
       <div id="recurringSection" class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-indigo-400 group-open:mb-4">
@@ -686,7 +668,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- 📊 Analisi -->
+      <!-- 📊 Analisi — chiuso di default -->
       <div id="analysisSection" class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-amber-400 group-open:mb-4">
@@ -727,7 +709,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- 👥 Persone -->
+      <!-- 👥 Persone — chiuso di default -->
       <div id="personeSection" class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-pink-400 group-open:mb-4">
@@ -744,7 +726,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
         </details>
       </div>
 
-      <!-- 🏷️ Categorie & Budget -->
+      <!-- 🏷️ Categorie & Budget — chiuso di default -->
       <div id="categorieSection" class="section-card">
         <details class="group">
           <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-violet-400 group-open:mb-4">
@@ -788,7 +770,7 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
 
       <div class="mb-5 p-4 bg-darkCard rounded-2xl border border-slate-800 shadow-lg flex flex-wrap gap-2 items-center filter-bar-wrapper">
         <span class="text-[9px] font-bold uppercase text-slate-600 tracking-widest mr-1">Filtra:</span>
-        <button onclick="setFilter('all')" id="filter-all" class="filter-btn active px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all">Tutti</button>
+        <button onclick="setFilter('all')" id="filter-all" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all">Tutti</button>
         <button onclick="setFilter('expired')" id="filter-expired" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-red-400">⚠</button>
         <button onclick="setFilter('expense')" id="filter-expense" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-red-400">📤 Spese</button>
         <button onclick="setFilter('income')" id="filter-income" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-emerald-400">📥 Entrate</button>
@@ -815,8 +797,8 @@ html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
 
       <div class="flex justify-between items-end mb-5">
         <div>
-          <h2 id="mainTitle" class="text-xl font-bold text-white">Attività e Scadenze</h2>
-          <p id="mainSubtitle" class="text-[10px] text-slate-500 mt-0.5">Timeline delle tue attività</p>
+          <h2 id="mainTitle" class="text-xl font-bold text-white">Oggi</h2>
+          <p id="mainSubtitle" class="text-[10px] text-slate-500 mt-0.5">Spese e Entrate di oggi</p>
         </div>
         <div class="flex items-center gap-5">
           <div id="filterTotalBox" class="hidden text-right">
@@ -899,7 +881,7 @@ function setGlobalBudgetForCountry(v){if(activeCountry==='GB')state.globalBudget
 function getActiveCurrency(){return COUNTRY_CONFIG[activeCountry].currency;}
 function getCountryTasks(){return state.tasks.filter(t=>t.country===activeCountry);}
 
-let currentFilter='all',currentSort='date';
+let currentFilter='calDay',currentSort='date';
 let myChart=null,monthlyChart=null,balanceChartObj=null;
 let chartMode='category',chartTab='dist',chartDataType='expense';
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),selectedCalDate=null;
@@ -971,14 +953,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMoveModal();cl
 
 function switchCountry(c){
   activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();
-  currentFilter='all';currentPage=0;selectedCalDate=null;activeTagFilter=null;
+  currentFilter='calDay';currentPage=0;selectedCalDate=todayStr();activeTagFilter=null;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  const fa=document.getElementById('filter-all');if(fa)fa.classList.add('active');
-  document.getElementById('mainTitle').textContent='Attività e Scadenze';
-  document.getElementById('mainSubtitle').textContent='Timeline delle tue attività';
+  setTodayTitle();
   document.getElementById('filter-period').classList.add('hidden');
   initSelects();renderTagFilters();renderCategories();renderClientManagement();
-  renderCalendar();renderTasks();calculateSummaries();
+  renderClientFilters();renderCalendar();renderTasks();calculateSummaries();
   try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
   updateGlobalBudgetBar();
   showToast(COUNTRY_CONFIG[c].flag,`Passato a: ${COUNTRY_CONFIG[c].flagText}`);
@@ -1018,8 +998,9 @@ function updateGlobalBudgetBar(){
 
 function updateHeroKPIs(){
   const tasks=getCountryTasks();const active=tasks.filter(t=>!t.done).length;
-  const now=new Date();const msDay=86400000;const ts=todayStr();
+  const ts=todayStr();
   let exp30=0,inc30=0;
+  const msDay=86400000;
   tasks.forEach(t=>{if(t.done||!t.amount||t.amount<=0)return;const diff=Math.round((parseDateLocal(ts)-parseDateLocal(t.date))/msDay);if(diff>=0&&diff<30){if(t.type==='income')inc30+=t.amount;else exp30+=t.amount;}});
   const net=inc30-exp30;const cur=getActiveCurrency();
   document.getElementById('heroActive').textContent=active;
@@ -1028,9 +1009,42 @@ function updateHeroKPIs(){
   const netEl=document.getElementById('heroNet');netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
 
+/* FIX: helper per impostare titolo "Oggi" */
+function setTodayTitle(){
+  const d=parseDateLocal(todayStr());
+  const lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});
+  document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);
+  document.getElementById('mainSubtitle').textContent='Spese e Entrate di oggi';
+}
+
 window.onload=()=>{
-  try{applyTheme(safeGet('app_theme')!=='light');applyCountryTheme();updateFormCountryIndicator();document.getElementById('taskDate').value=todayStr();updateGlobalBudgetBar();initSelects();renderTagFilters();renderCategories();renderClientManagement();renderClientFilters();renderCalendar();renderTasks();calculateSummaries();updateHeroKPIs();renderRecurringList();renderUpcomingRecurring();applyFontSize();}catch(e){console.error('Init:',e);}
-  try{initChart();}catch(e){}try{initMonthlyChart();}catch(e){}try{initBalanceChart();}catch(e){}try{switchChartTab('dist');}catch(e){}
+  try{
+    applyTheme(safeGet('app_theme')!=='light');
+    applyCountryTheme();
+    updateFormCountryIndicator();
+    document.getElementById('taskDate').value=todayStr();
+    updateGlobalBudgetBar();
+    initSelects();
+    renderTagFilters();
+    renderCategories();
+    renderClientManagement();
+    renderClientFilters();
+    /* FIX: seleziona oggi come filtro di default nella vista principale */
+    selectedCalDate=todayStr();
+    currentFilter='calDay';
+    setTodayTitle();
+    renderCalendar();
+    renderTasks();
+    calculateSummaries();
+    updateHeroKPIs();
+    renderRecurringList();
+    renderUpcomingRecurring();
+    applyFontSize();
+  }catch(e){console.error('Init:',e);}
+  try{initChart();}catch(e){}
+  try{initMonthlyChart();}catch(e){}
+  try{initBalanceChart();}catch(e){}
+  try{switchChartTab('dist');}catch(e){}
   checkTodayNotifications();
 };
 
@@ -1234,8 +1248,25 @@ function makeCalDay(num,ds,dateMap,ts,maxExp,other){
     el.addEventListener('mouseenter',e=>showCalTooltip(e,ds,data));el.addEventListener('mouseleave',hideCalTooltip);el.addEventListener('mousemove',moveCalTooltip);}
   el.onclick=()=>selectCalDay(ds);return el;
 }
-function selectCalDay(ds){if(selectedCalDate===ds){clearCalendarFilter();return;}selectedCalDate=ds;currentFilter='calDay';currentPage=0;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('taskDate').value=ds;renderCalendar();renderTasks();const d=parseDateLocal(ds);const lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);document.getElementById('mainSubtitle').textContent='Task del giorno';}
-function clearCalendarFilter(){selectedCalDate=null;currentFilter='all';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');document.getElementById('calDaySummary').classList.add('hidden');document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline';renderCalendar();renderTasks();}
+function selectCalDay(ds){
+  if(selectedCalDate===ds){clearCalendarFilter();return;}
+  selectedCalDate=ds;currentFilter='calDay';currentPage=0;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('taskDate').value=ds;
+  renderCalendar();renderTasks();
+  const d=parseDateLocal(ds);const lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});
+  document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);
+  document.getElementById('mainSubtitle').textContent='Task del giorno';
+}
+function clearCalendarFilter(){
+  selectedCalDate=null;currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('filter-all').classList.add('active');
+  document.getElementById('calDaySummary').classList.add('hidden');
+  document.getElementById('mainTitle').textContent='Attività e Scadenze';
+  document.getElementById('mainSubtitle').textContent='Timeline';
+  renderCalendar();renderTasks();
+}
 function updateCalDaySummary(){
   const box=document.getElementById('calDaySummary');if(!selectedCalDate){box.classList.add('hidden');return;}
   const dayTasks=getCountryTasks().filter(t=>t.date===selectedCalDate);box.classList.remove('hidden');
@@ -1348,7 +1379,21 @@ document.getElementById('mainForm').onsubmit=(e)=>{
   const now=Date.now();
   const histEntry={ts:now,action:editId?'Modificato':'Creato',note:cat+(parsedAmount!=null?' — '+fmtCur(parsedAmount,currency):'')};
   if(editId){const idx=state.tasks.findIndex(t=>t.id===parseInt(editId));if(idx!==-1){const prev=state.tasks[idx];state.tasks[idx]={...prev,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,history:[...(prev.history||[]),histEntry].slice(-10)};}}
-  else{const taskData={id:now,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,done:false,history:[histEntry]};state.tasks.push(taskData);state.taskOrder.push(taskData.id);if(currentFilter!=='all'){currentFilter='all';selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');document.getElementById('filter-period').classList.add('hidden');document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline';}}
+  else{
+    const taskData={id:now,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,done:false,history:[histEntry]};
+    state.tasks.push(taskData);state.taskOrder.push(taskData.id);
+    /* FIX: se il task salvato è di oggi, mantieni filtro calDay; altrimenti vai a "tutti" */
+    if(date===todayStr()){
+      selectedCalDate=todayStr();currentFilter='calDay';setTodayTitle();
+    } else {
+      currentFilter='all';selectedCalDate=null;
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      document.getElementById('filter-all').classList.add('active');
+      document.getElementById('filter-period').classList.add('hidden');
+      document.getElementById('mainTitle').textContent='Attività e Scadenze';
+      document.getElementById('mainSubtitle').textContent='Timeline';
+    }
+  }
   saveState();fullRefresh();resetForm();showToast('✓',editId?'Aggiornato!':'Salvato!');
 };
 
@@ -1510,7 +1555,10 @@ function resetForm(){
   document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';document.getElementById('taskDate').value=todayStr();
   document.getElementById('formTitle').innerHTML=`<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span> Nuovo Task / Spesa`;
   document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');document.getElementById('formDetails').open=false;setTaskType('expense');
-  document.getElementById('taskRecurrenceInterval').value=1;document.getElementById('recIntervalWrap').classList.add('hidden');document.getElementById('taskCurrency').value=getActiveCurrency();document.getElementById('amountSymbol').textContent=getActiveCurrency();clearCatError();
+  document.getElementById('taskRecurrenceInterval').value=1;
+  /* FIX: usa .visible invece di manipolare hidden/flex */
+  document.getElementById('recIntervalWrap').classList.remove('visible');
+  document.getElementById('taskCurrency').value=getActiveCurrency();document.getElementById('amountSymbol').textContent=getActiveCurrency();clearCatError();
 }
 function deleteTask(id){
   const task=state.tasks.find(t=>t.id===id);if(!task)return;const backup=[...state.tasks];const orderBackup=[...state.taskOrder];
@@ -1616,8 +1664,14 @@ function changeFontSize(dir){currentFontSize=Math.max(70,Math.min(160,currentFon
 function applyFontSize(){document.documentElement.style.fontSize=currentFontSize+'%';const l=document.getElementById('fontSizeLabel');if(l)l.textContent=currentFontSize+'%';}
 
 function onRecTypeChange(){
-  const type=document.getElementById('taskRecurrenceType').value;const wrap=document.getElementById('recIntervalWrap');const unit=document.getElementById('recIntervalUnit');
-  if(type==='none'){wrap.classList.add('hidden');return;}wrap.classList.remove('hidden');const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};if(unit)unit.textContent=units[type]||'';
+  const type=document.getElementById('taskRecurrenceType').value;
+  const wrap=document.getElementById('recIntervalWrap');
+  const unit=document.getElementById('recIntervalUnit');
+  /* FIX: usa classe .visible invece di manipolare hidden e flex insieme */
+  if(type==='none'){wrap.classList.remove('visible');return;}
+  wrap.classList.add('visible');
+  const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};
+  if(unit)unit.textContent=units[type]||'';
 }
 
 function getVirtualRecurrences(year,month){
