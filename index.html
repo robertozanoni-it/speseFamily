@@ -138,7 +138,6 @@ letter-spacing:.06em;text-transform:uppercase;
 }
 .country-hero-stats{display:flex;gap:20px;flex-wrap:wrap}
 .hero-kpi{text-align:center}
-/* MODIFICA FONT KPI */
 .hero-kpi-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:4px}
 .hero-kpi-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:800}
 .hero-stripe{position:absolute;inset:0;pointer-events:none;opacity:.04}
@@ -260,7 +259,6 @@ html:not(.dark) .rec-drop-item:hover{background:#e2e8f0;color:#1e293b}
 .vrec-pill{font-size:8px;font-weight:800;padding:1px 7px;border-radius:99px;background:rgba(99,102,241,.18);color:#a78bfa;border:1px solid rgba(99,102,241,.28);letter-spacing:.04em;white-space:nowrap;flex-shrink:0}
 .upcoming-header{display:flex;align-items:center;gap:10px;margin-top:28px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #1f2937}
 html:not(.dark) .card-vrec{background:rgba(99,102,241,.04)!important}
-/* FIX: recIntervalWrap — use flex only when visible */
 #recIntervalWrap{display:none;align-items:center;gap:8px;margin-top:6px}
 #recIntervalWrap.visible{display:flex}
 @media print{
@@ -270,34 +268,26 @@ body{background:white!important;color:black!important}
 main{display:block!important}
 }
 @media(max-width:768px){.cal-day{font-size:10px}.country-hero-inner{flex-direction:column}}
-/* ===== FEATURE CSS ===== */
-/* Quick Add */
 #quickAddBar input,#quickAddBar select{color-scheme:dark}
 html:not(.dark) #quickAddBar{background:#fff;border-color:#e2e8f0}
-/* Urgency */
 .card-task.urg-red{border-left-color:#ef4444!important;box-shadow:inset 0 0 0 1px rgba(239,68,68,.1)}
 .card-task.urg-yellow{border-left-color:#f59e0b!important;box-shadow:inset 0 0 0 1px rgba(245,158,11,.08)}
 .urg-badge{font-size:8px;font-weight:900;padding:1px 5px;border-radius:4px;letter-spacing:.04em;margin-left:2px}
 .urg-badge.red{background:rgba(239,68,68,.18);color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .urg-badge.yellow{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.28)}
-/* Confirm occurrence modal */
 #confirmOccModal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
 #confirmOccModal.visible{display:flex}
-/* Split */
 .split-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #1f2937}
 .split-row:last-child{border-bottom:none}
 html:not(.dark) .split-row{border-color:#e2e8f0}
-/* Templates */
 #templatesPanel{position:absolute;top:calc(100% + 6px);left:0;z-index:60;background:#111827;border:1px solid #334155;border-radius:14px;padding:8px;min-width:230px;box-shadow:0 16px 40px rgba(0,0,0,.6);display:none}
 #templatesPanel.open{display:block}
 .tpl-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background .12s}
 .tpl-item:hover{background:#1f2937}
 html:not(.dark) #templatesPanel{background:#f8fafc;border-color:#e2e8f0}
-/* Sparkline */
 #dailyBalanceBar{display:flex;align-items:flex-end;gap:1px;height:28px}
 .dbb-col{flex:1;border-radius:2px 2px 0 0;min-height:2px;cursor:pointer;position:relative;transition:opacity .12s}
 .dbb-col:hover{opacity:.75}
-/* Heatmap */
 #heatmapSection{margin-top:24px;padding:16px;background:#111827;border:1px solid #1f2937;border-radius:16px}
 .ah-grid{display:grid;gap:2px}
 .ah-cell{width:10px;height:10px;border-radius:2px;cursor:pointer;transition:transform .1s}
@@ -422,7 +412,6 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 <button onclick="hideUndo()" class="text-slate-500 hover:text-white text-xs ml-1">✕</button>
 </div>
 <div class="max-w-[1700px] mx-auto p-3 md:p-5">
-<!-- HEADER -->
 <header id="noPrint" class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 border-b border-slate-800 pb-5">
 <div class="flex items-center gap-3">
 <div class="p-2 rounded-xl shadow-lg" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">
@@ -453,7 +442,6 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 </div>
 </div>
 </header>
-<!-- COUNTRY HERO SWITCHER -->
 <div class="country-hero" id="countryHero">
 <div class="hero-stripe"></div>
 <div class="country-hero-inner">
@@ -483,9 +471,7 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-<!-- ===== SIDEBAR ===== -->
 <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
-<!-- ✅ CALENDARIO — chiuso di default -->
 <div id="calendarSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4">
@@ -525,7 +511,6 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 </div>
 </details>
 </div>
-<!-- ✨ Form Nuovo Task — APERTO di default -->
 <div id="formSection" class="section-card">
 <details id="formDetails" class="group">
 <summary class="flex items-center justify-between cursor-pointer text-[10px] font-bold uppercase tracking-widest text-slate-400 group-open:mb-4 select-none">
@@ -576,7 +561,6 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 <span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span>
 <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono" oninput="updateSplitPreview()">
 </div>
-<!-- SPLIT -->
 <button type="button" id="splitToggleBtn" onclick="toggleSplit()" class="text-[9px] font-bold px-2 py-1 rounded-lg border border-slate-700 text-slate-500 hover:border-accent hover:text-accent transition-all mt-1">⚖ Dividi tra persone</button>
 <div id="splitPanel" class="hidden mt-1 bg-slate-900/60 border border-slate-700 rounded-xl p-3">
 <div id="splitRows" class="space-y-0"></div>
@@ -614,7 +598,6 @@ class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-
 <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea>
 </div>
 <div class="flex gap-2 pt-1">
-<!-- TEMPLATES -->
 <div class="relative flex-shrink-0">
 <button type="button" id="tplBtn" onclick="toggleTemplates()" class="h-full px-3 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white text-xs font-bold transition-all hover:border-accent" title="Template">📋</button>
 <div id="templatesPanel">
@@ -633,7 +616,6 @@ class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-
 </form>
 </details>
 </div>
-<!-- 💰 Riepilogo & Saldo — spostato qui sotto il form, chiuso di default -->
 <div class="section-card" id="summaryCard">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-emerald-400 group-open:mb-4">
@@ -708,16 +690,25 @@ onchange="setGlobalBudget(this.value)">
 <button onclick="clearAmountFilter()" class="text-[9px] font-bold py-1 px-2 bg-slate-800/80 text-slate-400 border border-slate-700 rounded-lg">✕</button>
 </div>
 </div>
-<!-- NUOVA SEZIONE: DETTAGLIO SPESE PER NOME E CATEGORIA -->
+<!-- NUOVA SEZIONE: FILTRO CATEGORIA DA RIEPILOGO -->
+<div class="mt-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
+  <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">🔍 Filtro Categoria</div>
+  <div class="flex gap-2 items-center">
+    <select id="summaryCatFilter" class="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-400 appearance-none cursor-pointer" onchange="applySummaryCatFilter()">
+      <option value="">— Tutte le categorie —</option>
+    </select>
+    <span id="summaryCatTotal" class="mono text-xs font-bold text-red-400 w-24 text-right">0.00</span>
+  </div>
+</div>
+
 <div id="summaryBreakdown" class="mt-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
-    <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">📊 Dettaglio Spese</div>
-    <div id="breakdownByCategory" class="space-y-1 mb-3"></div>
-    <div id="breakdownByClient" class="space-y-1"></div>
+<div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">📊 Dettaglio Spese</div>
+<div id="breakdownByCategory" class="space-y-1 mb-3"></div>
+<div id="breakdownByClient" class="space-y-1"></div>
 </div>
 </div>
 </details>
 </div>
-<!-- 🔄 Ricorrenze — chiuso di default -->
 <div id="recurringSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-indigo-400 group-open:mb-4">
@@ -728,7 +719,6 @@ onchange="setGlobalBudget(this.value)">
 </div>
 </details>
 </div>
-<!-- 📊 Analisi — chiuso di default -->
 <div id="analysisSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-amber-400 group-open:mb-4">
@@ -764,12 +754,10 @@ onchange="setGlobalBudget(this.value)">
 <div id="panelBalance" class="hidden">
 <div class="h-48 relative"><canvas id="balanceChart"></canvas></div>
 <div class="flex justify-center mt-2.5"><div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm" style="background:var(--accent);opacity:.8"></span><span class="text-[9px] font-bold" style="color:var(--accent)">Saldo cumulativo</span></div></div>
-<!-- STEP 8: confronto mese precedente -->
 <div class="mt-4 pt-3 border-t border-slate-800/60">
 <div class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-2">📊 vs mese precedente</div>
 <div id="monthCompare" class="space-y-1 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
 </div>
-<!-- STEP 9: proiezione fine mese -->
 <div class="mt-3 pt-3 border-t border-slate-800/60">
 <div class="text-[9px] font-black uppercase tracking-widest text-cyan-400 mb-2">🔮 Proiezione fine mese</div>
 <div class="grid grid-cols-2 gap-2 text-center">
@@ -783,7 +771,6 @@ onchange="setGlobalBudget(this.value)">
 </div>
 </details>
 </div>
-<!-- 👥 Persone — chiuso di default -->
 <div id="personeSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-pink-400 group-open:mb-4">
@@ -799,7 +786,6 @@ onchange="setGlobalBudget(this.value)">
 </div>
 </details>
 </div>
-<!-- 🏷️ Categorie & Budget — chiuso di default -->
 <div id="categorieSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-violet-400 group-open:mb-4">
@@ -817,9 +803,7 @@ onchange="setGlobalBudget(this.value)">
 </details>
 </div>
 </aside>
-<!-- ===== MAIN ===== -->
 <main class="lg:col-span-8 xl:col-span-9">
-<!-- ⚡ QUICK ADD -->
 <div id="quickAddBar" class="mb-4 p-3 bg-darkCard border border-slate-800 rounded-2xl flex flex-wrap gap-2 items-center" style="border-left:4px solid var(--accent)">
 <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 flex-shrink-0">⚡</span>
 <button type="button" id="qaTypeBtn" onclick="qaToggleType()" class="text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-expense">📤</button>
@@ -896,7 +880,6 @@ class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-70
 <div id="taskGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
 ondragover="event.preventDefault()" ondrop="onGridDrop(event)"></div>
 <div id="emptyTasks"><span class="text-6xl mb-4">🎯</span><p class="text-lg font-semibold">Nessun task trovato</p></div>
-<!-- Prossime Ricorrenze -->
 <div id="upcomingRecSection" class="hidden">
 <div class="upcoming-header">
 <span class="text-base">🔄</span>
@@ -914,7 +897,6 @@ ondragover="event.preventDefault()" ondrop="onGridDrop(event)"></div>
 <button id="pgNext" onclick="changePage(1)" class="px-3 py-1.5 text-xs font-bold bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-30">Succ. ›</button>
 <span id="pgInfo" class="text-[9px] text-slate-500 ml-2"></span>
 </div>
-<!-- STEP 10: HEATMAP ANNUALE -->
 <div id="heatmapSection" class="mt-6">
 <div class="flex items-center justify-between mb-3">
 <div>
@@ -939,7 +921,6 @@ ondragover="event.preventDefault()" ondrop="onGridDrop(event)"></div>
 </div>
 </div>
 </main>
-</div>
 </div>
 <div id="toast" class="fixed bottom-6 right-6 bg-darkCard border border-slate-700 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4 z-[100] text-sm font-semibold flex items-center gap-2">
 <span id="toastIcon">✓</span><span id="toastMsg">OK</span>
@@ -990,6 +971,9 @@ let virtualOccCache={};
 let currentFontSize=parseInt(safeGet('app_fontSize'))||115;
 let currentVoiceCategory=null,currentVoiceTab='list';
 let moveTaskId=null;
+// NUOVA VARIABILE: Filtro categoria da riepilogo
+let summaryCatFilter='';
+
 function fmtCur(n,cur){const c=cur||getActiveCurrency();return c.length>1?`${n.toFixed(2)} ${c}`:`${c}${n.toFixed(2)}`;}
 function fmtTask(t){return fmtCur(t.amount||0,t.currency||getActiveCurrency());}
 function hexToRgba(hex,alpha){
@@ -1044,11 +1028,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMoveModal();cl
 function switchCountry(c){
 activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();
 currentFilter='calDay';currentPage=0;selectedCalDate=todayStr();activeTagFilter=null;
+summaryCatFilter=''; // Reset filtro categoria
 document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
 setTodayTitle();
 document.getElementById('filter-period').classList.add('hidden');
 initSelects();renderTagFilters();renderCategories();renderClientManagement();
 renderClientFilters();renderCalendar();renderTasks();calculateSummaries();renderSummaryBreakdown();
+updateSummaryCatFilter(); // Aggiorna dropdown
 try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
 updateGlobalBudgetBar();
 showToast(COUNTRY_CONFIG[c].flag,`Passato a: ${COUNTRY_CONFIG[c].flagText}`);
@@ -1095,7 +1081,6 @@ document.getElementById('heroExpenses').textContent=fmtCur(exp30,cur);
 document.getElementById('heroIncome').textContent=fmtCur(inc30,cur);
 const netEl=document.getElementById('heroNet');netEl.textContent=(net>=0?'+':'')+fmtCur(Math.abs(net),cur);netEl.style.color=net>=0?'#10b981':'#ef4444';
 }
-/* FIX: helper per impostare titolo "Oggi" */
 function setTodayTitle(){
 const d=parseDateLocal(todayStr());
 const lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});
@@ -1114,7 +1099,6 @@ renderTagFilters();
 renderCategories();
 renderClientManagement();
 renderClientFilters();
-/* FIX: seleziona oggi come filtro di default nella vista principale */
 selectedCalDate=todayStr();
 currentFilter='calDay';
 setTodayTitle();
@@ -1123,6 +1107,7 @@ renderTasks();
 calculateSummaries();
 renderSummaryBreakdown();
 updateHeroKPIs();
+updateSummaryCatFilter(); // Inizializza filtro categoria
 renderRecurringList();
 renderUpcomingRecurring();
 applyFontSize();
@@ -1156,12 +1141,40 @@ if(cv)cs.value=cv;
 cl.innerHTML='<option value="">Generico</option>';
 state.clients.forEach(c=>cl.innerHTML+=`<option value="${c.id}">${c.name}</option>`);
 if(clv)cl.value=clv;
-// sync quick add selects
 const qc=document.getElementById('qaCategory'),ql=document.getElementById('qaClient');
 if(qc){qc.innerHTML='<option value="">Categoria…</option>';[...getCategories()].sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>qc.innerHTML+=`<option value="${c.name}">${c.name}</option>`);}
 if(ql){ql.innerHTML='<option value="">Generico</option>';state.clients.forEach(c=>ql.innerHTML+=`<option value="${c.id}">${c.name}</option>`);}
 const sym=document.getElementById('qaSymbol');if(sym)sym.textContent=getActiveCurrency();
 }
+// FUNZIONI PER FILTRO CATEGORIA DA RIEPILOGO
+function populateSummaryCatFilter() {
+  const sel = document.getElementById('summaryCatFilter');
+  if(!sel) return;
+  const curVal = sel.value;
+  sel.innerHTML = '<option value="">— Tutte le categorie —</option>';
+  const cats = getCategories();
+  cats.forEach(c => sel.innerHTML += `<option value="${c.name}">${c.name}</option>`);
+  sel.value = curVal;
+}
+function applySummaryCatFilter() {
+  summaryCatFilter = document.getElementById('summaryCatFilter').value;
+  currentPage = 0;
+  renderTasks();
+  updateSummaryCatTotal();
+}
+function updateSummaryCatTotal() {
+  const cat = document.getElementById('summaryCatFilter').value;
+  const cur = getActiveCurrency();
+  if(!cat) { document.getElementById('summaryCatTotal').textContent = '—'; return; }
+  const tasks = getCountryTasks().filter(t => t.category === cat && !t.done && t.type !== 'income' && t.amount > 0);
+  const total = tasks.reduce((s, t) => s + t.amount, 0);
+  document.getElementById('summaryCatTotal').textContent = fmtCur(total, cur);
+}
+function updateSummaryCatFilter() {
+  populateSummaryCatFilter();
+  updateSummaryCatTotal();
+}
+
 function getAllTags(){const set=new Set();getCountryTasks().forEach(t=>(t.tags||[]).forEach(tag=>{if(tag)set.add(tag);}));return [...set].sort();}
 function renderTagFilters(){
 const list=document.getElementById('tagFilterList');list.innerHTML='';
@@ -1268,14 +1281,14 @@ const v=ni.value.trim();if(!v){showToast('⚠️','Inserisci un nome!');return;}
 const cats=getCategories();
 if(cats.find(c=>c.name.toLowerCase()===v.toLowerCase())){showToast('⚠️','Esiste già!');return;}
 cats.push({name:v,color:ci.value,budget:bi.value?parseFloat(bi.value):0});
-saveState();renderCategories();initSelects();ni.value='';bi.value='';showToast('✓',`"${v}" aggiunta!`);renderSummaryBreakdown();
+saveState();renderCategories();initSelects();updateSummaryCatFilter();ni.value='';bi.value='';showToast('✓',`"${v}" aggiunta!`);renderSummaryBreakdown();
 }
 function removeCategory(name){
 const cats=getCategories();const backup=[...cats];
 if(activeCountry==='GB')state.categoriesGB=cats.filter(c=>c.name!==name);
 else state.categoriesIT=cats.filter(c=>c.name!==name);
-saveState();renderCategories();initSelects();try{updateChart();}catch(e){}renderSummaryBreakdown();
-showUndo(`"${name}" rimossa`,backup,b=>{if(activeCountry==='GB')state.categoriesGB=b;else state.categoriesIT=b;saveState();renderCategories();initSelects();try{updateChart();}catch(e){}renderSummaryBreakdown();showToast('↩️','Annullato!');});
+saveState();renderCategories();initSelects();updateSummaryCatFilter();try{updateChart();}catch(e){}renderSummaryBreakdown();
+showUndo(`"${name}" rimossa`,backup,b=>{if(activeCountry==='GB')state.categoriesGB=b;else state.categoriesIT=b;saveState();renderCategories();initSelects();updateSummaryCatFilter();try{updateChart();}catch(e){}renderSummaryBreakdown();showToast('↩️','Annullato!');});
 }
 function showCalTooltip(event,ds,data){
 const tip=document.getElementById('calTooltip');
@@ -1461,7 +1474,6 @@ if(editId){const idx=state.tasks.findIndex(t=>t.id===parseInt(editId));if(idx!==
 else{
 const taskData={id:now,date,category:cat,type,currency,country:activeCountry,clientId:clientId?Number(clientId):null,amount:parsedAmount,note,recurrence,recurrenceInterval,tags,done:false,history:[histEntry]};
 state.tasks.push(taskData);state.taskOrder.push(taskData.id);
-/* FIX: se il task salvato è di oggi, mantieni filtro calDay; altrimenti vai a "tutti" */
 if(date===todayStr()){
 selectedCalDate=todayStr();currentFilter='calDay';setTodayTitle();
 } else {
@@ -1472,7 +1484,6 @@ document.getElementById('filter-period').classList.add('hidden');
 document.getElementById('mainTitle').textContent='Attività e Scadenze';
 document.getElementById('mainSubtitle').textContent='Timeline';
 }
-/* STEP 5: split — aggiungi task per ogni persona */
 if(typeof splitActive!=='undefined'&&splitActive){
 const splits=buildSplitTasks(taskData);
 splits.forEach(s=>{state.tasks.push(s);state.taskOrder.push(s.id);});
@@ -1543,6 +1554,8 @@ else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFi
 if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
 if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
 if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
+// NUOVO FILTRO CATEGORIA
+if(summaryCatFilter) filtered = filtered.filter(t => t.category === summaryCatFilter);
 if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return t.category.toLowerCase().includes(search)||(t.note||'').toLowerCase().includes(search)||(cl?cl.name.toLowerCase().includes(search):'generico'.includes(search))||(t.tags||[]).some(tag=>tag.includes(search))||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
 if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
 else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
@@ -1633,7 +1646,6 @@ document.getElementById('mainForm').reset();document.getElementById('editTaskId'
 document.getElementById('formTitle').innerHTML=`<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span> Nuovo Task / Spesa`;
 document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');document.getElementById('formDetails').open=false;setTaskType('expense');
 document.getElementById('taskRecurrenceInterval').value=1;
-/* FIX: usa .visible invece di manipolare hidden/flex */
 document.getElementById('recIntervalWrap').classList.remove('visible');
 document.getElementById('taskCurrency').value=getActiveCurrency();document.getElementById('amountSymbol').textContent=getActiveCurrency();clearCatError();
 }
@@ -1667,13 +1679,15 @@ const w=window.open('','_blank');if(!w){showToast('⚠️','Popup bloccato');ret
 }
 function fullRefresh(){
 renderTasks();renderUpcomingRecurring();calculateSummaries();renderCalendar();renderClientManagement();renderCategories();renderTagFilters();updateHeroKPIs();renderRecurringList();renderSummaryBreakdown();
+updateSummaryCatFilter(); // Aggiorna filtro categoria
 try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
 }
 function exportCSV(){
 const tasks=getCountryTasks();if(!tasks.length){showToast('⚠️','Nessun task');return;}const cur=getActiveCurrency();
 const h=['Data','Tipo','Valuta','Categoria','Persona','Importo','Ricorrenza','Tag','Note','Completato'];
 const rows=tasks.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return[t.date,t.type==='income'?'Entrata':'Spesa',t.currency||cur,`"${t.category}"`,cl?`"${cl.name}"`:'Generico',t.amount!=null?t.amount.toFixed(2):'',t.recurrence||'none',`"${(t.tags||[]).join(',')}"`,`"${(t.note||'').replace(/"/g,"''")}"`,t.done?'Sì':'No'];});
-const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
+const csv=[h,...rows].map(r=>r.join(',')).join('
+');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
 }
 function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');}
 function importBackup(event){
@@ -1737,7 +1751,6 @@ function onRecTypeChange(){
 const type=document.getElementById('taskRecurrenceType').value;
 const wrap=document.getElementById('recIntervalWrap');
 const unit=document.getElementById('recIntervalUnit');
-/* FIX: usa classe .visible invece di manipolare hidden e flex insieme */
 if(type==='none'){wrap.classList.remove('visible');return;}
 wrap.classList.add('visible');
 const units={weekly:'settimane',monthly:'mesi',yearly:'anni'};
@@ -1860,13 +1873,9 @@ currentPage=0;renderTasks();renderUpcomingRecurring();if(type!=='none')showToast
 document.addEventListener('click',function(e){
 const w=document.getElementById('recDropWrap');
 if(w&&!w.contains(e.target)){const m=document.getElementById('recDropMenu');if(m&&!m.classList.contains('hidden')){m.classList.add('hidden');const ch=document.getElementById('recDropChevron');if(ch)ch.style.transform='';}}
-// close templates panel
 const tp=document.getElementById('templatesPanel');
 if(tp&&tp.classList.contains('open')){const tb=document.getElementById('tplBtn');if(!tp.contains(e.target)&&e.target!==tb)tp.classList.remove('open');}
 });
-/* ============================================================
-STEP 1 — QUICK ADD
-============================================================ */
 let qaType='expense';
 function qaToggleType(){
 qaType=qaType==='expense'?'income':'expense';
@@ -1888,9 +1897,6 @@ selectedCalDate=todayStr();currentFilter='calDay';setTodayTitle();
 fullRefresh();amtEl.value='';
 showToast('⚡',`${catEl.value} ${getActiveCurrency()}${amt.toFixed(2)}`);
 }
-/* ============================================================
-STEP 2 — CONFIRM OCCURRENCE
-============================================================ */
 let pendingOcc=null;
 function openOccModal(originalId,dateStr){
 const task=state.tasks.find(t=>t.id===originalId);if(!task)return;
@@ -1915,9 +1921,6 @@ state.tasks.push(t);state.taskOrder.push(newId);saveState();fullRefresh();closeO
 showToast('✅',`"${task.category}" registrato`);
 }
 document.getElementById('confirmOccModal').addEventListener('click',function(e){if(e.target===this)closeOccModal();});
-/* ============================================================
-STEP 3 — SPARKLINE SALDO GIORNALIERO
-============================================================ */
 function renderDailyBalanceBar(daysInMonth,dateMap){
 const bar=document.getElementById('dailyBalanceBar'),lbl=document.getElementById('monthNetLabel');
 if(!bar)return;
@@ -1948,9 +1951,6 @@ col.onclick=()=>selectCalDay(ds);
 bar.appendChild(col);
 });
 }
-/* ============================================================
-STEP 4 — VOICE NOTE
-============================================================ */
 let voiceRec=null,voiceOn=false;
 function toggleVoiceNote(){
 if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){showToast('⚠️','Non supportato in questo browser');return;}
@@ -1973,9 +1973,6 @@ voiceRec.onerror=()=>showToast('⚠️','Errore microfono');
 voiceRec.onend=()=>{voiceOn=false;if(btn){btn.textContent='🎤 Voce';btn.style.color='';btn.style.borderColor='';}};
 voiceRec.start();showToast('🎤','In ascolto…');
 }
-/* ============================================================
-STEP 5 — SPLIT SPESA
-============================================================ */
 let splitActive=false;
 function toggleSplit(){
 splitActive=!splitActive;
@@ -2010,9 +2007,6 @@ if(amt>0)out.push({...base,id:Date.now()+idx++,clientId:c.id,amount:amt,note:(ba
 return out;
 }
 function resetSplit(){splitActive=false;const p=document.getElementById('splitPanel');if(p)p.classList.add('hidden');const b=document.getElementById('splitToggleBtn');if(b){b.style.color='';b.style.borderColor='';}}
-/* ============================================================
-STEP 6 — TEMPLATE
-============================================================ */
 function getTpls(){try{return JSON.parse(safeGet('app_tpls')||'[]');}catch{return[];}}
 function saveTpls(a){safeSet('app_tpls',JSON.stringify(a));}
 function toggleTemplates(){
@@ -2058,23 +2052,16 @@ document.getElementById('templatesPanel').classList.remove('open');
 showToast('📋',`"${t.name}" caricato`);
 }
 function deleteTpl(i){const tpls=getTpls();tpls.splice(i,1);saveTpls(tpls);renderTemplateList();showToast('🗑️','Template eliminato');}
-/* ============================================================
-STEP 7 — URGENCY
-============================================================ */
 function applyUrgency(){
 const today=parseDateLocal(todayStr());
 document.querySelectorAll('#taskGrid .card-task').forEach(card=>{
 card.classList.remove('urg-red','urg-yellow');
-// remove old badges
 card.querySelectorAll('.urg-badge').forEach(b=>b.remove());
-// find date from mono badge text
 const dateBadge=card.querySelector('.mono.uppercase');
 if(!dateBadge)return;
-const txt=dateBadge.textContent.trim();// format: "05 apr"
-// match task by checking all future tasks
+const txt=dateBadge.textContent.trim();
 getCountryTasks().filter(t=>!t.done).forEach(t=>{
 const td=parseDateLocal(t.date);const diff=Math.round((td-today)/86400000);
-// match by date label
 const lbl=td.toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
 if(lbl.toLowerCase()===txt.toLowerCase()&&diff>=0&&diff<=3){
 if(diff<=1){
@@ -2090,9 +2077,6 @@ dateBadge.parentNode.insertBefore(b,dateBadge.nextSibling);
 });
 });
 }
-/* ============================================================
-STEP 8 — CONFRONTO MESE PRECEDENTE
-============================================================ */
 function renderMonthCompare(){
 const el=document.getElementById('monthCompare');if(!el)return;
 const now=new Date(),curM=now.getMonth(),curY=now.getFullYear();
@@ -2122,9 +2106,6 @@ row.innerHTML=`<span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="backg
 el.appendChild(row);
 });
 }
-/* ============================================================
-STEP 9 — PROIEZIONE FINE MESE
-============================================================ */
 function renderMonthProjection(){
 const now=new Date(),curM=now.getMonth(),curY=now.getFullYear();
 const daysInMonth=new Date(curY,curM+1,0).getDate(),day=now.getDate();
@@ -2154,9 +2135,6 @@ s('projTotal',fmtCur(projExp,cur));
 s('projIncome',fmtCur(projInc,cur));
 s('projNet',(projNet>=0?'+':'')+fmtCur(Math.abs(projNet),cur),projNet>=0?'#10b981':'#ef4444');
 }
-/* ============================================================
-STEP 10 — HEATMAP ANNUALE
-============================================================ */
 let heatmapYear=new Date().getFullYear();
 function renderAnnualHeatmap(){
 const grid=document.getElementById('heatmapGrid');
@@ -2174,11 +2152,9 @@ const vals=Object.values(dayMap),maxVal=vals.length?Math.max(...vals):1;
 const isLeap=((heatmapYear%4===0&&heatmapYear%100!==0)||(heatmapYear%400===0));
 const totalDays=isLeap?366:365;
 const jan1=new Date(heatmapYear,0,1);let dow=jan1.getDay();dow=dow===0?6:dow-1;
-// build array of cells: null=padding, string=date
 const cells=[];for(let i=0;i<dow;i++)cells.push(null);
 for(let d=0;d<totalDays;d++){cells.push(getLocalDateStr(new Date(heatmapYear,0,d+1)));}
 while(cells.length%7!==0)cells.push(null);
-// weeks = columns
 const weeks=[];for(let i=0;i<cells.length;i+=7)weeks.push(cells.slice(i,i+7));
 grid.innerHTML='';
 grid.style.cssText='display:flex;gap:2px;';
@@ -2199,26 +2175,17 @@ grid.appendChild(col);
 });
 }
 function changeHeatmapYear(dir){heatmapYear+=dir;renderAnnualHeatmap();}
-/* ============================================================
-HOOK: switchChartTab — compare + projection on balance tab
-============================================================ */
 const _origSwitchTab=switchChartTab;
 switchChartTab=function(tab){
 _origSwitchTab(tab);
 if(tab==='balance'){try{renderMonthCompare();}catch(e){}try{renderMonthProjection();}catch(e){};}
 };
-/* ============================================================
-HOOK: fullRefresh — add heatmap + urgency
-============================================================ */
 const _origFR=fullRefresh;
 fullRefresh=function(){
 _origFR();
 try{renderAnnualHeatmap();}catch(e){}
 setTimeout(()=>{try{applyUrgency();}catch(e){}},80);
 };
-/* ============================================================
-HOOK: renderUpcomingRecurring — add confirm buttons
-============================================================ */
 const _origRUR=renderUpcomingRecurring;
 renderUpcomingRecurring=function(){
 _origRUR();
@@ -2238,61 +2205,45 @@ btn.onclick=()=>openOccModal(origId,dateStr);
 card.appendChild(btn);
 });
 };
-
-/* ============================================================
-STEP 11 — RIEPILOGO DETTAGLIATO PER CATEGORIA E PERSONA
-============================================================ */
 function renderSummaryBreakdown(){
-    const tasks = getCountryTasks();
-    const cur = getActiveCurrency();
-    const cats = getCategories();
-
-    // Group by category
-    const catTotals = {};
-    const clientTotals = {};
-
-    tasks.forEach(t => {
-        if (t.done || t.type === 'income' || !t.amount || t.amount <= 0) return;
-        catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
-        const cl = state.clients.find(c => c.id === t.clientId);
-        const cName = cl ? cl.name : 'Generico';
-        clientTotals[cName] = (clientTotals[cName] || 0) + t.amount;
-    });
-
-    const catEl = document.getElementById('breakdownByCategory');
-    const clientEl = document.getElementById('breakdownByClient');
-    if (!catEl || !clientEl) return;
-
-    // Render Categories
-    const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
-    catEl.innerHTML = sortedCats.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1">Per Categoria</div>' : '';
-    sortedCats.forEach(([name, val]) => {
-        const c = cats.find(x => x.name === name);
-        const col = c ? c.color : '#6366f1';
-        catEl.innerHTML += `
-            <div class="flex justify-between items-center text-[10px]">
-                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full" style="background:${col}"></span>${name}</div>
-                <span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
-            </div>`;
-    });
-    if (!sortedCats.length) catEl.innerHTML += '<div class="text-[9px] text-slate-600 italic">Nessuna spesa</div>';
-
-    // Render Clients
-    const sortedClients = Object.entries(clientTotals).sort((a, b) => b[1] - a[1]);
-    clientEl.innerHTML = sortedClients.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1 mt-2 pt-2 border-t border-slate-800">Per Persona</div>' : '';
-    sortedClients.forEach(([name, val]) => {
-        clientEl.innerHTML += `
-            <div class="flex justify-between items-center text-[10px]">
-                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>${name}</div>
-                <span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
-            </div>`;
-    });
-    if (!sortedClients.length) clientEl.innerHTML += '<div class="text-[9px] text-slate-600 italic mt-2 pt-2 border-t border-slate-800">Nessuna spesa</div>';
+const tasks = getCountryTasks();
+const cur = getActiveCurrency();
+const cats = getCategories();
+const catTotals = {};
+const clientTotals = {};
+tasks.forEach(t => {
+if (t.done || t.type === 'income' || !t.amount || t.amount <= 0) return;
+catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
+const cl = state.clients.find(c => c.id === t.clientId);
+const cName = cl ? cl.name : 'Generico';
+clientTotals[cName] = (clientTotals[cName] || 0) + t.amount;
+});
+const catEl = document.getElementById('breakdownByCategory');
+const clientEl = document.getElementById('breakdownByClient');
+if (!catEl || !clientEl) return;
+const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+catEl.innerHTML = sortedCats.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1">Per Categoria</div>' : '';
+sortedCats.forEach(([name, val]) => {
+const c = cats.find(x => x.name === name);
+const col = c ? c.color : '#6366f1';
+catEl.innerHTML += `
+<div class="flex justify-between items-center text-[10px]">
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full" style="background:${col}"></span>${name}</div>
+<span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
+</div>`;
+});
+if (!sortedCats.length) catEl.innerHTML += '<div class="text-[9px] text-slate-600 italic">Nessuna spesa</div>';
+const sortedClients = Object.entries(clientTotals).sort((a, b) => b[1] - a[1]);
+clientEl.innerHTML = sortedClients.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1 mt-2 pt-2 border-t border-slate-800">Per Persona</div>' : '';
+sortedClients.forEach(([name, val]) => {
+clientEl.innerHTML += `
+<div class="flex justify-between items-center text-[10px]">
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>${name}</div>
+<span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
+</div>`;
+});
+if (!sortedClients.length) clientEl.innerHTML += '<div class="text-[9px] text-slate-600 italic mt-2 pt-2 border-t border-slate-800">Nessuna spesa</div>';
 }
-
-/* ============================================================
-INIT: onload extras
-============================================================ */
 const _origLoad=window.onload;
 window.onload=function(){
 if(_origLoad)_origLoad.call(this);
