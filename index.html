@@ -1573,20 +1573,10 @@ if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
 else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
 else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
 else if(currentSort==='custom'){state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});}
-cconst totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
+const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
 const cur=getActiveCurrency();
 const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
-if(search){
-  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-  const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const net=incT-expT;
-  document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
-  document.getElementById('mainSubtitle').textContent=`Spese: ${fmtCur(expT,cur)} · Entrate: ${fmtCur(incT,cur)} · Netto: ${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}`;
-  ftBox.classList.add('hidden');
-}else if(currentFilter!=='all'){
-  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-  ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
-}else{ftBox.classList.add('hidden');}
+if(currentFilter!=='all'){const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';}else ftBox.classList.add('hidden');
 renderPagination(totalCount,currentPage,PAGE_SIZE);
 const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
 const cats=getCategories();
