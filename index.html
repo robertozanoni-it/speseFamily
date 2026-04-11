@@ -989,7 +989,7 @@ const DEFAULT_CATEGORIES_GB = [
 {name:'NHS',color:'#06b6d4',budget:0},{name:'Insurance',color:'#84cc16',budget:0},{name:'Courses',color:'#8b5cf6',budget:0}
 ];
 function migrateCats(raw,country){if(!Array.isArray(raw)||!raw.length)return country==='GB'?DEFAULT_CATEGORIES_GB:[...DEFAULT_CATEGORIES_IT];return raw.map(c=>typeof c==='string'?{name:c,color:'#6366f1',budget:0}:{budget:0,...c});}
-function migrateTasks(arr){return arr.map(t=>({type:'expense',...t,recurrenceInterval:t.recurrenceInterval||1,currency:t.currency||'€',country:t.country||'IT',clientId:t.clientId!=null?Number(t.clientId):null,tags:Array.isArray(t.tags)?t.tags:[],history:Array.isArray(t.history)?t.history:[]}));}
+function migrateTasks(arr){return arr.map(t=>{const inferredCountry=t.country||(t.currency==='£'?'GB':'IT');return{type:'expense',...t,recurrenceInterval:t.recurrenceInterval||1,currency:t.currency||'€',country:inferredCountry,clientId:t.clientId!=null?Number(t.clientId):null,tags:Array.isArray(t.tags)?t.tags:[],history:Array.isArray(t.history)?t.history:[]};});}
 function loadState(){return {tasks:migrateTasks(JSON.parse(safeGet('app_tasks'))||[]),clients:JSON.parse(safeGet('app_clients'))||[{id:1,name:'Roberto',color:'#ef4444'},{id:2,name:'Kate',color:'#ec4899'},{id:3,name:'Family',color:'#10b981'}],categoriesIT:migrateCats(JSON.parse(safeGet('app_cats_IT')),'IT'),categoriesGB:migrateCats(JSON.parse(safeGet('app_cats_GB')),'GB'),globalBudgetIT:parseFloat(safeGet('app_budget_IT'))||0,globalBudgetGB:parseFloat(safeGet('app_budget_GB'))||0,taskOrder:JSON.parse(safeGet('app_taskOrder'))||[]};}
 let state = loadState();
 function getCategories(){return activeCountry==='GB'?state.categoriesGB:state.categoriesIT;}
