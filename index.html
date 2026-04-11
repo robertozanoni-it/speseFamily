@@ -1568,7 +1568,7 @@ if(!search){
 if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
 if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
 if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
-if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{return t.category.toLowerCase().includes(search)||(t.note||'').toLowerCase().includes(search)||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
+if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{return t.category.toLowerCase().includes(search)||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
 if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
 else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
 else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
