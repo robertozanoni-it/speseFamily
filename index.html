@@ -1576,7 +1576,17 @@ else if(currentSort==='custom'){state.tasks.forEach(t=>{if(!state.taskOrder.incl
 const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
 const cur=getActiveCurrency();
 const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
-if(currentFilter!=='all'){const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';}else ftBox.classList.add('hidden');
+if(search){
+  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const net=incT-expT;
+  document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
+  document.getElementById('mainSubtitle').textContent=`Spese: ${fmtCur(expT,cur)} · Entrate: ${fmtCur(incT,cur)} · Netto: ${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}`;
+  ftBox.classList.add('hidden');
+}else if(currentFilter!=='all'){
+  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
+}else{ftBox.classList.add('hidden');}
 renderPagination(totalCount,currentPage,PAGE_SIZE);
 const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
 const cats=getCategories();
