@@ -1581,7 +1581,7 @@ if(search){
   const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
   const net=incT-expT;
   document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
-  document.getElementById('mainSubtitle').textContent=`Spese: ${fmtCur(expT,cur)} · Entrate: ${fmtCur(incT,cur)} · Netto: ${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}`;
+  document.getElementById('mainSubtitle').innerHTML=`<span class="text-white font-bold text-sm mono">Spese: <span class="text-red-400">${fmtCur(expT,cur)}</span> &nbsp;·&nbsp; Entrate: <span class="text-emerald-400">${fmtCur(incT,cur)}</span> &nbsp;·&nbsp; Netto: <span style="color:${net>=0?'#10b981':'#ef4444'}">${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}</span></span>`;
   ftBox.classList.add('hidden');
 }else if(currentFilter!=='all'){
   const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
