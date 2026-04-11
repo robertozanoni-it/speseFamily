@@ -1557,12 +1557,14 @@ const search=(document.getElementById('searchInput').value||'').toLowerCase().tr
 grid.innerHTML='';
 const ts=todayStr(),today=parseDateLocal(ts);
 let filtered=getCountryTasks();
-if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
-else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
-else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
-else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
-else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
-else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
+if(!search){
+  if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
+  else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
+  else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
+  else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
+  else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
+  else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
+}
 if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
 if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
 if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
