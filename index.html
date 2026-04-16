@@ -613,6 +613,11 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 class="w-16 bg-slate-900/80 border border-slate-700 rounded-xl p-2 text-sm text-center mono focus:outline-none focus:border-blue-400">
 <span id="recIntervalUnit" class="text-[10px] text-slate-400"></span>
 </div>
+<!-- NUOVO CAMPO: SPESA ANNUALE -->
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800/40">
+  <input type="checkbox" id="setAsAnnual" onchange="toggleAnnualMode()" class="w-4 h-4 rounded border-slate-600 bg-slate-800 text-orange-500 focus:ring-orange-500 cursor-pointer">
+  <label for="setAsAnnual" class="text-[10px] font-bold text-orange-400 cursor-pointer select-none">Imposta come Spesa Annuale</label>
+</div>
 </div>
 <div class="space-y-1">
 <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
@@ -764,7 +769,11 @@ onchange="setGlobalBudget(this.value)">
 <div id="annualExpensesSection" class="section-card">
 <details class="group">
 <summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-orange-400 group-open:mb-4">
-💶 Spese Annuali <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
+<span class="flex items-center gap-2 flex-1">
+💶 Spese Annuali
+<button type="button" onclick="event.stopPropagation(); setFilter('annual')" class="text-[9px] px-2 py-0.5 rounded bg-orange-500/20 text-orange-400 hover:bg-orange-500/40 transition-colors">👁️ Vedi tutte</button>
+</span>
+<span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
 </summary>
 <div class="pt-3 border-t border-slate-800/60">
 <div id="annualExpensesList" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pr-1"></div>
@@ -1219,7 +1228,7 @@ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')
 const btn=document.getElementById(`filter-${filter}`);if(btn)btn.classList.add('active');
 if(filter!=='calDay'){selectedCalDate=null;renderCalendar();}
 if(filter!=='period')document.getElementById('filter-period').classList.add('hidden');
-const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],period:['📅 Periodo','Task nel periodo']};
+const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],period:['📅 Periodo','Task nel periodo'],annual:['💶 Spese Annuali','Ricorrenze con cadenza annuale']};
 const[title,sub]=titles[filter]||[null,null];
 if(title){document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;}
 updateExpiredBanner();renderTasks();renderSummaryBreakdown();
@@ -1581,6 +1590,7 @@ const ts=todayStr(),today=parseDateLocal(ts);
 let filtered=getCountryTasks();
 if(!search){
 if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
+else if(currentFilter==='annual') filtered=filtered.filter(t=>t.recurrence==='yearly'); // <-- AGGIUNTO FILTRO ANNUALE
 else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
 else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
 else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
@@ -1621,7 +1631,7 @@ const isIncome=t.type==='income';const catObj=cats.find(c=>c.name===t.category);
 let recTag='';
 if(t.recurrence==='weekly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">7g</span>';
 else if(t.recurrence==='monthly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1M</span>';
-else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-accent font-bold bg-accent/10 px-1.5 py-0.5 rounded">1A</span>';
+else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-orange-400 font-bold bg-orange-500/15 px-1.5 py-0.5 rounded">1A</span>';
 const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag" onclick="setActiveTag('${tag}')">#${tag}</span>`).join('');
 const safeCat=t.category.replace(/'/g,"\\'").replace(/"/g,'&quot;');
 const card=document.createElement('div');
@@ -1681,7 +1691,11 @@ updateGlobalBudgetBar();updateHeroKPIs();
 }
 function editTask(id){
 const t=state.tasks.find(t=>t.id===id);if(!t)return;
-document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';document.getElementById('taskRecurrenceType').value=t.recurrence||'none';document.getElementById('taskRecurrenceInterval').value=t.recurrenceInterval||1;onRecTypeChange();document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
+document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';document.getElementById('taskRecurrenceType').value=t.recurrence||'none';document.getElementById('taskRecurrenceInterval').value=t.recurrenceInterval||1;
+// NUOVO: sincronizza checkbox annuale
+document.getElementById('setAsAnnual').checked = (t.recurrence==='yearly' && (t.recurrenceInterval||1)===1);
+if(document.getElementById('setAsAnnual').checked) toggleAnnualMode(); else onRecTypeChange();
+document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
 document.getElementById('formDetails').open=true;document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';document.getElementById('submitBtn').textContent='Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');
 setTaskType(t.type||'expense');clearCatError();const[y,m]=t.date.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1690,6 +1704,8 @@ document.getElementById('mainForm').reset();document.getElementById('editTaskId'
 document.getElementById('formTitle').innerHTML=`<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span> Nuovo Task / Spesa`;
 document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');document.getElementById('formDetails').open=false;setTaskType('expense');
 document.getElementById('taskRecurrenceInterval').value=1;
+document.getElementById('setAsAnnual').checked=false; // <-- RESET CHECKBOX
+document.getElementById('taskRecurrenceType').disabled=false; // <-- SBLOCCA SELECT
 /* FIX: usa .visible invece di manipolare hidden/flex */
 document.getElementById('recIntervalWrap').classList.remove('visible');
 document.getElementById('taskCurrency').value=getActiveCurrency();document.getElementById('amountSymbol').textContent=getActiveCurrency();clearCatError();
@@ -1735,7 +1751,8 @@ const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufef
 function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');}
 function importBackup(event){
 const file=event.target.files[0];if(!file)return;
-if(!window.confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){event.target.value='';return;}
+if(!window.confirm(`Importare "${file.name}"?
+I dati attuali verranno sostituiti.`)){event.target.value='';return;}
 const reader=new FileReader();reader.onload=(e)=>{try{const imp=JSON.parse(e.target.result);if(imp.tasks&&imp.clients){imp.tasks=migrateTasks(imp.tasks);imp.categoriesIT=migrateCats(imp.categoriesIT||imp.categories,'IT');imp.categoriesGB=migrateCats(imp.categoriesGB,'GB');state=imp;if(!state.taskOrder)state.taskOrder=state.tasks.map(t=>t.id);saveState();location.reload();}else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore JSON');}};reader.readAsText(file);
 }
 function saveState(){
@@ -1826,7 +1843,7 @@ list.innerHTML='';
 [...tasks].sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{
 const co=cats.find(c=>c.name===t.category);const color=co?co.color:'#6366f1';
 const isIncome=t.type==='income';const nextDate=getNextOccurrence(t);
-const nextLbl=nextDate?parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}):'—';
+const nextLbl=nextDate?parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'}):'—';
 const div=document.createElement('div');
 div.className='rec-sidebar-item group p-2.5 border';
 div.style.background=hexToRgba(color,0.28);div.style.borderColor=hexToRgba(color,0.5);
@@ -2454,6 +2471,22 @@ if(countEl) countEl.textContent = count;
 if(avgEl) avgEl.textContent = count > 0 ? fmtCur(total/count, cur) : '—';
 }
 }
+}
+/* ============================================================
+NUOVA FUNZIONE: TOGGLE ANNUALE/RIcorrenza
+============================================================ */
+function toggleAnnualMode(){
+  const chk=document.getElementById('setAsAnnual');
+  const rec=document.getElementById('taskRecurrenceType');
+  const wrap=document.getElementById('recIntervalWrap');
+  if(chk.checked){
+    rec.value='yearly'; rec.disabled=true;
+    document.getElementById('taskRecurrenceInterval').value=1;
+    wrap.classList.remove('visible');
+  } else {
+    rec.disabled=false;
+    onRecTypeChange();
+  }
 }
 /* ============================================================
 INIT: onload extras
