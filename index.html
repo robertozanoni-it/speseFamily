@@ -172,6 +172,16 @@ border: 1px solid rgba(99,102,241,0.38) !important;
 border-top: 3px solid #6366f1 !important;
 box-shadow: 0 4px 24px rgba(99,102,241,0.13), inset 0 1px 0 rgba(99,102,241,0.09);
 }
+#annualExpensesSection {
+background: linear-gradient(145deg, rgba(249,115,22,0.17) 0%, rgba(25,10,3,0.92) 100%) !important;
+border: 1px solid rgba(249,115,22,0.38) !important;
+border-top: 3px solid #f97316 !important;
+box-shadow: 0 4px 24px rgba(249,115,22,0.12), inset 0 1px 0 rgba(249,115,22,0.09);
+}
+html:not(.dark) #annualExpensesSection { 
+background: linear-gradient(145deg, rgba(249,115,22,0.10) 0%, rgba(255,245,230,0.95) 100%) !important; 
+}
+#annualExpensesSection details summary { color: #f97316 !important; }
 #analysisSection {
 background: linear-gradient(145deg, rgba(245,158,11,0.16) 0%, rgba(22,14,4,0.92) 100%) !important;
 border: 1px solid rgba(245,158,11,0.36) !important;
@@ -192,6 +202,7 @@ box-shadow: 0 4px 24px rgba(139,92,246,0.12), inset 0 1px 0 rgba(139,92,246,0.09
 }
 #calendarSection details summary { color: #14b8c4 !important; }
 #recurringSection details summary { color: #6366f1 !important; }
+#annualExpensesSection details summary { color: #f97316 !important; }
 #analysisSection details summary { color: #f59e0b !important; }
 #personeSection details summary { color: #ec4899 !important; }
 #categorieSection details summary { color: #8b5cf6 !important; }
@@ -200,6 +211,7 @@ html:not(.dark) #calendarSection { background: linear-gradient(145deg, rgba(14,1
 html:not(.dark) #summaryCard { background: linear-gradient(145deg, rgba(16,185,129,0.10) 0%, rgba(220,248,238,0.95) 100%) !important; }
 html:not(.dark) #formSection { background: linear-gradient(145deg, rgba(59,130,246,0.10) 0%, rgba(220,232,255,0.95) 100%) !important; }
 html:not(.dark) #recurringSection { background: linear-gradient(145deg, rgba(99,102,241,0.10) 0%, rgba(228,228,255,0.95) 100%) !important; }
+html:not(.dark) #annualExpensesSection { background: linear-gradient(145deg, rgba(249,115,22,0.10) 0%, rgba(255,245,230,0.95) 100%) !important; }
 html:not(.dark) #analysisSection { background: linear-gradient(145deg, rgba(245,158,11,0.10) 0%, rgba(255,245,220,0.95) 100%) !important; }
 html:not(.dark) #personeSection { background: linear-gradient(145deg, rgba(236,72,153,0.10) 0%, rgba(255,220,240,0.95) 100%) !important; }
 html:not(.dark) #categorieSection { background: linear-gradient(145deg, rgba(139,92,246,0.10) 0%, rgba(240,225,255,0.95) 100%) !important; }
@@ -670,7 +682,6 @@ onchange="setGlobalBudget(this.value)">
 <div class="budget-bar mb-1"><div id="globalBudgetBar" class="budget-bar-fill" style="width:0%;background:#10b981"></div></div>
 <div id="globalBudgetLabel" class="text-[9px] text-slate-500 text-right"></div>
 </div>
-
 <!-- 🔍 NUOVA SEZIONE: Ricerca per Categoria -->
 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/60" style="border-left:3px solid #f59e0b">
 <div class="flex justify-between items-center mb-2">
@@ -691,7 +702,6 @@ onchange="setGlobalBudget(this.value)">
 </div>
 </div>
 </div>
-
 <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
 <span class="text-[10px] text-slate-500">Oggi</span>
 <span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span>
@@ -732,9 +742,9 @@ onchange="setGlobalBudget(this.value)">
 </div>
 <!-- NUOVA SEZIONE: DETTAGLIO SPESE PER NOME E CATEGORIA -->
 <div id="summaryBreakdown" class="mt-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800/60">
-    <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">📊 Dettaglio Spese</div>
-    <div id="breakdownByCategory" class="space-y-1 mb-3"></div>
-    <div id="breakdownByClient" class="space-y-1"></div>
+<div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">📊 Dettaglio Spese</div>
+<div id="breakdownByCategory" class="space-y-1 mb-3"></div>
+<div id="breakdownByClient" class="space-y-1"></div>
 </div>
 </div>
 </details>
@@ -747,6 +757,17 @@ onchange="setGlobalBudget(this.value)">
 </summary>
 <div class="pt-3 border-t border-slate-800/60">
 <div id="recurringList" class="space-y-2 max-h-72 overflow-y-auto custom-scrollbar pr-1"></div>
+</div>
+</details>
+</div>
+<!-- 💶 SPESA ANNUALE RICORRENTE -->
+<div id="annualExpensesSection" class="section-card">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer text-[10px] font-bold uppercase tracking-widest text-orange-400 group-open:mb-4">
+💶 Spese Annuali <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
+</summary>
+<div class="pt-3 border-t border-slate-800/60">
+<div id="annualExpensesList" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pr-1"></div>
 </div>
 </details>
 </div>
@@ -1147,6 +1168,7 @@ renderSummaryBreakdown();
 updateHeroKPIs();
 renderRecurringList();
 renderUpcomingRecurring();
+renderAnnualExpenses();
 applyFontSize();
 populateSummaryCatFilter();
 }catch(e){console.error('Init:',e);}
@@ -1558,12 +1580,12 @@ grid.innerHTML='';
 const ts=todayStr(),today=parseDateLocal(ts);
 let filtered=getCountryTasks();
 if(!search){
-  if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
-  else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
-  else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
-  else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
-  else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
-  else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
+if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
+else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
+else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
+else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
+else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
+else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
 }
 if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
 if(currentRecurrenceFilter!=='none')filtered=filtered.filter(t=>t.recurrence===currentRecurrenceFilter);
@@ -1577,15 +1599,15 @@ const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none
 const cur=getActiveCurrency();
 const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
 if(search){
-  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-  const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const net=incT-expT;
-  document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
-  document.getElementById('mainSubtitle').innerHTML=`<span class="text-white font-bold text-sm mono">Spese: <span class="text-red-400">${fmtCur(expT,cur)}</span> &nbsp;·&nbsp; Entrate: <span class="text-emerald-400">${fmtCur(incT,cur)}</span> &nbsp;·&nbsp; Netto: <span style="color:${net>=0?'#10b981':'#ef4444'}">${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}</span></span>`;
-  ftBox.classList.add('hidden');
+const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
+const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
+const net=incT-expT;
+document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
+document.getElementById('mainSubtitle').innerHTML=`<span class="text-white font-bold text-sm mono">Spese: <span class="text-red-400">${fmtCur(expT,cur)}</span> &nbsp;·&nbsp; Entrate: <span class="text-emerald-400">${fmtCur(incT,cur)}</span> &nbsp;·&nbsp; Netto: <span style="color:${net>=0?'#10b981':'#ef4444'}">${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}</span></span>`;
+ftBox.classList.add('hidden');
 }else if(currentFilter!=='all'){
-  const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-  ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
+const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
+ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
 }else{ftBox.classList.add('hidden');}
 renderPagination(totalCount,currentPage,PAGE_SIZE);
 const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
@@ -1701,7 +1723,7 @@ const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${cfg.flagTe
 const w=window.open('','_blank');if(!w){showToast('⚠️','Popup bloccato');return;}w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);
 }
 function fullRefresh(){
-renderTasks();renderUpcomingRecurring();calculateSummaries();renderCalendar();renderClientManagement();renderCategories();renderTagFilters();updateHeroKPIs();renderRecurringList();renderSummaryBreakdown();populateSummaryCatFilter();
+renderTasks();renderUpcomingRecurring();calculateSummaries();renderCalendar();renderClientManagement();renderCategories();renderTagFilters();updateHeroKPIs();renderRecurringList();renderSummaryBreakdown();populateSummaryCatFilter();renderAnnualExpenses();
 try{updateChart();}catch(e){}try{if(chartTab==='trend')updateMonthlyChart();}catch(e){}try{if(chartTab==='balance')updateBalanceChart();}catch(e){}
 }
 function exportCSV(){
@@ -1713,8 +1735,7 @@ const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufef
 function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');}
 function importBackup(event){
 const file=event.target.files[0];if(!file)return;
-if(!window.confirm(`Importare "${file.name}"?
-I dati attuali verranno sostituiti.`)){event.target.value='';return;}
+if(!window.confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){event.target.value='';return;}
 const reader=new FileReader();reader.onload=(e)=>{try{const imp=JSON.parse(e.target.result);if(imp.tasks&&imp.clients){imp.tasks=migrateTasks(imp.tasks);imp.categoriesIT=migrateCats(imp.categoriesIT||imp.categories,'IT');imp.categoriesGB=migrateCats(imp.categoriesGB,'GB');state=imp;if(!state.taskOrder)state.taskOrder=state.tasks.map(t=>t.id);saveState();location.reload();}else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore JSON');}};reader.readAsText(file);
 }
 function saveState(){
@@ -1805,7 +1826,7 @@ list.innerHTML='';
 [...tasks].sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{
 const co=cats.find(c=>c.name===t.category);const color=co?co.color:'#6366f1';
 const isIncome=t.type==='income';const nextDate=getNextOccurrence(t);
-const nextLbl=nextDate?parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'}):'—';
+const nextLbl=nextDate?parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const div=document.createElement('div');
 div.className='rec-sidebar-item group p-2.5 border';
 div.style.background=hexToRgba(color,0.28);div.style.borderColor=hexToRgba(color,0.5);
@@ -1829,6 +1850,60 @@ div.innerHTML=`
 </div>`;
 list.appendChild(div);
 });
+}
+function renderAnnualExpenses() {
+  const list = document.getElementById('annualExpensesList');
+  if (!list) return;
+  const cur = getActiveCurrency();
+  const cats = getCategories();
+  
+  // Filtra solo spese annuali attive
+  const tasks = getCountryTasks().filter(t => 
+    t.recurrence === 'yearly' && t.type === 'expense' && !t.done && t.amount > 0
+  ).sort((a, b) => a.date.localeCompare(b.date));
+
+  if (!tasks.length) {
+    list.innerHTML = '<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna spesa annuale ricorrente</p>';
+    return;
+  }
+
+  let totalAnnual = 0;
+  list.innerHTML = '';
+  tasks.forEach(t => {
+    const interval = t.recurrenceInterval || 1;
+    totalAnnual += t.amount; 
+    
+    const co = cats.find(c => c.name === t.category);
+    const color = co ? co.color : '#6366f1';
+    const nextDate = getNextOccurrence(t);
+    const nextLbl = nextDate ? parseDateLocal(nextDate).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+
+    const div = document.createElement('div');
+    div.className = 'p-2.5 rounded-xl border group rec-sidebar-item';
+    div.style.background = hexToRgba(color, 0.25);
+    div.style.borderColor = hexToRgba(color, 0.45);
+    div.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${color}"></span>
+          <span class="text-[10px] font-black text-white truncate">${t.category}</span>
+        </div>
+        <div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+          <button onclick="editTask(${t.id})" class="vrec-action-btn">✏️</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-1.5 pl-3.5">
+        <span class="text-[8px] text-white/60 mono">Prossima: ${nextLbl}</span>
+        <span class="mono text-[10px] font-black text-red-300">-${fmtCur(t.amount, cur)}${interval > 1 ? ` (ogni ${interval} anni)` : ''}</span>
+      </div>`;
+    list.appendChild(div);
+  });
+
+  // Totale stimato
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';
+  totalDiv.innerHTML = `<span class="text-slate-400 uppercase tracking-widest">Totale annuo stimato</span><span class="mono text-orange-400">-${fmtCur(totalAnnual, cur)}</span>`;
+  list.appendChild(totalDiv);
 }
 function deleteRecurring(id){
 const task=state.tasks.find(t=>t.id===id);if(!task)return;
@@ -2273,126 +2348,113 @@ btn.onclick=()=>openOccModal(origId,dateStr);
 card.appendChild(btn);
 });
 };
-
 /* ============================================================
 STEP 11 — RIEPILOGO DETTAGLIATO PER CATEGORIA E PERSONA
 ============================================================ */
 function renderSummaryBreakdown(){
-    const tasks = getCountryTasks();
-    const cur = getActiveCurrency();
-    const cats = getCategories();
-
-    // Group by category
-    const catTotals = {};
-    const clientTotals = {};
-
-    tasks.forEach(t => {
-        if (t.done || t.type === 'income' || !t.amount || t.amount <= 0) return;
-        catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
-        const cl = state.clients.find(c => c.id === t.clientId);
-        const cName = cl ? cl.name : 'Generico';
-        clientTotals[cName] = (clientTotals[cName] || 0) + t.amount;
-    });
-
-    const catEl = document.getElementById('breakdownByCategory');
-    const clientEl = document.getElementById('breakdownByClient');
-    if (!catEl || !clientEl) return;
-
-    // Render Categories
-    const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
-    catEl.innerHTML = sortedCats.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1">Per Categoria</div>' : '';
-    sortedCats.forEach(([name, val]) => {
-        const c = cats.find(x => x.name === name);
-        const col = c ? c.color : '#6366f1';
-        catEl.innerHTML += `
-            <div class="flex justify-between items-center text-[10px]">
-                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full" style="background:${col}"></span>${name}</div>
-                <span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
-            </div>`;
-    });
-    if (!sortedCats.length) catEl.innerHTML += '<div class="text-[9px] text-slate-600 italic">Nessuna spesa</div>';
-
-    // Render Clients
-    const sortedClients = Object.entries(clientTotals).sort((a, b) => b[1] - a[1]);
-    clientEl.innerHTML = sortedClients.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1 mt-2 pt-2 border-t border-slate-800">Per Persona</div>' : '';
-    sortedClients.forEach(([name, val]) => {
-        clientEl.innerHTML += `
-            <div class="flex justify-between items-center text-[10px]">
-                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>${name}</div>
-                <span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
-            </div>`;
-    });
-    if (!sortedClients.length) clientEl.innerHTML += '<div class="text-[9px] text-slate-600 italic mt-2 pt-2 border-t border-slate-800">Nessuna spesa</div>';
+const tasks = getCountryTasks();
+const cur = getActiveCurrency();
+const cats = getCategories();
+// Group by category
+const catTotals = {};
+const clientTotals = {};
+tasks.forEach(t => {
+if (t.done || t.type === 'income' || !t.amount || t.amount <= 0) return;
+catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
+const cl = state.clients.find(c => c.id === t.clientId);
+const cName = cl ? cl.name : 'Generico';
+clientTotals[cName] = (clientTotals[cName] || 0) + t.amount;
+});
+const catEl = document.getElementById('breakdownByCategory');
+const clientEl = document.getElementById('breakdownByClient');
+if (!catEl || !clientEl) return;
+// Render Categories
+const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+catEl.innerHTML = sortedCats.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1">Per Categoria</div>' : '';
+sortedCats.forEach(([name, val]) => {
+const c = cats.find(x => x.name === name);
+const col = c ? c.color : '#6366f1';
+catEl.innerHTML += `
+<div class="flex justify-between items-center text-[10px]">
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full" style="background:${col}"></span>${name}</div>
+<span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
+</div>`;
+});
+if (!sortedCats.length) catEl.innerHTML += '<div class="text-[9px] text-slate-600 italic">Nessuna spesa</div>';
+// Render Clients
+const sortedClients = Object.entries(clientTotals).sort((a, b) => b[1] - a[1]);
+clientEl.innerHTML = sortedClients.length ? '<div class="text-[8px] text-slate-400 font-bold mb-1 mt-2 pt-2 border-t border-slate-800">Per Persona</div>' : '';
+sortedClients.forEach(([name, val]) => {
+clientEl.innerHTML += `
+<div class="flex justify-between items-center text-[10px]">
+<div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>${name}</div>
+<span class="mono font-bold text-red-400">${fmtCur(val, cur)}</span>
+</div>`;
+});
+if (!sortedClients.length) clientEl.innerHTML += '<div class="text-[9px] text-slate-600 italic mt-2 pt-2 border-t border-slate-800">Nessuna spesa</div>';
 }
-
 /* ============================================================
 NUOVA FUNZIONE: Ricerca per Categoria nel Riepilogo
 ============================================================ */
 function populateSummaryCatFilter(){
-    const select = document.getElementById('summaryCatFilter');
-    if(!select) return;
-    const currentVal = select.value;
-    select.innerHTML = '<option value="">Tutte le categorie (totale mese)</option>';
-    const cats = getCategories();
-    [...cats].sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.textContent = c.name;
-        select.appendChild(opt);
-    });
-    select.value = currentVal;
-    updateCatFilterTotal();
+const select = document.getElementById('summaryCatFilter');
+if(!select) return;
+const currentVal = select.value;
+select.innerHTML = '<option value="">Tutte le categorie (totale mese)</option>';
+const cats = getCategories();
+[...cats].sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
+const opt = document.createElement('option');
+opt.value = c.name;
+opt.textContent = c.name;
+select.appendChild(opt);
+});
+select.value = currentVal;
+updateCatFilterTotal();
 }
-
 function updateCatFilterTotal(){
-    const select = document.getElementById('summaryCatFilter');
-    const totalEl = document.getElementById('catFilterTotal');
-    const details = document.getElementById('catFilterDetails');
-    const countEl = document.getElementById('catFilterCount');
-    const avgEl = document.getElementById('catFilterAvg');
-    const cur = getActiveCurrency();
-    
-    if(!select || !totalEl) return;
-    
-    const cat = select.value;
-    const now = new Date();
-    const m = now.getMonth(), y = now.getFullYear();
-    
-    let total = 0, count = 0;
-    
-    if(!cat){
-        // Totale generale del mese (tutte le categorie)
-        getCountryTasks().forEach(t => {
-            if(t.done || t.type === 'income' || !t.amount) return;
-            const td = parseDateLocal(t.date);
-            if(td.getMonth() === m && td.getFullYear() === y) {
-                total += t.amount;
-                count++;
-            }
-        });
-        totalEl.textContent = total > 0 ? '-' + fmtCur(total, cur) : '—';
-        totalEl.style.color = total > 0 ? '#ef4444' : '#94a3b8';
-        if(details) details.classList.add('hidden');
-    } else {
-        // Totale specifico per categoria selezionata
-        getCountryTasks().forEach(t => {
-            if(t.done || t.type === 'income' || !t.amount || t.category !== cat) return;
-            const td = parseDateLocal(t.date);
-            if(td.getMonth() === m && td.getFullYear() === y) {
-                total += t.amount;
-                count++;
-            }
-        });
-        totalEl.textContent = '-' + fmtCur(total, cur);
-        totalEl.style.color = total > 0 ? '#ef4444' : '#94a3b8';
-        if(details) {
-            details.classList.remove('hidden');
-            if(countEl) countEl.textContent = count;
-            if(avgEl) avgEl.textContent = count > 0 ? fmtCur(total/count, cur) : '—';
-        }
-    }
+const select = document.getElementById('summaryCatFilter');
+const totalEl = document.getElementById('catFilterTotal');
+const details = document.getElementById('catFilterDetails');
+const countEl = document.getElementById('catFilterCount');
+const avgEl = document.getElementById('catFilterAvg');
+const cur = getActiveCurrency();
+if(!select || !totalEl) return;
+const cat = select.value;
+const now = new Date();
+const m = now.getMonth(), y = now.getFullYear();
+let total = 0, count = 0;
+if(!cat){
+// Totale generale del mese (tutte le categorie)
+getCountryTasks().forEach(t => {
+if(t.done || t.type === 'income' || !t.amount) return;
+const td = parseDateLocal(t.date);
+if(td.getMonth() === m && td.getFullYear() === y) {
+total += t.amount;
+count++;
 }
-
+});
+totalEl.textContent = total > 0 ? '-' + fmtCur(total, cur) : '—';
+totalEl.style.color = total > 0 ? '#ef4444' : '#94a3b8';
+if(details) details.classList.add('hidden');
+} else {
+// Totale specifico per categoria selezionata
+getCountryTasks().forEach(t => {
+if(t.done || t.type === 'income' || !t.amount || t.category !== cat) return;
+const td = parseDateLocal(t.date);
+if(td.getMonth() === m && td.getFullYear() === y) {
+total += t.amount;
+count++;
+}
+});
+totalEl.textContent = '-' + fmtCur(total, cur);
+totalEl.style.color = total > 0 ? '#ef4444' : '#94a3b8';
+if(details) {
+details.classList.remove('hidden');
+if(countEl) countEl.textContent = count;
+if(avgEl) avgEl.textContent = count > 0 ? fmtCur(total/count, cur) : '—';
+}
+}
+}
 /* ============================================================
 INIT: onload extras
 ============================================================ */
