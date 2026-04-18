@@ -1679,7 +1679,14 @@ const h=['Data','Tipo','Valuta','Categoria','Persona','Importo','Ricorrenza','Ta
 const rows=tasks.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return[t.date,t.type==='income'?'Entrata':'Spesa',t.currency||cur,`"${t.category}"`,cl?`"${cl.name}"`:'Generico',t.amount!=null?t.amount.toFixed(2):'',t.recurrence||'none',`"${(t.tags||[]).join(',')}"`,`"${(t.note||'').replace(/"/g,"''")}"`,t.done?'Sì':'No'];});
 const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
 }
-function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`backup_v6_${todayStr()}.json`;a.click();showToast('📤','Backup esportato!');}
+function exportBackup(){
+  const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
+  const a=document.createElement('a');
+  a.href=data;
+  a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`; // ← RIGA AGGIORNATA
+  a.click();
+  showToast('📤','Backup esportato!');
+}
 function importBackup(event){
 const file=event.target.files[0];if(!file)return;
 if(!window.confirm(`Importare "${file.name}"?
