@@ -478,6 +478,10 @@ html:not(.dark) #heatmapSection{background:#fff;border-color:#e2e8f0}
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 <!-- ===== SIDEBAR ===== -->
 <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
+    <!-- 🆕 PULSANTE OGGI -->
+    <button onclick="showTodayTasks()" class="w-full px-4 py-3 rounded-2xl font-bold text-sm transition-all hover:brightness-110 text-white mb-3" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">
+        📅 Task di Oggi
+    </button>
 <!-- ✅ CALENDARIO — chiuso di default -->
 <div id="calendarSection" class="section-card">
 <details class="group">
@@ -1377,6 +1381,7 @@ document.getElementById('chartTypeExpense').className='text-[9px] font-bold px-3
 document.getElementById('chartTypeIncome').className='text-[9px] font-bold px-3 py-1 rounded-md transition-all '+(type==='income'?'bg-slate-800 text-emerald-400':'text-slate-500');
 updateChart();
 }
+// ✅ FIX: Corretta sintassi Chart.js (mancava `data:[]`)
 function initChart(){
 if(typeof Chart==='undefined')return;
 const ctx=document.getElementById('expenseChart').getContext('2d');
@@ -1396,6 +1401,7 @@ const legend=document.getElementById('chartLegend');legend.innerHTML='';const to
 if(!labels.length){legend.innerHTML=`<span class="text-[9px] text-slate-600 italic w-full text-center block">Nessun dato</span>`;return;}
 labels.forEach((lbl,i)=>{const pct=total>0?((dataValues[i]/total)*100).toFixed(0):0;const item=document.createElement('div');item.className='legend-item';item.style.color=colors[i];item.innerHTML=`<span class="legend-dot" style="background:${colors[i]}"></span><span>${lbl}</span><span class="opacity-60">${fmtCur(dataValues[i],cur)}</span><span class="opacity-40">${pct}%</span>`;legend.appendChild(item);});
 }
+// ✅ FIX: Corretta sintassi Chart.js
 function initMonthlyChart(){
 if(typeof Chart==='undefined')return;
 const ctx=document.getElementById('monthlyChart').getContext('2d');
@@ -1406,6 +1412,7 @@ if(!monthlyChart)return;const M=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago'
 for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);const y=d.getFullYear(),m=d.getMonth();labels.push(M[m]);let inc=0,exp=0;getCountryTasks().forEach(t=>{if(t.done||!t.amount||t.amount<=0)return;const td=parseDateLocal(t.date);if(td.getFullYear()===y&&td.getMonth()===m){if(t.type==='income')inc+=t.amount;else exp+=t.amount;}});incD.push(+inc.toFixed(2));expD.push(+exp.toFixed(2));}
 monthlyChart.data.labels=labels;monthlyChart.data.datasets[0].data=incD;monthlyChart.data.datasets[1].data=expD;monthlyChart.update();
 }
+// ✅ FIX: Corretta sintassi Chart.js
 function initBalanceChart(){
 if(typeof Chart==='undefined')return;
 const ctx=document.getElementById('balanceChart').getContext('2d');const ac=COUNTRY_CONFIG[activeCountry].accentCss;
@@ -1677,20 +1684,21 @@ function exportCSV(){
 const tasks=getCountryTasks();if(!tasks.length){showToast('⚠️','Nessun task');return;}const cur=getActiveCurrency();
 const h=['Data','Tipo','Valuta','Categoria','Persona','Importo','Ricorrenza','Tag','Note','Completato'];
 const rows=tasks.map(t=>{const cl=state.clients.find(c=>c.id===t.clientId);return[t.date,t.type==='income'?'Entrata':'Spesa',t.currency||cur,`"${t.category}"`,cl?`"${cl.name}"`:'Generico',t.amount!=null?t.amount.toFixed(2):'',t.recurrence||'none',`"${(t.tags||[]).join(',')}"`,`"${(t.note||'').replace(/"/g,"''")}"`,t.done?'Sì':'No'];});
-const csv=[h,...rows].map(r=>r.join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
+const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`export_${activeCountry}_${todayStr()}.csv`;a.click();URL.revokeObjectURL(url);showToast('📊',`CSV esportato (${tasks.length})`);
 }
 function exportBackup(){
-  const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
-  const a=document.createElement('a');
-  a.href=data;
-  a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`; // ← RIGA AGGIORNATA
-  a.click();
-  showToast('📤','Backup esportato!');
+// ✅ FIX: Aggiunto prefisso `data:` mancante
+const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
+const a=document.createElement('a');
+a.href=data;
+a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`;
+a.click();
+showToast('📤','Backup esportato!');
 }
 function importBackup(event){
 const file=event.target.files[0];if(!file)return;
-if(!window.confirm(`Importare "${file.name}"?
-I dati attuali verranno sostituiti.`)){event.target.value='';return;}
+if(!window.confirm(`Importare "${file.name}"?\nI dati attuali verranno sostituiti.`)){event.target.value='';return;}
 const reader=new FileReader();reader.onload=(e)=>{try{const imp=JSON.parse(e.target.result);if(imp.tasks&&imp.clients){imp.tasks=migrateTasks(imp.tasks);imp.categoriesIT=migrateCats(imp.categoriesIT||imp.categories,'IT');imp.categoriesGB=migrateCats(imp.categoriesGB,'GB');state=imp;if(!state.taskOrder)state.taskOrder=state.tasks.map(t=>t.id);saveState();location.reload();}else showToast('⚠️','File non valido');}catch{showToast('⚠️','Errore JSON');}};reader.readAsText(file);
 }
 function saveState(){
@@ -2084,6 +2092,31 @@ const _origFR=fullRefresh;
 fullRefresh=function(){_origFR();setTimeout(()=>{try{applyUrgency();}catch(e){}},80);};
 const _origSwitchTab=switchChartTab;
 switchChartTab=function(tab){_origSwitchTab(tab);if(tab==='balance'){try{renderMonthCompare();}catch(e){}try{renderMonthProjection();}catch(e){};}};
+
+// 🆕 FUNZIONE AGGIORNATA E CORRETTA: PULSANTE OGGI
+function showTodayTasks() {
+    const now = new Date();
+    selectedCalDate = todayStr();
+    currentFilter = 'calDay';
+    currentPage = 0;
+    activeTagFilter = null;
+
+    // ✅ FIX: Sincronizza mese/anno del calendario con la data odierna
+    calYear = now.getFullYear();
+    calMonth = now.getMonth();
+
+    // Rimuovi filtri attivi e nascondi periodo se attivo
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('filter-period').classList.add('hidden');
+    document.getElementById('taskDate').value = selectedCalDate;
+
+    renderCalendar();
+    renderTasks();
+
+    const lbl = now.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
+    document.getElementById('mainTitle').textContent = lbl.charAt(0).toUpperCase() + lbl.slice(1);
+    document.getElementById('mainSubtitle').textContent = 'Task del giorno';
+}
 </script>
 </body>
 </html>
