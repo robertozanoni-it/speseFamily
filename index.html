@@ -1519,108 +1519,137 @@ const nums=document.getElementById('pgNumbers');nums.innerHTML='';
 for(let i=0;i<totalPages;i++){const btn=document.createElement('button');btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);}
 }
 function renderTasks(){
-const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
-const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
-grid.innerHTML='';
-const ts=todayStr(),today=parseDateLocal(ts);
-let filtered=getCountryTasks();
-if(!search){
-if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
-else if(currentFilter==='annual') filtered=filtered.filter(t=>t.recurrence==='yearly');
-else if(currentFilter==='weekly') filtered=filtered.filter(t=>t.recurrence==='weekly');
-else if(currentFilter==='monthly') filtered=filtered.filter(t=>t.recurrence==='monthly');
-else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
-else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
-else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
-else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
-else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
-}
-if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
-if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
-if(search){
-    const searchNum=parseFloat(search);
-    filtered=filtered.filter(t=>{
-        const cl=state.clients.find(c=>c.id===t.clientId);
-        const clientName=(cl?cl.name:'generico').toLowerCase();
-        const note=(t.note||'').toLowerCase();
-        const tags=(t.tags||[]).join(' ').toLowerCase();
-        const cat=t.category.toLowerCase();
-        return cat.includes(search)||
-               clientName.includes(search)||
-               note.includes(search)||
-               tags.includes(search)||
-               (!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);
+    const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
+    const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+    grid.innerHTML='';
+    const ts=todayStr(),today=parseDateLocal(ts);
+    let filtered=getCountryTasks();
+
+    // 1. Filtri standard
+    if(!search){
+        if(currentFilter==='calDay'&&selectedCalDate)filtered=filtered.filter(t=>t.date===selectedCalDate);
+        else if(currentFilter==='annual') filtered=filtered.filter(t=>t.recurrence==='yearly');
+        else if(currentFilter==='weekly') filtered=filtered.filter(t=>t.recurrence==='weekly');
+        else if(currentFilter==='monthly') filtered=filtered.filter(t=>t.recurrence==='monthly');
+        else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
+        else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
+        else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
+        else if(currentFilter==='period'){const s=document.getElementById('filterStart').value,en=document.getElementById('filterEnd').value;if(s&&en){const sd=parseDateLocal(s),ed=parseDateLocal(en);filtered=filtered.filter(t=>{const td=parseDateLocal(t.date);return td>=sd&&td<=ed;});}}
+        else if(currentFilter!=='all')filtered=filtered.filter(t=>t.clientId===currentFilter);
+    }
+    if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
+    if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
+
+    // 2. Ricerca avanzata (corretta per nome, note, tag, importo)
+    if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const clientName=(cl?cl.name:'generico').toLowerCase();const note=(t.note||'').toLowerCase();const tags=(t.tags||[]).join(' ').toLowerCase();const cat=t.category.toLowerCase();return cat.includes(search)||clientName.includes(search)||note.includes(search)||tags.includes(search)||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
+
+    // 3. Ordinamento
+    if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
+    else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
+    else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
+    else if(currentSort==='custom'){state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});}
+
+    const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
+    const cur=getActiveCurrency();
+    const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
+
+    // 4. Gestione UI Ricerca + 🆕 BREAKDOWN CATEGORIE
+    let breakdownBox = document.getElementById('searchBreakdownBox');
+    if(search){
+        const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
+        const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
+        const net=incT-expT;
+        document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
+        document.getElementById('mainSubtitle').innerHTML=`<span class="text-white font-bold text-sm mono">Spese: <span class="text-red-400">${fmtCur(expT,cur)}</span> &nbsp;·&nbsp; Entrate: <span class="text-emerald-400">${fmtCur(incT,cur)}</span> &nbsp;·&nbsp; Netto: <span style="color:${net>=0?'#10b981':'#ef4444'}">${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}</span></span>`;
+        ftBox.classList.add('hidden');
+
+        // 🆕 Calcolo ripartizione per categoria sui risultati filtrati
+        const cats=getCategories();const catTotals={};
+        filtered.forEach(t=>{if(t.done||t.type==='income'||!t.amount||t.amount<=0)return;catTotals[t.category]=(catTotals[t.category]||0)+t.amount;});
+        const sortedCats=Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
+
+        if(!breakdownBox){
+            breakdownBox=document.createElement('div');breakdownBox.id='searchBreakdownBox';breakdownBox.className='mb-4';
+            const ref=document.getElementById('noPrint2');
+            if(ref)ref.parentNode.insertBefore(breakdownBox,ref.nextSibling);
+            else document.querySelector('main').prepend(breakdownBox);
+        }
+        
+        if(!sortedCats.length){breakdownBox.classList.add('hidden');}
+        else{
+            breakdownBox.classList.remove('hidden');
+            breakdownBox.innerHTML=`<div class="bg-darkCard border border-slate-800 rounded-2xl p-4 shadow-sm">
+                <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">📊 Ripartizione Categorie</div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    ${sortedCats.map(([cat,val])=>{
+                        const cObj=cats.find(c=>c.name===cat);const col=cObj?cObj.color:'#6366f1';
+                        return `<div class="bg-slate-800/50 rounded-lg p-2 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${col}"></span>
+                            <span class="text-[10px] text-slate-300 flex-1 truncate">${cat}</span>
+                            <span class="mono text-[11px] font-bold text-red-400">${fmtCur(val,cur)}</span>
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>`;
+        }
+    } else {
+        if(breakdownBox)breakdownBox.classList.add('hidden');
+        if(currentFilter!=='all'){const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';}
+        else{ftBox.classList.add('hidden');}
+    }
+
+    // 5. Paginazione e rendering carte
+    renderPagination(totalCount,currentPage,PAGE_SIZE);
+    const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
+    const cats=getCategories();
+    const otherCountry=activeCountry==='IT'?'GB':'IT';const otherCfg=COUNTRY_CONFIG[otherCountry];
+    paginated.forEach(t=>{
+        const client=state.clients.find(c=>c.id===t.clientId);const cColor=client?client.color:'#475569';
+        const isPast=parseDateLocal(t.date)<today&&!t.done;
+        const dateLabel=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
+        const isIncome=t.type==='income';const catObj=cats.find(c=>c.name===t.category);const catColor=catObj?catObj.color:'#6366f1';const cur=t.currency||getActiveCurrency();
+        let recTag='';
+        if(t.recurrence==='weekly')recTag='<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/15 px-1.5 py-0.5 rounded">7g</span>';
+        else if(t.recurrence==='monthly')recTag='<span class="text-[9px] text-amber-400 font-bold bg-amber-500/15 px-1.5 py-0.5 rounded">1M</span>';
+        else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-orange-400 font-bold bg-orange-500/15 px-1.5 py-0.5 rounded">1A</span>';
+        const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag" onclick="setActiveTag('${tag}')">#${tag}</span>`).join('');
+        const safeCat=t.category.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        const card=document.createElement('div');
+        card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;
+        card.style.borderLeftColor=cColor;card.draggable=true;
+        card.addEventListener('dragstart',e=>onDragStart(e,t.id));card.addEventListener('dragend',e=>onDragEnd(e));card.addEventListener('dragover',e=>onDragOver(e,t.id));card.addEventListener('drop',e=>onDrop(e,t.id));
+        card.innerHTML=`
+        <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="drag-handle text-slate-600 text-sm select-none">⠿</span>
+                <button onclick="toggleTaskStatus(${t.id})" class="w-5 h-5 rounded-md border-2 border-slate-700 flex items-center justify-center transition-all text-[10px] ${t.done?'bg-green-500 border-green-500 text-white':'hover:border-accent'}">${t.done?'✓':''}</button>
+                <span class="text-[10px] font-black uppercase tracking-widest mono px-2 py-0.5 rounded-full border ${isPast?'text-red-400 bg-red-400/10 border-red-400/20':'text-slate-400 bg-slate-800 border-slate-700'}">${dateLabel}</span>
+                ${recTag}<span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑':'↓'}</span>
+            </div>
+            <div class="flex gap-1 items-center">
+                <button onclick="openMoveModal(${t.id})" class="btn-move-task" title="Sposta in ${otherCfg.flagText}">${otherCfg.flag}</button>
+                <button onclick="showHistoryModal(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors" title="Storico">🕐</button>
+                <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-600 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
+                <button onclick="editTask(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors">✏️</button>
+                <button onclick="deleteTask(${t.id})" class="text-xs text-slate-600 hover:text-red-400 p-1 transition-colors">✕</button>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
+            <button onclick="showVoiceAnalysis('${safeCat}')" class="cat-link font-bold text-base leading-tight text-left ${t.done?'line-through text-slate-500':'text-white'}">${t.category}<span class="cat-link-icon">📊</span></button>
+        </div>
+        <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${t.note||'—'}</p>
+        ${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
+        <div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50">
+            <div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,cur):''}</div>
+            <div class="flex items-center gap-2">
+                <span class="text-[8px] font-bold mono px-1.5 py-0.5 rounded" style="background:${catColor}18;color:${catColor};border:1px solid ${catColor}30">${cur}</span>
+                <div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${cColor}">${client?client.name:'Generico'}</div>
+            </div>
+        </div>`;
+        grid.appendChild(card);
     });
-}
-if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
-else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
-else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
-else if(currentSort==='custom'){state.tasks.forEach(t=>{if(!state.taskOrder.includes(t.id))state.taskOrder.push(t.id);});filtered.sort((a,b)=>{const ai=state.taskOrder.indexOf(a.id),bi=state.taskOrder.indexOf(b.id);if(ai<0&&bi<0)return 0;if(ai<0)return 1;if(bi<0)return-1;return ai-bi;});}
-const totalCount=filtered.length;empty.style.display=totalCount===0?'flex':'none';
-const cur=getActiveCurrency();
-const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
-if(search){
-const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-const incT=filtered.filter(t=>!t.done&&t.amount&&t.type==='income').reduce((s,t)=>s+t.amount,0);
-const net=incT-expT;
-document.getElementById('mainTitle').textContent=`${totalCount} risultat${totalCount===1?'o':'i'} per "${search}"`;
-document.getElementById('mainSubtitle').innerHTML=`<span class="text-white font-bold text-sm mono">Spese: <span class="text-red-400">${fmtCur(expT,cur)}</span> &nbsp;·&nbsp; Entrate: <span class="text-emerald-400">${fmtCur(incT,cur)}</span> &nbsp;·&nbsp; Netto: <span style="color:${net>=0?'#10b981':'#ef4444'}">${(net>=0?'+':'')+fmtCur(Math.abs(net),cur)}</span></span>`;
-ftBox.classList.add('hidden');
-}else if(currentFilter!=='all'){
-const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);
-ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';
-}else{ftBox.classList.add('hidden');}
-renderPagination(totalCount,currentPage,PAGE_SIZE);
-const paginated=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
-const cats=getCategories();
-const otherCountry=activeCountry==='IT'?'GB':'IT';const otherCfg=COUNTRY_CONFIG[otherCountry];
-paginated.forEach(t=>{
-const client=state.clients.find(c=>c.id===t.clientId);const cColor=client?client.color:'#475569';
-const isPast=parseDateLocal(t.date)<today&&!t.done;
-const dateLabel=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
-const isIncome=t.type==='income';const catObj=cats.find(c=>c.name===t.category);const catColor=catObj?catObj.color:'#6366f1';const cur=t.currency||getActiveCurrency();
-let recTag='';
-if(t.recurrence==='weekly')recTag='<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/15 px-1.5 py-0.5 rounded">7g</span>';
-else if(t.recurrence==='monthly')recTag='<span class="text-[9px] text-amber-400 font-bold bg-amber-500/15 px-1.5 py-0.5 rounded">1M</span>';
-else if(t.recurrence==='yearly')recTag='<span class="text-[9px] text-orange-400 font-bold bg-orange-500/15 px-1.5 py-0.5 rounded">1A</span>';
-const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag" onclick="setActiveTag('${tag}')">#${tag}</span>`).join('');
-const safeCat=t.category.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-const card=document.createElement('div');
-card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;
-card.style.borderLeftColor=cColor;card.draggable=true;
-card.addEventListener('dragstart',e=>onDragStart(e,t.id));card.addEventListener('dragend',e=>onDragEnd(e));card.addEventListener('dragover',e=>onDragOver(e,t.id));card.addEventListener('drop',e=>onDrop(e,t.id));
-card.innerHTML=`
-<div class="flex justify-between items-start mb-3">
-<div class="flex items-center gap-2 flex-wrap">
-<span class="drag-handle text-slate-600 text-sm select-none">⠿</span>
-<button onclick="toggleTaskStatus(${t.id})" class="w-5 h-5 rounded-md border-2 border-slate-700 flex items-center justify-center transition-all text-[10px] ${t.done?'bg-green-500 border-green-500 text-white':'hover:border-accent'}">${t.done?'✓':''}</button>
-<span class="text-[10px] font-black uppercase tracking-widest mono px-2 py-0.5 rounded-full border ${isPast?'text-red-400 bg-red-400/10 border-red-400/20':'text-slate-400 bg-slate-800 border-slate-700'}">${dateLabel}</span>
-${recTag}<span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑':'↓'}</span>
-</div>
-<div class="flex gap-1 items-center">
-<button onclick="openMoveModal(${t.id})" class="btn-move-task" title="Sposta in ${otherCfg.flagText}">${otherCfg.flag}</button>
-<button onclick="showHistoryModal(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors" title="Storico">🕐</button>
-<button onclick="duplicateTask(${t.id})" class="text-xs text-slate-600 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
-<button onclick="editTask(${t.id})" class="text-xs text-slate-600 hover:text-slate-300 p-1 transition-colors">✏️</button>
-<button onclick="deleteTask(${t.id})" class="text-xs text-slate-600 hover:text-red-400 p-1 transition-colors">✕</button>
-</div>
-</div>
-<div class="flex items-center gap-2 mb-1">
-<span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
-<button onclick="showVoiceAnalysis('${safeCat}')" class="cat-link font-bold text-base leading-tight text-left ${t.done?'line-through text-slate-500':'text-white'}">${t.category}<span class="cat-link-icon">📊</span></button>
-</div>
-<p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${t.note||'—'}</p>
-${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
-<div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50">
-<div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${t.amount!=null?(isIncome?'+':'-')+fmtCur(t.amount,cur):''}</div>
-<div class="flex items-center gap-2">
-<span class="text-[8px] font-bold mono px-1.5 py-0.5 rounded" style="background:${catColor}18;color:${catColor};border:1px solid ${catColor}30">${cur}</span>
-<div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${cColor}">${client?client.name:'Generico'}</div>
-</div>
-</div>`;
-grid.appendChild(card);
-});
-updateExpiredBanner();
+    updateExpiredBanner();
 }
 function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;currentPage=0;renderTagFilters();renderTasks();}
 function duplicateTask(id){const t=state.tasks.find(t=>t.id===id);if(!t)return;const newId=Date.now();const clone={...t,id:newId,done:false,date:todayStr(),country:activeCountry,history:[{ts:newId,action:'Duplicato da '+t.category,note:''}]};state.tasks.push(clone);state.taskOrder.push(newId);saveState();fullRefresh();showToast('📋',`"${t.category}" duplicato!`);}
