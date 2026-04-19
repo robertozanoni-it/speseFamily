@@ -1627,15 +1627,40 @@ const pc=document.getElementById('periodTotalContainer');if(fs&&fe){pc.classList
 updateGlobalBudgetBar();updateHeroKPIs();
 }
 function editTask(id){
-const t=state.tasks.find(t=>t.id===id);if(!t)return;
-document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';
-document.getElementById('setAsWeekly').checked=(t.recurrence==='weekly');
-document.getElementById('setAsMonthly').checked=(t.recurrence==='monthly');
-document.getElementById('setAsAnnual').checked=(t.recurrence==='yearly');
-document.getElementById('taskRecurrence').value=t.recurrence||'none';
-document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');
-document.getElementById('formDetails').open=true;document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span> Modifica Task';document.getElementById('submitBtn').textContent='Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');
-setTaskType(t.type||'expense');clearCatError();const[y,m]=t.date.split('-').map(Number);calYear=y;calMonth=m-1;renderCalendar();window.scrollTo({top:0,behavior:'smooth'});
+    const t = state.tasks.find(task => task.id === id);
+    if(!t) return;
+
+    // 1. Apri il form e scrolla dolcemente verso di esso
+    const formDetails = document.getElementById('formDetails');
+    formDetails.open = true;
+    setTimeout(() => formDetails.scrollIntoView({behavior: 'smooth', block: 'start'}), 50);
+
+    // 2. Popola tutti i campi in modo sicuro
+    document.getElementById('editTaskId').value = t.id;
+    document.getElementById('taskDate').value = t.date;
+    document.getElementById('taskCategory').value = t.category || '';
+    document.getElementById('taskClient').value = t.clientId || '';
+    document.getElementById('taskAmount').value = t.amount != null ? t.amount : '';
+    document.getElementById('taskNote').value = t.note || '';
+    document.getElementById('taskTags').value = (t.tags || []).join(', ');
+
+    // 3. Gestione Ricorrenza
+    document.getElementById('setAsWeekly').checked = (t.recurrence === 'weekly');
+    document.getElementById('setAsMonthly').checked = (t.recurrence === 'monthly');
+    document.getElementById('setAsAnnual').checked = (t.recurrence === 'yearly');
+    document.getElementById('taskRecurrence').value = t.recurrence || 'none';
+
+    // 4. Aggiorna UI e Stato
+    setTaskType(t.type || 'expense');
+    clearCatError();
+    document.getElementById('formTitle').innerHTML = '<span class="w-1.5 h-1.5 rounded-full animate-pulse bg-yellow-400"></span> Modifica Task';
+    document.getElementById('submitBtn').textContent = '💾 Aggiorna';
+    document.getElementById('cancelEdit').classList.remove('hidden');
+
+    // 5. Sincronizza calendario alla data del task
+    const [y, m] = t.date.split('-').map(Number);
+    calYear = y; calMonth = m - 1;
+    renderCalendar();
 }
 function resetForm(){
 document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';document.getElementById('taskDate').value=todayStr();
