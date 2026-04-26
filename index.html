@@ -1562,7 +1562,60 @@ function renderTasks(){
     if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
 
     // 2. Ricerca avanzata (corretta per nome, note, tag, importo)
-    if(search){const searchNum=parseFloat(search);filtered=filtered.filter(t=>{const cl=state.clients.find(c=>c.id===t.clientId);const clientName=(cl?cl.name:'generico').toLowerCase();const note=(t.note||'').toLowerCase();const tags=(t.tags||[]).join(' ').toLowerCase();const cat=t.category.toLowerCase();return cat.includes(search)||clientName.includes(search)||note.includes(search)||tags.includes(search)||(!isNaN(searchNum)&&t.amount!==null&&Math.abs(t.amount-searchNum)<0.005);});}
+    // 2. Ricerca avanzata con supporto mese + categoria
+if(search){
+    // Mappa mesi IT/EN → numero mese (1-12)
+    const monthMap = {
+        'gennaio':1,'febbraio':2,'marzo':3,'aprile':4,'maggio':5,'giugno':6,
+        'luglio':7,'agosto':8,'settembre':9,'ottobre':10,'novembre':11,'dicembre':12,
+        'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,
+        'july':7,'august':8,'september':9,'october':10,'november':11,'december':12,
+        'gen':1,'feb':2,'mar':3,'apr':4,'mag':5,'giu':6,'lug':7,'ago':8,'set':9,'ott':10,'nov':11,'dic':12,
+        'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12
+    };
+    
+    const searchLower = search.toLowerCase().trim();
+    const searchNum = parseFloat(search);
+    
+    // Estrai mese dalla query (se presente)
+    let searchMonth = null;
+    for(const [name, num] of Object.entries(monthMap)){
+        if(searchLower.includes(name)){ searchMonth = num; break; }
+    }
+    
+    // Estrai categoria/testo dalla query (rimuovendo il mese trovato)
+    let searchCat = searchLower;
+    if(searchMonth !== null){
+        for(const [name] of Object.entries(monthMap)){
+            if(searchLower.includes(name)){
+                searchCat = searchLower.replace(new RegExp(name,'gi'),'').trim();
+                break;
+            }
+        }
+    }
+    
+    filtered = filtered.filter(t => {
+        const cl = state.clients.find(c => c.id === t.clientId);
+        const clientName = (cl ? cl.name : 'generico').toLowerCase();
+        const note = (t.note || '').toLowerCase();
+        const tags = (t.tags || []).join(' ').toLowerCase();
+        const cat = t.category.toLowerCase();
+        const td = parseDateLocal(t.date);
+        const taskMonth = td.getMonth() + 1; // 1-12
+        
+        // Filtro mese (se specificato)
+        if(searchMonth !== null && taskMonth !== searchMonth) return false;
+        
+        // Filtro testo: categoria, cliente, note, tag, importo
+        const textMatch = cat.includes(searchCat) || 
+                         clientName.includes(searchCat) || 
+                         note.includes(searchCat) || 
+                         tags.includes(searchCat) ||
+                         (!isNaN(searchNum) && t.amount !== null && Math.abs(t.amount - searchNum) < 0.005);
+        
+        return textMatch;
+    });
+}
 
     // 3. Ordinamento
     if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
