@@ -89,6 +89,31 @@ body.country-GB .move-country-box.to{border-color:#7c3aed;background:rgba(124,58
 .btn-move-cancel:hover{color:#e2e8f0;border-color:#475569}
 .btn-move-task{font-size:11px;padding:2px 5px;border-radius:6px;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.08);color:#a5b4fc;cursor:pointer;transition:all .15s;line-height:1.4}
 .btn-move-task:hover{background:rgba(99,102,241,.22);border-color:#a5b4fc;transform:scale(1.05)}
+.vrec-action-btn{
+font-size:10px;
+line-height:1;
+padding:4px 6px;
+border-radius:7px;
+border:1px solid rgba(255,255,255,.12);
+background:rgba(255,255,255,.08);
+color:#e2e8f0;
+cursor:pointer;
+transition:all .15s ease;
+}
+.vrec-action-btn:hover{
+background:rgba(255,255,255,.16);
+border-color:var(--accent);
+transform:scale(1.06);
+}
+html:not(.dark) .vrec-action-btn{
+background:rgba(0,0,0,.05);
+border-color:rgba(0,0,0,.10);
+color:#334155;
+}
+html:not(.dark) .vrec-action-btn:hover{
+background:rgba(0,0,0,.10);
+border-color:var(--accent);
+}
 /* ===== COUNTRY SWITCHER ===== */
 :root{
 --accent:#3b82f6;
@@ -264,7 +289,7 @@ html{transition:font-size .18s ease}
 .font-ctrl-btn:active{transform:scale(.88)}
 html:not(.dark) .font-ctrl-btn:hover{background:rgba(0,0,0,.07);color:#1e293b}
 @media print{
-#noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,.country-hero{display:none!important}
+#noPrint,header,aside,.filter-bar-wrapper,#expiredBanner,#paginationBar,#undoToast,#calTooltip,#historyModal,#voiceAnalysisModal,#moveTaskModal,#confirmOccModal,.country-hero{display:none!important}
 body{background:white!important;color:black!important}
 .card-task{break-inside:avoid;border:1px solid #ccc!important;box-shadow:none!important}
 main{display:block!important}
@@ -1062,7 +1087,14 @@ showToast('🔀',`"${task.category}" → ${toCfg.flag} ${toCfg.flagText}`);
 showUndo(`Spostato in ${toCfg.flagText}`,backup,b=>{state.tasks=b;saveState();fullRefresh();showToast('↩️','Spostamento annullato!');});
 }
 document.getElementById('moveTaskModal').addEventListener('click',function(e){if(e.target===this)closeMoveModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMoveModal();closeHistoryModal();closeVoiceModal();}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closeMoveModal();
+    closeHistoryModal();
+    closeVoiceModal();
+    closeOccModal();
+  }
+});
 function switchCountry(c){
 activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();
 currentFilter='calDay';currentPage=0;selectedCalDate=todayStr();activeTagFilter=null;
@@ -2047,7 +2079,8 @@ div.innerHTML=`
 <span class="text-[10px] font-black text-white truncate">${t.category} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span>
 </div>
 <div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-<button onclick="editTask(${t.id})" class="vrec-action-btn">✏️</button>
+<button onclick="openOccModal(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button>
+<button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button>
 </div>
 </div>
 <div class="flex items-center justify-between mt-1.5 pl-3.5">
@@ -2377,6 +2410,119 @@ const _origFR=fullRefresh;
 fullRefresh=function(){_origFR();setTimeout(()=>{try{applyUrgency();}catch(e){}},80);};
 const _origSwitchTab=switchChartTab;
 switchChartTab=function(tab){_origSwitchTab(tab);if(tab==='balance'){try{renderMonthCompare();}catch(e){}try{renderMonthProjection();}catch(e){};}};
+// ===== OCCURRENZE RICORRENTI =====
+let pendingOccurrenceTaskId = null;
+let pendingOccurrenceDate = null;
+
+function openOccModal(id, occurrenceDate = null) {
+  const task = state.tasks.find(t => t.id === id);
+  if (!task) {
+    showToast('⚠️', 'Task non trovato');
+    return;
+  }
+
+  pendingOccurrenceTaskId = id;
+  pendingOccurrenceDate = occurrenceDate || todayStr();
+
+  const cats = task.country === 'GB' ? state.categoriesGB : state.categoriesIT;
+  const catObj = cats.find(c => c.name === task.category);
+  const catColor = catObj ? catObj.color : '#6366f1';
+  const cur = task.currency || getActiveCurrency();
+
+  document.getElementById('occCatDot').style.background = catColor;
+  document.getElementById('occCat').textContent = task.category || 'Occorrenza';
+
+  document.getElementById('occDate').textContent =
+    parseDateLocal(pendingOccurrenceDate).toLocaleDateString('it-IT', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+
+  document.getElementById('occSymbol').textContent = cur;
+  document.getElementById('occAmount').value =
+    task.amount != null ? Number(task.amount).toFixed(2) : '';
+
+  document.getElementById('confirmOccModal').classList.add('visible');
+}
+
+function closeOccModal() {
+  document.getElementById('confirmOccModal').classList.remove('visible');
+
+  pendingOccurrenceTaskId = null;
+  pendingOccurrenceDate = null;
+
+  document.getElementById('occCatDot').style.background = '';
+  document.getElementById('occCat').textContent = '';
+  document.getElementById('occDate').textContent = '';
+  document.getElementById('occAmount').value = '';
+}
+
+function confirmOccurrence() {
+  if (pendingOccurrenceTaskId === null) {
+    showToast('⚠️', 'Nessuna occorrenza selezionata');
+    closeOccModal();
+    return;
+  }
+
+  const source = state.tasks.find(t => t.id === pendingOccurrenceTaskId);
+  if (!source) {
+    showToast('⚠️', 'Task originale non trovato');
+    closeOccModal();
+    return;
+  }
+
+  const amountRaw = document.getElementById('occAmount').value;
+  const amount = amountRaw !== '' ? parseFloat(amountRaw) : null;
+
+  if (amount === null || Number.isNaN(amount) || amount < 0) {
+    showToast('⚠️', 'Importo non valido');
+    document.getElementById('occAmount').focus();
+    return;
+  }
+
+  const newId = Date.now();
+  const occDate = pendingOccurrenceDate || todayStr();
+
+  const occurrence = {
+    ...source,
+    id: newId,
+    date: occDate,
+    amount,
+    done: false,
+    recurrence: 'none',
+    note: source.note ? `${source.note} [occorrenza registrata]` : '[occorrenza registrata]',
+    history: [
+      {
+        ts: newId,
+        action: 'Occorrenza registrata',
+        note: `${source.category} — ${fmtCur(amount, source.currency || getActiveCurrency())}`
+      }
+    ]
+  };
+
+  state.tasks.push(occurrence);
+  state.taskOrder.push(newId);
+
+  selectedCalDate = occDate;
+  currentFilter = 'calDay';
+  currentPage = 0;
+
+  const [y, m] = occDate.split('-').map(Number);
+  calYear = y;
+  calMonth = m - 1;
+
+  saveState();
+  closeOccModal();
+  fullRefresh();
+
+  showToast('✅', 'Occorrenza registrata');
+}
+
+document.getElementById('confirmOccModal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeOccModal();
+});
 
 // 🆕 FUNZIONE AGGIORNATA E CORRETTA: PULSANTE OGGI
 function showTodayTasks() {
