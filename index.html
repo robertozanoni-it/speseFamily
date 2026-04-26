@@ -886,7 +886,7 @@ onkeydown="if(event.key==='Enter')quickAdd()">
 <div id="noPrint2" class="mb-4 flex flex-col sm:flex-row gap-3 filter-bar-wrapper">
 <div class="relative flex-1">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span>
-<input type="text" id="searchInput" placeholder="Cerca: nome, tag, o importo…" oninput="debouncedSearch()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors">
+<input type="text" id="searchInput" placeholder="Cerca: mese, categoria, persona, tag, tipo o importo… es. febbraio food roberto" oninput="debouncedSearch()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors">
 </div>
 <div class="flex items-center gap-1.5 bg-darkCard border border-slate-800 rounded-xl px-3 py-2 flex-shrink-0">
 <span class="text-[9px] uppercase tracking-widest text-slate-600 font-bold mr-1">Ordina</span>
@@ -1539,6 +1539,157 @@ document.getElementById('pgInfo').textContent=`${pg*pageSize+1}–${Math.min((pg
 const nums=document.getElementById('pgNumbers');nums.innerHTML='';
 for(let i=0;i<totalPages;i++){const btn=document.createElement('button');btn.className='w-7 h-7 text-[10px] font-bold rounded-lg border border-slate-700 transition-all '+(i===pg?'bg-accent text-white border-accent':'bg-slate-800 text-slate-400 hover:bg-slate-700');btn.textContent=i+1;btn.onclick=()=>{currentPage=i;renderTasks();};nums.appendChild(btn);}
 }
+const MONTH_ALIASES = {
+  gennaio:1, gen:1, january:1, jan:1,
+  febbraio:2, feb:2, february:2,
+  marzo:3, mar:3, march:3,
+  aprile:4, apr:4, april:4,
+  maggio:5, mag:5, may:5,
+  giugno:6, giu:6, june:6, jun:6,
+  luglio:7, lug:7, july:7, jul:7,
+  agosto:8, ago:8, august:8, aug:8,
+  settembre:9, set:9, september:9, sep:9, sept:9,
+  ottobre:10, ott:10, october:10, oct:10,
+  novembre:11, nov:11, november:11,
+  dicembre:12, dic:12, december:12, dec:12
+};
+
+function normalizeSearchText(value){
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .trim();
+}
+
+function getSearchParts(query){
+  const normalized = normalizeSearchText(query);
+  const rawTokens = normalized.split(/[\s,;|]+/).filter(Boolean);
+
+  let month = null;
+  let year = null;
+  const tokens = [];
+
+  rawTokens.forEach(token => {
+    if(MONTH_ALIASES[token]){
+      month = MONTH_ALIASES[token];
+      return;
+    }
+
+    if(/^\d{4}$/.test(token)){
+      const y = Number(token);
+      if(y >= 1900 && y <= 2100){
+        year = y;
+        return;
+      }
+    }
+
+    tokens.push(token);
+  });
+
+  return { month, year, tokens };
+}
+
+function getRecurrenceSearchText(recurrence){
+  const map = {
+    weekly: 'settimanale settimana weekly week 7g ricorrente',
+    monthly: 'mensile mese monthly month 1m ricorrente',
+    yearly: 'annuale anno annual yearly year 1a ricorrente',
+    none: 'singola normale una tantum no ricorrenza'
+  };
+
+  return map[recurrence || 'none'] || '';
+}
+
+function getTaskTypeSearchText(type){
+  if(type === 'income'){
+    return 'entrata entrate income guadagno guadagni ricavo ricavi incasso accredito';
+  }
+
+  return 'spesa spese expense uscita uscite costo costi pagamento pagamenti';
+}
+
+function taskMatchesSmartSearch(task, searchParts){
+  const taskDate = parseDateLocal(task.date);
+
+  if(searchParts.month !== null && taskDate.getMonth() + 1 !== searchParts.month) return false;
+  if(searchParts.year !== null && taskDate.getFullYear() !== searchParts.year) return false;
+
+  const client = state.clients.find(c => c.id === task.clientId);
+  const clientName = client ? client.name : 'generico';
+
+  const amount = Number(task.amount);
+  const amountFields = Number.isFinite(amount)
+    ? [
+        String(amount),
+        amount.toFixed(2),
+        amount.toFixed(0).replace('.00',''),
+        String(amount).replace('.', ','),
+        amount.toFixed(2).replace('.', ',')
+      ]
+    : [];
+
+  const fields = [
+    task.category,
+    clientName,
+    task.note || '',
+    (task.tags || []).join(' '),
+    task.currency || '',
+    getTaskTypeSearchText(task.type),
+    getRecurrenceSearchText(task.recurrence),
+    task.done ? 'completato completata fatto chiuso' : 'aperto attivo non completato da fare',
+    ...amountFields
+  ].map(normalizeSearchText);
+
+  if(!searchParts.tokens.length) return true;
+
+  return searchParts.tokens.every(token => {
+    const numericToken = parseFloat(token.replace(',', '.'));
+
+    if(!Number.isNaN(numericToken) && Number.isFinite(amount)){
+      if(Math.abs(amount - numericToken) < 0.005) return true;
+    }
+
+    return fields.some(field => field.includes(token));
+  });
+}
+
+function restoreMainTitleFromCurrentFilter(){
+  const titleEl = document.getElementById('mainTitle');
+  const subEl = document.getElementById('mainSubtitle');
+
+  if(currentFilter === 'calDay' && selectedCalDate){
+    const d = parseDateLocal(selectedCalDate);
+    const lbl = d.toLocaleDateString('it-IT', { weekday:'long', day:'2-digit', month:'long' });
+    titleEl.textContent = lbl.charAt(0).toUpperCase() + lbl.slice(1);
+    subEl.textContent = 'Task del giorno';
+    return;
+  }
+
+  if(typeof currentFilter === 'number'){
+    const client = state.clients.find(c => c.id === currentFilter);
+    if(client){
+      titleEl.textContent = `👤 ${client.name}`;
+      subEl.textContent = `Task di ${client.name}`;
+      return;
+    }
+  }
+
+  const titles = {
+    all:['Attività e Scadenze','Timeline'],
+    expired:['⚠ Scaduti','Non completati'],
+    expense:['📤 Spese','Uscite'],
+    income:['📥 Entrate','Guadagni'],
+    period:['📅 Periodo','Task nel periodo'],
+    annual:['💶 Spese Annuali','Ricorrenze con cadenza annuale'],
+    weekly:['📅 Spese Settimanali','Cadenza settimanale'],
+    monthly:['🗓 Spese Mensili','Cadenza mensile']
+  };
+
+  const fallback = titles[currentFilter] || titles.all;
+  titleEl.textContent = fallback[0];
+  subEl.textContent = fallback[1];
+}
 function renderTasks(){
     const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
     const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
@@ -1561,61 +1712,11 @@ function renderTasks(){
     if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
     if(amountFilterActive)filtered=filtered.filter(t=>{if(t.amount===null||t.amount===undefined)return amountMin===0;return t.amount>=amountMin&&t.amount<=amountMax;});
 
-    // 2. Ricerca avanzata (corretta per nome, note, tag, importo)
-    // 2. Ricerca avanzata con supporto mese + categoria
-if(search){
-    // Mappa mesi IT/EN → numero mese (1-12)
-    const monthMap = {
-        'gennaio':1,'febbraio':2,'marzo':3,'aprile':4,'maggio':5,'giugno':6,
-        'luglio':7,'agosto':8,'settembre':9,'ottobre':10,'novembre':11,'dicembre':12,
-        'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,
-        'july':7,'august':8,'september':9,'october':10,'november':11,'december':12,
-        'gen':1,'feb':2,'mar':3,'apr':4,'mag':5,'giu':6,'lug':7,'ago':8,'set':9,'ott':10,'nov':11,'dic':12,
-        'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12
-    };
-    
-    const searchLower = search.toLowerCase().trim();
-    const searchNum = parseFloat(search);
-    
-    // Estrai mese dalla query (se presente)
-    let searchMonth = null;
-    for(const [name, num] of Object.entries(monthMap)){
-        if(searchLower.includes(name)){ searchMonth = num; break; }
+    // 2. Ricerca avanzata SMART: mese + categoria/genere + persona + tag + tipo + importo
+    if(search){
+        const searchParts = getSearchParts(search);
+        filtered = filtered.filter(t => taskMatchesSmartSearch(t, searchParts));
     }
-    
-    // Estrai categoria/testo dalla query (rimuovendo il mese trovato)
-    let searchCat = searchLower;
-    if(searchMonth !== null){
-        for(const [name] of Object.entries(monthMap)){
-            if(searchLower.includes(name)){
-                searchCat = searchLower.replace(new RegExp(name,'gi'),'').trim();
-                break;
-            }
-        }
-    }
-    
-    filtered = filtered.filter(t => {
-        const cl = state.clients.find(c => c.id === t.clientId);
-        const clientName = (cl ? cl.name : 'generico').toLowerCase();
-        const note = (t.note || '').toLowerCase();
-        const tags = (t.tags || []).join(' ').toLowerCase();
-        const cat = t.category.toLowerCase();
-        const td = parseDateLocal(t.date);
-        const taskMonth = td.getMonth() + 1; // 1-12
-        
-        // Filtro mese (se specificato)
-        if(searchMonth !== null && taskMonth !== searchMonth) return false;
-        
-        // Filtro testo: categoria, cliente, note, tag, importo
-        const textMatch = cat.includes(searchCat) || 
-                         clientName.includes(searchCat) || 
-                         note.includes(searchCat) || 
-                         tags.includes(searchCat) ||
-                         (!isNaN(searchNum) && t.amount !== null && Math.abs(t.amount - searchNum) < 0.005);
-        
-        return textMatch;
-    });
-}
 
     // 3. Ordinamento
     if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));
@@ -1668,6 +1769,7 @@ if(search){
         }
     } else {
         if(breakdownBox)breakdownBox.classList.add('hidden');
+        restoreMainTitleFromCurrentFilter();
         if(currentFilter!=='all'){const expT=filtered.filter(t=>!t.done&&t.amount&&t.type!=='income').reduce((s,t)=>s+t.amount,0);ftBox.classList.remove('hidden');ftEl.textContent=fmtCur(expT,cur)||'0';}
         else{ftBox.classList.add('hidden');}
     }
