@@ -26,304 +26,61 @@ tailwind.config = {
 
 <style>
 *{box-sizing:border-box}
-:root{
-  --accent:#3b82f6;
-  --accent-glow:rgba(59,130,246,.25);
-}
-body{
-  font-family:'DM Sans',sans-serif;
-  transition:background-color .3s,color .3s;
-}
-body.country-GB{
-  --accent:#7c3aed;
-  --accent-glow:rgba(124,58,237,.25);
-}
+:root{--accent:#3b82f6;--accent-glow:rgba(59,130,246,.25)}
+body{font-family:'DM Sans',sans-serif;transition:background-color .3s,color .3s}
+body.country-GB{--accent:#7c3aed;--accent-glow:rgba(124,58,237,.25)}
 .mono{font-family:'DM Mono',monospace}
 .custom-scrollbar::-webkit-scrollbar{width:4px;height:4px}
 .custom-scrollbar::-webkit-scrollbar-thumb{background:#374151;border-radius:10px}
-
-.section-card{
-  background:#111827;
-  border:1px solid #1f2937;
-  border-radius:16px;
-  padding:16px;
-}
-.card-task{
-  transition:all .2s ease;
-}
-.card-task:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 24px -6px rgba(0,0,0,.4);
-}
-.filter-btn.active{
-  background:var(--accent);
-  color:white!important;
-  border-color:var(--accent)!important;
-}
-details>summary{list-style:none}
-details>summary::-webkit-details-marker{display:none}
-
-.badge-income{
-  background:rgba(16,185,129,.15);
-  color:#10b981;
-  border:1px solid rgba(16,185,129,.3);
-}
-.badge-expense{
-  background:rgba(239,68,68,.12);
-  color:#ef4444;
-  border:1px solid rgba(239,68,68,.25);
-}
-.task-tag{
-  font-size:9px;
-  font-weight:800;
-  padding:2px 6px;
-  border-radius:5px;
-  background:rgba(99,102,241,.15);
-  color:#a5b4fc;
-  border:1px solid rgba(99,102,241,.25);
-}
-.country-hero{
-  position:relative;
-  overflow:hidden;
-  border-radius:20px;
-  margin-bottom:28px;
-  border:1px solid rgba(255,255,255,.06);
-  background:linear-gradient(135deg,#1a2744,#0f172a);
-  transition:background .4s ease;
-}
-body.country-GB .country-hero{
-  background:linear-gradient(135deg,#1f1232,#0f0a1e);
-}
-.country-hero-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:20px 24px;
-  gap:20px;
-  flex-wrap:wrap;
-}
-.country-btn-wrap{
-  display:flex;
-  background:rgba(0,0,0,.3);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
-  overflow:hidden;
-}
-.country-btn{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:12px 20px;
-  font-size:13px;
-  font-weight:900;
-  border:none;
-  cursor:pointer;
-  transition:all .25s;
-  background:transparent;
-  color:#64748b;
-}
-.country-btn.active-country{
-  background:var(--accent);
-  color:#fff;
-  box-shadow:0 0 20px var(--accent-glow);
-}
-.country-pill{
-  font-size:10px;
-  font-weight:800;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#94a3b8;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-}
-.hero-kpi{text-align:center}
-.hero-kpi-label{
-  font-size:10px;
-  color:#94a3b8;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  font-weight:800;
-  margin-bottom:4px;
-}
-.hero-kpi-val{
-  font-family:'DM Mono',monospace;
-  font-size:20px;
-  font-weight:900;
-}
-
-#calendarSection {
-  background: linear-gradient(145deg, rgba(14,148,167,0.20) 0%, rgba(8,30,35,0.92) 100%) !important;
-  border: 1px solid rgba(20,184,196,0.40) !important;
-  border-top: 3px solid #14b8c4 !important;
-}
-#formSection {
-  background: linear-gradient(145deg, rgba(59,130,246,0.17) 0%, rgba(8,12,35,0.92) 100%) !important;
-  border: 1px solid rgba(59,130,246,0.38) !important;
-  border-top: 3px solid var(--accent) !important;
-}
-body.country-GB #formSection {
-  background: linear-gradient(145deg, rgba(124,58,237,0.18) 0%, rgba(12,6,30,0.92) 100%) !important;
-}
-#summaryCard {
-  background: linear-gradient(145deg, rgba(16,185,129,0.17) 0%, rgba(5,22,15,0.92) 100%) !important;
-  border: 1px solid rgba(16,185,129,0.38) !important;
-  border-top: 3px solid #10b981 !important;
-}
-#recurringFinanceSection {
-  background: linear-gradient(145deg, rgba(99,102,241,0.16) 0%, rgba(10,8,32,0.92) 100%) !important;
-  border: 1px solid rgba(99,102,241,0.38) !important;
-  border-top: 3px solid #6366f1 !important;
-}
-#analysisSection {
-  background: linear-gradient(145deg, rgba(245,158,11,0.16) 0%, rgba(22,14,4,0.92) 100%) !important;
-  border: 1px solid rgba(245,158,11,0.36) !important;
-  border-top: 3px solid #f59e0b !important;
-}
-#peopleSection {
-  background: linear-gradient(145deg, rgba(236,72,153,0.16) 0%, rgba(25,5,18,0.92) 100%) !important;
-  border: 1px solid rgba(236,72,153,0.36) !important;
-  border-top: 3px solid #ec4899 !important;
-}
-#categoriesSection {
-  background: linear-gradient(145deg, rgba(139,92,246,0.17) 0%, rgba(13,5,28,0.92) 100%) !important;
-  border: 1px solid rgba(139,92,246,0.38) !important;
-  border-top: 3px solid #8b5cf6 !important;
-}
-
-.recurring-subsection {
-  background: rgba(15,23,42,.42);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 14px;
-  overflow: hidden;
-}
-.recurring-subsection summary {
-  padding: 10px 12px;
-  cursor: pointer;
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.recurring-subsection-body {
-  padding: 10px 12px 12px;
-  border-top: 1px solid rgba(255,255,255,.07);
-}
-.rec-filter-btn {
-  font-size: 9px;
-  font-weight: 900;
-  padding: 4px 7px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.05);
-  transition: all .15s ease;
-}
-.rec-filter-btn:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
-}
-.vrec-action-btn{
-  font-size:10px;
-  line-height:1;
-  padding:4px 6px;
-  border-radius:7px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.08);
-  color:#e2e8f0;
-  cursor:pointer;
-  transition:all .15s ease;
-}
-.vrec-action-btn:hover{
-  background:rgba(255,255,255,.16);
-  border-color:var(--accent);
-  transform:scale(1.06);
-}
-
-.cal-day{
-  width:100%;
-  aspect-ratio:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:11px;
-  font-weight:800;
-  transition:all .12s ease;
-  position:relative;
-}
-.cal-day:hover{background:#1f2937}
-.cal-day.today{background:#1d3a6e;color:#93c5fd}
-.cal-day.selected{background:var(--accent)!important;color:white!important}
-.cal-day.other-month{opacity:.22;pointer-events:none}
-.cal-day.has-dot::after{
-  content:'';
-  position:absolute;
-  bottom:4px;
-  width:4px;
-  height:4px;
-  background:var(--accent);
-  border-radius:50%;
-}
-.heat-1{background:rgba(16,185,129,.12)}
-.heat-2{background:rgba(16,185,129,.28)}
-.heat-3{background:rgba(16,185,129,.45);color:#d1fae5}
-.heat-4{background:rgba(16,185,129,.63);color:#d1fae5}
-.heat-5{background:rgba(16,185,129,.82);color:white}
-
-#toast{
-  position:fixed;
-  bottom:24px;
-  right:24px;
-  background:#111827;
-  border:1px solid #334155;
-  color:white;
-  padding:12px 16px;
-  border-radius:14px;
-  box-shadow:0 12px 32px rgba(0,0,0,.5);
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(12px);
-  transition:all .25s ease;
-  z-index:999;
-}
-#toast.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-
-html:not(.dark) .section-card,
-html:not(.dark) .bg-darkCard{
-  background:#fff!important;
-  border-color:#e2e8f0!important;
-}
-html:not(.dark) .bg-darkBg{background:#f1f5f9!important}
-html:not(.dark) .bg-slate-900{background:#f8fafc!important}
-html:not(.dark) .bg-slate-800{background:#e2e8f0!important}
-html:not(.dark) .border-slate-800{border-color:#e2e8f0!important}
-html:not(.dark) .border-slate-700{border-color:#cbd5e1!important}
-html:not(.dark) .text-white{color:#0f172a!important}
-html:not(.dark) .text-slate-200{color:#1e293b!important}
-html:not(.dark) .text-slate-400{color:#64748b!important}
-html:not(.dark) .text-slate-500{color:#94a3b8!important}
-html:not(.dark) input,
-html:not(.dark) select,
-html:not(.dark) textarea{color:#1e293b!important;color-scheme:light}
-html:not(.dark) .country-hero{background:linear-gradient(135deg,#dbeafe,#ede9fe)}
-html:not(.dark) .country-btn-wrap{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08)}
+.section-card{background:#111827;border:1px solid #1f2937;border-radius:16px;padding:16px}
+.card-task{transition:all .2s ease}.card-task:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(0,0,0,.4)}
+.filter-btn.active{background:var(--accent);color:white!important;border-color:var(--accent)!important}
+details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
+.badge-income{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.badge-expense{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25)}
+.task-tag{font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25)}
+.country-hero{position:relative;overflow:hidden;border-radius:20px;margin-bottom:28px;border:1px solid rgba(255,255,255,.06);background:linear-gradient(135deg,#1a2744,#0f172a);transition:background .4s ease}
+body.country-GB .country-hero{background:linear-gradient(135deg,#1f1232,#0f0a1e)}
+.country-hero-inner{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;gap:20px;flex-wrap:wrap}
+.country-btn-wrap{display:flex;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+.country-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:13px;font-weight:900;border:none;cursor:pointer;transition:all .25s;background:transparent;color:#64748b}
+.country-btn.active-country{background:var(--accent);color:#fff;box-shadow:0 0 20px var(--accent-glow)}
+.country-pill{font-size:10px;font-weight:800;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#94a3b8;letter-spacing:.06em;text-transform:uppercase}
+.hero-kpi{text-align:center}.hero-kpi-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;font-weight:800;margin-bottom:4px}.hero-kpi-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:900}
+#calendarSection{background:linear-gradient(145deg,rgba(14,148,167,0.20),rgba(8,30,35,0.92))!important;border:1px solid rgba(20,184,196,0.40)!important;border-top:3px solid #14b8c4!important}
+#formSection{background:linear-gradient(145deg,rgba(59,130,246,0.17),rgba(8,12,35,0.92))!important;border:1px solid rgba(59,130,246,0.38)!important;border-top:3px solid var(--accent)!important}
+body.country-GB #formSection{background:linear-gradient(145deg,rgba(124,58,237,0.18),rgba(12,6,30,0.92))!important}
+#summaryCard{background:linear-gradient(145deg,rgba(16,185,129,0.17),rgba(5,22,15,0.92))!important;border:1px solid rgba(16,185,129,0.38)!important;border-top:3px solid #10b981!important}
+#recurringFinanceSection{background:linear-gradient(145deg,rgba(99,102,241,0.16),rgba(10,8,32,0.92))!important;border:1px solid rgba(99,102,241,0.38)!important;border-top:3px solid #6366f1!important}
+#analysisSection{background:linear-gradient(145deg,rgba(245,158,11,0.16),rgba(22,14,4,0.92))!important;border:1px solid rgba(245,158,11,0.36)!important;border-top:3px solid #f59e0b!important}
+#peopleSection{background:linear-gradient(145deg,rgba(236,72,153,0.16),rgba(25,5,18,0.92))!important;border:1px solid rgba(236,72,153,0.36)!important;border-top:3px solid #ec4899!important}
+#categoriesSection{background:linear-gradient(145deg,rgba(139,92,246,0.17),rgba(13,5,28,0.92))!important;border:1px solid rgba(139,92,246,0.38)!important;border-top:3px solid #8b5cf6!important}
+.recurring-subsection{background:rgba(15,23,42,.42);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden}
+.recurring-subsection summary{padding:10px 12px;cursor:pointer;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;justify-content:space-between}
+.recurring-subsection-body{padding:10px 12px 12px;border-top:1px solid rgba(255,255,255,.07)}
+.rec-filter-btn{font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);transition:all .15s ease}
+.rec-filter-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.vrec-action-btn{font-size:10px;line-height:1;padding:4px 6px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#e2e8f0;cursor:pointer;transition:all .15s ease}
+.vrec-action-btn:hover{background:rgba(255,255,255,.16);border-color:var(--accent);transform:scale(1.06)}
+.cal-day{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;font-size:11px;font-weight:800;transition:all .12s ease;position:relative}
+.cal-day:hover{background:#1f2937}.cal-day.today{background:#1d3a6e;color:#93c5fd}.cal-day.selected{background:var(--accent)!important;color:white!important}.cal-day.other-month{opacity:.22;pointer-events:none}
+.cal-day.has-dot::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;background:var(--accent);border-radius:50%}
+.heat-1{background:rgba(16,185,129,.12)}.heat-2{background:rgba(16,185,129,.28)}.heat-3{background:rgba(16,185,129,.45);color:#d1fae5}.heat-4{background:rgba(16,185,129,.63);color:#d1fae5}.heat-5{background:rgba(16,185,129,.82);color:white}
+#toast{position:fixed;bottom:24px;right:24px;background:#111827;border:1px solid #334155;color:white;padding:12px 16px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.5);opacity:0;pointer-events:none;transform:translateY(12px);transition:all .25s ease;z-index:999}
+#toast.visible{opacity:1;transform:translateY(0)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:998}
+.modal-backdrop.open{display:flex}
+.modal-box{width:100%;max-width:460px;background:#111827;border:1px solid #334155;border-radius:20px;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+html:not(.dark) .section-card,html:not(.dark) .bg-darkCard{background:#fff!important;border-color:#e2e8f0!important}
+html:not(.dark) .bg-darkBg{background:#f1f5f9!important}html:not(.dark) .bg-slate-900{background:#f8fafc!important}html:not(.dark) .bg-slate-800{background:#e2e8f0!important}
+html:not(.dark) .border-slate-800{border-color:#e2e8f0!important}html:not(.dark) .border-slate-700{border-color:#cbd5e1!important}
+html:not(.dark) .text-white{color:#0f172a!important}html:not(.dark) .text-slate-200{color:#1e293b!important}html:not(.dark) .text-slate-400{color:#64748b!important}html:not(.dark) .text-slate-500{color:#94a3b8!important}
+html:not(.dark) input,html:not(.dark) select,html:not(.dark) textarea{color:#1e293b!important;color-scheme:light}
+html:not(.dark) .country-hero{background:linear-gradient(135deg,#dbeafe,#ede9fe)}html:not(.dark) .country-btn-wrap{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-color:rgba(0,0,0,.1)}
 html:not(.dark) .recurring-subsection{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
-
-@media print{
-  header,aside,.filter-bar-wrapper,.country-hero,#toast{display:none!important}
-  body{background:white!important;color:black!important}
-  .card-task{break-inside:avoid;border:1px solid #ccc!important;box-shadow:none!important}
-}
+@media print{header,aside,.filter-bar-wrapper,.country-hero,#toast,.modal-backdrop{display:none!important}body{background:white!important;color:black!important}.card-task{break-inside:avoid;border:1px solid #ccc!important;box-shadow:none!important}}
 </style>
 </head>
 
@@ -365,6 +122,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
         <div class="flex gap-2 flex-wrap">
           <span id="countryPill1" class="country-pill">€ EUR predefinito</span>
           <span class="country-pill">Dati separati per paese</span>
+          <span class="country-pill">Elimina occorrenza o serie</span>
         </div>
       </div>
     </div>
@@ -381,15 +139,11 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
 
 <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
 
-<button onclick="showTodayTasks()" class="w-full px-4 py-3 rounded-2xl font-black text-sm transition-all hover:brightness-110 text-white" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">
-  📅 Task di Oggi
-</button>
+<button onclick="showTodayTasks()" class="w-full px-4 py-3 rounded-2xl font-black text-sm transition-all hover:brightness-110 text-white" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">📅 Task di Oggi</button>
 
 <div id="calendarSection" class="section-card">
   <details class="group" open>
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-cyan-400 group-open:mb-4">
-      📅 Calendario <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
+    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-cyan-400 group-open:mb-4">📅 Calendario <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
     <div class="pt-3 border-t border-slate-800/60">
       <div class="flex items-center justify-between mb-2">
         <button onclick="prevMonth()" class="w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-sm">‹</button>
@@ -397,13 +151,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
         <button onclick="nextMonth()" class="w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-sm">›</button>
       </div>
       <div class="grid grid-cols-7 gap-0.5 mb-1">
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Lu</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ma</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Me</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Gi</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ve</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Sa</div>
-        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Do</div>
+        <div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Lu</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ma</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Me</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Gi</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Ve</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Sa</div><div class="text-[9px] font-bold text-center text-slate-600 uppercase py-1">Do</div>
       </div>
       <div id="calGrid" class="grid grid-cols-7 gap-0.5"></div>
     </div>
@@ -418,262 +166,99 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
     </summary>
 
     <form id="mainForm" class="space-y-3 pt-3 border-t border-slate-800/60">
-      <input type="hidden" id="editTaskId">
-      <input type="hidden" id="taskType" value="expense">
-      <input type="hidden" id="taskCurrency" value="€">
-
+      <input type="hidden" id="editTaskId"><input type="hidden" id="taskType" value="expense"><input type="hidden" id="taskCurrency" value="€">
       <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-800/60 bg-slate-900/60">
-        <span id="formCountryFlag" class="text-lg">🇮🇹</span>
-        <div>
-          <div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div>
-          <div id="formCountrySaving" class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div>
-        </div>
+        <span id="formCountryFlag" class="text-lg">🇮🇹</span><div><div id="formCountryLabel" class="text-[9px] font-bold text-white">Italia</div><div id="formCountrySaving" class="text-[8px] text-slate-600">Questo task verrà salvato per l'Italia</div></div>
       </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Data</label>
-        <input type="date" id="taskDate" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 cursor-pointer">
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tipo</label>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" id="typeExpenseBtn" onclick="setTaskType('expense')" class="py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense">📤 Spesa</button>
-          <button type="button" id="typeIncomeBtn" onclick="setTaskType('income')" class="py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all">📥 Entrata</button>
-        </div>
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Categoria</label>
-        <select id="taskCategory" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer">
-          <option value="">Seleziona…</option>
-        </select>
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label>
-        <select id="taskClient" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"></select>
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label>
-        <div class="relative">
-          <span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span>
-          <input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono">
-        </div>
-      </div>
-
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Data</label><input type="date" id="taskDate" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 cursor-pointer"></div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tipo</label><div class="grid grid-cols-2 gap-2"><button type="button" id="typeExpenseBtn" onclick="setTaskType('expense')" class="py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense">📤 Spesa</button><button type="button" id="typeIncomeBtn" onclick="setTaskType('income')" class="py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all">📥 Entrata</button></div></div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Categoria</label><select id="taskCategory" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"><option value="">Seleziona…</option></select></div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Persona</label><select id="taskClient" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"></select></div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Importo <span id="formCurHint" class="normal-case font-normal text-slate-600">(€ EUR)</span></label><div class="relative"><span id="amountSymbol" class="absolute left-3 top-3.5 text-slate-500 text-xs font-bold mono">€</span><input type="number" id="taskAmount" placeholder="0.00" step="0.01" min="0" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:border-blue-400 mono"></div></div>
       <div class="space-y-1">
         <label id="recurrenceLabel" class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Ricorrenza Spesa</label>
-        <select id="taskRecurrence"
-          class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer"
-          onchange="onRecurrenceSelectChange()">
-          <option value="none">Nessuna ricorrenza / Deseleziona</option>
-          <option value="weekly">Settimanale</option>
-          <option value="monthly">Mensile</option>
-          <option value="yearly">Annuale</option>
+        <select id="taskRecurrence" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400 appearance-none cursor-pointer" onchange="onRecurrenceSelectChange()">
+          <option value="none">Nessuna ricorrenza / Deseleziona</option><option value="weekly">Settimanale</option><option value="monthly">Mensile</option><option value="yearly">Annuale</option>
         </select>
         <p id="recurrenceHelp" class="text-[9px] text-slate-500 pl-1">Questa spesa può essere settimanale, mensile, annuale oppure non ricorrente.</p>
       </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label>
-        <input type="text" id="taskTags" placeholder="lavoro, casa, urgente…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400">
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Descrizione</label>
-        <textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea>
-      </div>
-
-      <div class="flex gap-2 pt-1">
-        <button type="submit" id="submitBtn" class="flex-1 text-white font-black py-3 rounded-xl transition-all shadow-lg text-sm" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">Salva</button>
-        <button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800/80 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button>
-      </div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Tag <span class="text-slate-600 normal-case font-normal">(virgola)</span></label><input type="text" id="taskTags" placeholder="lavoro, casa, urgente…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-400"></div>
+      <div class="space-y-1"><label class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Descrizione</label><textarea id="taskNote" placeholder="Note opzionali…" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm h-16 focus:outline-none focus:border-blue-400 resize-none"></textarea></div>
+      <div class="flex gap-2 pt-1"><button type="submit" id="submitBtn" class="flex-1 text-white font-black py-3 rounded-xl transition-all shadow-lg text-sm" style="background:var(--accent);box-shadow:0 4px 16px var(--accent-glow)">Salva</button><button type="button" id="cancelEdit" onclick="resetForm()" class="hidden bg-slate-800/80 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm">✕</button></div>
     </form>
   </details>
 </div>
 
 <div id="summaryCard" class="section-card">
   <details class="group" open>
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-emerald-400 group-open:mb-4">
-      💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
+    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-emerald-400 group-open:mb-4">💰 Riepilogo &amp; Saldo <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
     <div class="space-y-2 pt-3 border-t border-slate-800/60">
       <div class="bg-slate-900/60 p-3 rounded-xl border border-emerald-500/20">
         <div class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-2">Saldo netto 30 giorni</div>
         <div class="grid grid-cols-3 gap-2 text-center">
-          <button onclick="setFilter('income')" class="rounded-xl p-2 transition-all hover:bg-emerald-500/10">
-            <div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5">Entrate ↗</div>
-            <div id="balanceIncome" class="mono text-xs font-bold text-emerald-400">0.00</div>
-          </button>
-          <button onclick="setFilter('expense')" class="rounded-xl p-2 transition-all hover:bg-red-500/10">
-            <div class="text-[8px] text-red-400 font-bold uppercase mb-0.5">Spese ↘</div>
-            <div id="balanceExpense" class="mono text-xs font-bold text-red-400">0.00</div>
-          </button>
-          <button onclick="setFilter('all')" class="rounded-xl p-2 transition-all hover:bg-slate-700/60">
-            <div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5">Netto ≈</div>
-            <div id="balanceNet" class="mono text-xs font-bold text-white">0.00</div>
-          </button>
+          <button onclick="setFilter('income')" class="rounded-xl p-2 transition-all hover:bg-emerald-500/10"><div class="text-[8px] text-emerald-400 font-bold uppercase mb-0.5">Entrate ↗</div><div id="balanceIncome" class="mono text-xs font-bold text-emerald-400">0.00</div></button>
+          <button onclick="setFilter('expense')" class="rounded-xl p-2 transition-all hover:bg-red-500/10"><div class="text-[8px] text-red-400 font-bold uppercase mb-0.5">Spese ↘</div><div id="balanceExpense" class="mono text-xs font-bold text-red-400">0.00</div></button>
+          <button onclick="setFilter('all')" class="rounded-xl p-2 transition-all hover:bg-slate-700/60"><div class="text-[8px] text-slate-400 font-bold uppercase mb-0.5">Netto ≈</div><div id="balanceNet" class="mono text-xs font-bold text-white">0.00</div></button>
         </div>
       </div>
-      <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
-        <span class="text-[10px] text-slate-500">Oggi</span>
-        <span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span>
-      </div>
-      <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl">
-        <span class="text-[10px] text-slate-500">7 giorni</span>
-        <span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span>
-      </div>
+      <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">Oggi</span><span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span></div>
+      <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">7 giorni</span><span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span></div>
     </div>
   </details>
 </div>
 
 <div id="recurringFinanceSection" class="section-card">
   <details class="group" open>
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-indigo-400 group-open:mb-4">
-      🔁 Ricorrenze <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
-
+    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-indigo-400 group-open:mb-4">🔁 Ricorrenze <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
     <div class="space-y-3 pt-3 border-t border-slate-800/60">
-
-      <details class="recurring-subsection" open>
-        <summary>
-          <span class="text-red-400">📤 Spese ricorrenti</span>
-          <span>▼</span>
-        </summary>
-
+      <details class="recurring-subsection" open><summary><span class="text-red-400">📤 Spese ricorrenti</span><span>▼</span></summary>
         <div class="recurring-subsection-body space-y-3">
-          <div class="flex flex-wrap gap-1.5">
-            <button type="button" onclick="setFilter('expenseWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button>
-            <button type="button" onclick="setFilter('expenseMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button>
-            <button type="button" onclick="setFilter('expenseYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button>
-            <button type="button" onclick="setFilter('expenseRecurring')" class="rec-filter-btn text-red-400 bg-red-500/15 border-red-500/25">Tutte</button>
-          </div>
-
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div>
-            <div id="weeklyExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1.5">Mensili</div>
-            <div id="monthlyExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-1.5">Annuali</div>
-            <div id="annualExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
+          <div class="flex flex-wrap gap-1.5"><button type="button" onclick="setFilter('expenseWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button><button type="button" onclick="setFilter('expenseMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button><button type="button" onclick="setFilter('expenseYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button><button type="button" onclick="setFilter('expenseRecurring')" class="rec-filter-btn text-red-400 bg-red-500/15 border-red-500/25">Tutte</button></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div><div id="weeklyExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1.5">Mensili</div><div id="monthlyExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-1.5">Annuali</div><div id="annualExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
         </div>
       </details>
-
-      <details class="recurring-subsection">
-        <summary>
-          <span class="text-emerald-400">📥 Entrate ricorrenti</span>
-          <span>▼</span>
-        </summary>
-
+      <details class="recurring-subsection"><summary><span class="text-emerald-400">📥 Entrate ricorrenti</span><span>▼</span></summary>
         <div class="recurring-subsection-body space-y-3">
-          <div class="flex flex-wrap gap-1.5">
-            <button type="button" onclick="setFilter('incomeWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button>
-            <button type="button" onclick="setFilter('incomeMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button>
-            <button type="button" onclick="setFilter('incomeYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button>
-            <button type="button" onclick="setFilter('incomeRecurring')" class="rec-filter-btn text-emerald-400 bg-emerald-500/15 border-emerald-500/25">Tutte</button>
-          </div>
-
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div>
-            <div id="weeklyIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1.5">Mensili</div>
-            <div id="monthlyIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
-          <div>
-            <div class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-1.5">Annuali</div>
-            <div id="annualIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div>
-          </div>
+          <div class="flex flex-wrap gap-1.5"><button type="button" onclick="setFilter('incomeWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button><button type="button" onclick="setFilter('incomeMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button><button type="button" onclick="setFilter('incomeYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button><button type="button" onclick="setFilter('incomeRecurring')" class="rec-filter-btn text-emerald-400 bg-emerald-500/15 border-emerald-500/25">Tutte</button></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div><div id="weeklyIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1.5">Mensili</div><div id="monthlyIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
+          <div><div class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-1.5">Annuali</div><div id="annualIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
         </div>
       </details>
-
     </div>
   </details>
 </div>
 
-<div id="analysisSection" class="section-card">
-  <details class="group">
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-amber-400 group-open:mb-4">
-      📊 Analisi <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
-    <div class="pt-3 border-t border-slate-800/60">
-      <div class="h-48 relative">
-        <canvas id="expenseChart"></canvas>
-      </div>
-      <div id="chartLegend" class="flex flex-wrap gap-1.5 mt-3"></div>
-    </div>
-  </details>
-</div>
+<div id="analysisSection" class="section-card"><details class="group"><summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-amber-400 group-open:mb-4">📊 Analisi <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary><div class="pt-3 border-t border-slate-800/60"><div class="h-48 relative"><canvas id="expenseChart"></canvas></div><div id="chartLegend" class="flex flex-wrap gap-1.5 mt-3"></div></div></details></div>
 
 <div id="peopleSection" class="section-card">
-  <details class="group">
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-pink-400 group-open:mb-4">
-      👥 Persone <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
-    <div class="space-y-3 pt-3 border-t border-slate-800/60">
-      <div class="flex gap-2 items-center">
-        <input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-pink-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}">
-        <input type="color" id="newClientColor" value="#8b5cf6" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5">
-        <button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#ec4899">✓</button>
-      </div>
-      <div id="clientListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
-    </div>
+  <details class="group"><summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-pink-400 group-open:mb-4">👥 Persone <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
+    <div class="space-y-3 pt-3 border-t border-slate-800/60"><div class="flex gap-2 items-center"><input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-pink-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}"><input type="color" id="newClientColor" value="#8b5cf6" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5"><button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#ec4899">✓</button></div><div id="clientListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div></div>
   </details>
 </div>
 
 <div id="categoriesSection" class="section-card">
-  <details class="group">
-    <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-violet-400 group-open:mb-4">
-      🏷️ Categorie <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
-    </summary>
-    <div class="space-y-3 pt-3 border-t border-slate-800/60">
-      <div class="flex gap-2 items-center">
-        <input type="text" id="newCatName" placeholder="Nuova categoria…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-violet-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}">
-        <input type="color" id="newCatColor" value="#6366f1" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5">
-        <button type="button" onclick="addCategory()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#8b5cf6">✓</button>
-      </div>
-      <div id="categoryListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
-    </div>
+  <details class="group"><summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-violet-400 group-open:mb-4">🏷️ Categorie <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
+    <div class="space-y-3 pt-3 border-t border-slate-800/60"><div class="flex gap-2 items-center"><input type="text" id="newCatName" placeholder="Nuova categoria…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-violet-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}"><input type="color" id="newCatColor" value="#6366f1" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5"><button type="button" onclick="addCategory()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#8b5cf6">✓</button></div><div id="categoryListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div></div>
   </details>
 </div>
-
 </aside>
 
 <main class="lg:col-span-8 xl:col-span-9">
-
   <div id="quickAddBar" class="mb-4 p-3 bg-darkCard border border-slate-800 rounded-2xl flex flex-wrap gap-2 items-center" style="border-left:4px solid var(--accent)">
     <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 flex-shrink-0">⚡</span>
     <button type="button" id="qaTypeBtn" onclick="qaToggleType()" class="text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-expense">📤</button>
-    <div class="relative flex-shrink-0">
-      <span id="qaSymbol" class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500 mono pointer-events-none">€</span>
-      <input type="number" id="qaAmount" placeholder="0.00" step="0.01" min="0"
-        class="w-20 bg-slate-900 border border-slate-700 rounded-lg py-1.5 pl-5 pr-1 text-sm mono focus:outline-none focus:border-accent"
-        onkeydown="if(event.key==='Enter')quickAdd()">
-    </div>
+    <div class="relative flex-shrink-0"><span id="qaSymbol" class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500 mono pointer-events-none">€</span><input type="number" id="qaAmount" placeholder="0.00" step="0.01" min="0" class="w-20 bg-slate-900 border border-slate-700 rounded-lg py-1.5 pl-5 pr-1 text-sm mono focus:outline-none focus:border-accent" onkeydown="if(event.key==='Enter')quickAdd()"></div>
     <select id="qaCategory" class="flex-1 min-w-[110px] bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-accent appearance-none cursor-pointer"></select>
     <select id="qaClient" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-accent appearance-none cursor-pointer"></select>
     <button type="button" onclick="quickAdd()" class="px-3 py-1.5 rounded-lg text-white text-xs font-black flex-shrink-0" style="background:var(--accent)">+ Add</button>
   </div>
 
   <div class="mb-4 flex flex-col sm:flex-row gap-3 filter-bar-wrapper">
-    <div class="relative flex-1">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span>
-      <input type="text" id="searchInput" placeholder="Cerca: mese, categoria, persona, tag, tipo o importo…" oninput="renderTasks()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors">
-    </div>
-    <div class="flex items-center gap-1.5 bg-darkCard border border-slate-800 rounded-xl px-3 py-2 flex-shrink-0">
-      <span class="text-[9px] uppercase tracking-widest text-slate-600 font-bold mr-1">Ordina</span>
-      <button onclick="setSort('date')" id="sort-date" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all active">📅</button>
-      <button onclick="setSort('amount')" id="sort-amount" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">💰</button>
-      <button onclick="setSort('status')" id="sort-status" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">✓</button>
-    </div>
+    <div class="relative flex-1"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span><input type="text" id="searchInput" placeholder="Cerca: mese, categoria, persona, tag, tipo o importo…" oninput="renderTasks()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"></div>
+    <div class="flex items-center gap-1.5 bg-darkCard border border-slate-800 rounded-xl px-3 py-2 flex-shrink-0"><span class="text-[9px] uppercase tracking-widest text-slate-600 font-bold mr-1">Ordina</span><button onclick="setSort('date')" id="sort-date" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all active">📅</button><button onclick="setSort('amount')" id="sort-amount" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">💰</button><button onclick="setSort('status')" id="sort-status" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">✓</button></div>
   </div>
 
   <div class="mb-5 p-4 bg-darkCard rounded-2xl border border-slate-800 shadow-lg flex flex-wrap gap-2 items-center filter-bar-wrapper">
@@ -682,42 +267,36 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
     <button onclick="setFilter('expired')" id="filter-expired" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-red-400">⚠</button>
     <button onclick="setFilter('expense')" id="filter-expense" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-red-400">📤 Spese</button>
     <button onclick="setFilter('income')" id="filter-income" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-emerald-400">📥 Entrate</button>
-
     <div class="h-4 w-px bg-slate-800 mx-1"></div>
-
     <button onclick="setFilter('expenseWeekly')" id="filter-expenseWeekly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-indigo-400">📤 7g</button>
     <button onclick="setFilter('expenseMonthly')" id="filter-expenseMonthly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-amber-400">📤 1M</button>
     <button onclick="setFilter('expenseYearly')" id="filter-expenseYearly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-orange-400">📤 1A</button>
-
     <button onclick="setFilter('incomeWeekly')" id="filter-incomeWeekly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-indigo-400">📥 7g</button>
     <button onclick="setFilter('incomeMonthly')" id="filter-incomeMonthly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-amber-400">📥 1M</button>
     <button onclick="setFilter('incomeYearly')" id="filter-incomeYearly" class="filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all text-orange-400">📥 1A</button>
-
-    <div id="clientFilterList" class="flex flex-wrap gap-2"></div>
-    <div id="tagFilterList" class="flex flex-wrap gap-1.5"></div>
+    <div id="clientFilterList" class="flex flex-wrap gap-2"></div><div id="tagFilterList" class="flex flex-wrap gap-1.5"></div>
   </div>
 
   <div class="flex justify-between items-end mb-5">
-    <div>
-      <h2 id="mainTitle" class="text-xl font-black text-white">Attività e Scadenze</h2>
-      <p id="mainSubtitle" class="text-[10px] text-slate-500 mt-0.5">Timeline</p>
-    </div>
-    <div id="filterTotalBox" class="hidden text-right">
-      <div class="text-[9px] text-slate-500 uppercase tracking-widest">Totale filtro</div>
-      <div id="filterTotal" class="mono font-bold text-sm" style="color:var(--accent)">0.00</div>
-    </div>
+    <div><h2 id="mainTitle" class="text-xl font-black text-white">Attività e Scadenze</h2><p id="mainSubtitle" class="text-[10px] text-slate-500 mt-0.5">Timeline</p></div>
+    <div id="filterTotalBox" class="hidden text-right"><div class="text-[9px] text-slate-500 uppercase tracking-widest">Totale filtro</div><div id="filterTotal" class="mono font-bold text-sm" style="color:var(--accent)">0.00</div></div>
   </div>
-
   <div id="taskGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
-
-  <div id="emptyTasks" class="hidden flex-col items-center justify-center py-24 opacity-40 text-center">
-    <span class="text-6xl mb-4">🎯</span>
-    <p class="text-lg font-semibold">Nessun task trovato</p>
-  </div>
-
+  <div id="emptyTasks" class="hidden flex-col items-center justify-center py-24 opacity-40 text-center"><span class="text-6xl mb-4">🎯</span><p class="text-lg font-semibold">Nessun task trovato</p></div>
 </main>
-
 </div>
+</div>
+
+<div id="deleteRecurringModal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal-box">
+    <h3 class="text-white text-lg font-black mb-2">Eliminare ricorrenza?</h3>
+    <p id="deleteRecurringText" class="text-sm text-slate-400 mb-4">Questo movimento è ricorrente. Scegli cosa eliminare.</p>
+    <div class="grid gap-2">
+      <button type="button" onclick="confirmDeleteOccurrenceOnly()" class="w-full px-4 py-3 rounded-xl font-black text-sm border border-amber-500/40 bg-amber-500/15 text-amber-300 hover:bg-amber-500/25">Elimina solo questa occorrenza</button>
+      <button type="button" onclick="confirmDeleteRecurringSeries()" class="w-full px-4 py-3 rounded-xl font-black text-sm border border-red-500/40 bg-red-500/15 text-red-300 hover:bg-red-500/25">Elimina tutta la serie ricorrente</button>
+      <button type="button" onclick="closeDeleteRecurringModal()" class="w-full px-4 py-3 rounded-xl font-bold text-sm border border-slate-700 bg-slate-800/70 text-slate-200 hover:bg-slate-700">Annulla</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast"><span id="toastMsg">OK</span></div>
@@ -726,474 +305,191 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
 function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 
-const COUNTRY_CONFIG = {
-  IT: {label:'Italia — Gestione €',flag:'🇮🇹',flagText:'Italia',currency:'€',currencyLabel:'€ EUR predefinito',curHint:'(€ EUR)',savingNote:"Questo task verrà salvato per l'Italia"},
-  GB: {label:'Inghilterra — Gestione £',flag:'🇬🇧',flagText:'Inghilterra',currency:'£',currencyLabel:'£ GBP predefinito',curHint:'(£ GBP)',savingNote:"Questo task verrà salvato per l'Inghilterra"}
+const COUNTRY_CONFIG={
+  IT:{label:'Italia — Gestione €',flag:'🇮🇹',flagText:'Italia',currency:'€',currencyLabel:'€ EUR predefinito',curHint:'(€ EUR)',savingNote:"Questo task verrà salvato per l'Italia"},
+  GB:{label:'Inghilterra — Gestione £',flag:'🇬🇧',flagText:'Inghilterra',currency:'£',currencyLabel:'£ GBP predefinito',curHint:'(£ GBP)',savingNote:"Questo task verrà salvato per l'Inghilterra"}
 };
+const DEFAULT_CATEGORIES_IT=[{name:'App',color:'#6366f1'},{name:'Acqua',color:'#3b82f6'},{name:'Auto',color:'#f59e0b'},{name:'Corsi',color:'#8b5cf6'},{name:'Elettricità e Gas',color:'#f97316'},{name:'Cibo',color:'#10b981'},{name:'Internet',color:'#06b6d4'},{name:'Pensione',color:'#84cc16'},{name:'Tasse',color:'#ef4444'},{name:'Telefono',color:'#ec4899'},{name:'TV',color:'#a78bfa'}];
+const DEFAULT_CATEGORIES_GB=[{name:'Council Tax',color:'#ef4444'},{name:'Rent',color:'#f59e0b'},{name:'Food',color:'#10b981'},{name:'Transport',color:'#3b82f6'},{name:'Utilities',color:'#f97316'},{name:'Internet',color:'#06b6d4'},{name:'Phone',color:'#ec4899'},{name:'TV Licence',color:'#a78bfa'},{name:'NHS',color:'#06b6d4'},{name:'Insurance',color:'#84cc16'},{name:'Courses',color:'#8b5cf6'}];
 
-const DEFAULT_CATEGORIES_IT = [
-  {name:'App',color:'#6366f1'},
-  {name:'Acqua',color:'#3b82f6'},
-  {name:'Auto',color:'#f59e0b'},
-  {name:'Corsi',color:'#8b5cf6'},
-  {name:'Elettricità e Gas',color:'#f97316'},
-  {name:'Cibo',color:'#10b981'},
-  {name:'Internet',color:'#06b6d4'},
-  {name:'Pensione',color:'#84cc16'},
-  {name:'Tasse',color:'#ef4444'},
-  {name:'Telefono',color:'#ec4899'},
-  {name:'TV',color:'#a78bfa'}
-];
-
-const DEFAULT_CATEGORIES_GB = [
-  {name:'Council Tax',color:'#ef4444'},
-  {name:'Rent',color:'#f59e0b'},
-  {name:'Food',color:'#10b981'},
-  {name:'Transport',color:'#3b82f6'},
-  {name:'Utilities',color:'#f97316'},
-  {name:'Internet',color:'#06b6d4'},
-  {name:'Phone',color:'#ec4899'},
-  {name:'TV Licence',color:'#a78bfa'},
-  {name:'NHS',color:'#06b6d4'},
-  {name:'Insurance',color:'#84cc16'},
-  {name:'Courses',color:'#8b5cf6'}
-];
-
-let activeCountry = safeGet('app_activeCountry') || 'IT';
-let currentFilter = 'all';
-let currentSort = 'date';
-let selectedCalDate = null;
-let calYear = new Date().getFullYear();
-let calMonth = new Date().getMonth();
-let qaType = 'expense';
-let chart = null;
-let activeTagFilter = null;
+let activeCountry=safeGet('app_activeCountry')||'IT';
+let currentFilter='all';
+let currentSort='date';
+let selectedCalDate=null;
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth();
+let qaType='expense';
+let chart=null;
+let activeTagFilter=null;
+let pendingDelete=null;
 
 function migrateCats(raw,country){
-  if(!Array.isArray(raw)||!raw.length) return country==='GB' ? [...DEFAULT_CATEGORIES_GB] : [...DEFAULT_CATEGORIES_IT];
-  return raw.map(c=>typeof c==='string'?{name:c,color:'#6366f1'}:{...c});
+  if(!Array.isArray(raw)||!raw.length)return country==='GB'?[...DEFAULT_CATEGORIES_GB]:[...DEFAULT_CATEGORIES_IT];
+  return raw.map(c=>typeof c==='string'?{name:c,color:'#6366f1'}:{name:String(c.name||'Categoria'),color:c.color||'#6366f1'});
 }
-
+function normalizeRecurrence(v){return ['none','weekly','monthly','yearly'].includes(v)?v:'none'}
+function normalizeExcludedDates(v){return Array.isArray(v)?[...new Set(v.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))))]:[]}
 function migrateTasks(arr){
-  if(!Array.isArray(arr)) return [];
+  if(!Array.isArray(arr))return[];
   return arr.map(t=>{
-    const country=t.country || (t.currency==='£'?'GB':'IT');
+    const country=t.country||(t.currency==='£'?'GB':'IT');
     return {
-      id:t.id || Date.now()+Math.random(),
-      date:t.date || todayStr(),
-      category:t.category || '',
-      type:t.type || 'expense',
-      currency:t.currency || (country==='GB'?'£':'€'),
+      id:t.id||Date.now()+Math.floor(Math.random()*100000),
+      date:t.date||todayStr(),
+      category:t.category||'',
+      type:t.type||'expense',
+      currency:t.currency||(country==='GB'?'£':'€'),
       country,
       clientId:t.clientId!=null?Number(t.clientId):null,
       amount:t.amount!=null?Number(t.amount):null,
-      note:t.note || '',
-      recurrence:t.recurrence || 'none',
+      note:t.note||'',
+      recurrence:normalizeRecurrence(t.recurrence),
+      excludedDates:normalizeExcludedDates(t.excludedDates),
       tags:Array.isArray(t.tags)?t.tags:[],
       done:!!t.done,
       history:Array.isArray(t.history)?t.history:[]
     };
   });
 }
-
 function loadState(){
   return {
     tasks:migrateTasks(JSON.parse(safeGet('app_tasks')||'[]')),
-    clients:JSON.parse(safeGet('app_clients')||'null') || [
-      {id:1,name:'Roberto',color:'#ef4444'},
-      {id:2,name:'Kate',color:'#ec4899'},
-      {id:3,name:'Family',color:'#10b981'}
-    ],
+    clients:JSON.parse(safeGet('app_clients')||'null')||[{id:1,name:'Roberto',color:'#ef4444'},{id:2,name:'Kate',color:'#ec4899'},{id:3,name:'Family',color:'#10b981'}],
     categoriesIT:migrateCats(JSON.parse(safeGet('app_cats_IT')||'null'),'IT'),
     categoriesGB:migrateCats(JSON.parse(safeGet('app_cats_GB')||'null'),'GB')
   };
 }
-
-let state = loadState();
-
-function saveState(){
-  safeSet('app_tasks',JSON.stringify(state.tasks));
-  safeSet('app_clients',JSON.stringify(state.clients));
-  safeSet('app_cats_IT',JSON.stringify(state.categoriesIT));
-  safeSet('app_cats_GB',JSON.stringify(state.categoriesGB));
-}
-
+let state=loadState();
+function saveState(){safeSet('app_tasks',JSON.stringify(state.tasks));safeSet('app_clients',JSON.stringify(state.clients));safeSet('app_cats_IT',JSON.stringify(state.categoriesIT));safeSet('app_cats_GB',JSON.stringify(state.categoriesGB))}
 function getCategories(){return activeCountry==='GB'?state.categoriesGB:state.categoriesIT}
 function getCountryTasks(){return state.tasks.filter(t=>t.country===activeCountry)}
 function getActiveCurrency(){return COUNTRY_CONFIG[activeCountry].currency}
 function todayStr(){return getLocalDateStr(new Date())}
 function getLocalDateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function parseDateLocal(str){const [y,m,d]=str.split('-').map(Number);return new Date(y,m-1,d)}
+function parseDateLocal(str){const [y,m,d]=String(str||todayStr()).split('-').map(Number);return new Date(y,m-1,d)}
 function fmtCur(n,cur=getActiveCurrency()){return `${cur}${Number(n||0).toFixed(2)}`}
-function hexToRgba(hex,alpha){
-  let h=(hex||'#6366f1').replace('#','');
-  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
-  return `rgba(${r},${g},${b},${alpha})`;
+function hexToRgba(hex,alpha){let h=(hex||'#6366f1').replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return `rgba(${r},${g},${b},${alpha})`}
+function escapeHtml(str){return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function escapeJs(str){return String(str).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+function isRecurring(t){return t&&t.recurrence&&t.recurrence!=='none'}
+function repeatLabel(r){return r==='weekly'?'settimanale':r==='monthly'?'mensile':r==='yearly'?'annuale':'nessuna'}
+function getOccurrenceDate(t,explicitDate){return explicitDate||selectedCalDate||t.date||todayStr()}
+function isExcluded(t,dateStr){return normalizeExcludedDates(t.excludedDates).includes(dateStr)}
+function isOccurrenceDueOnDate(t,dateStr){
+  if(!t||!dateStr)return false;
+  if(isExcluded(t,dateStr))return false;
+  if(t.date===dateStr)return true;
+  if(!isRecurring(t))return false;
+  const base=parseDateLocal(t.date), target=parseDateLocal(dateStr);
+  if(base>target)return false;
+  if(t.recurrence==='weekly')return base.getDay()===target.getDay();
+  if(t.recurrence==='monthly')return base.getDate()===target.getDate();
+  if(t.recurrence==='yearly')return base.getDate()===target.getDate()&&base.getMonth()===target.getMonth();
+  return false;
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  document.getElementById('toastMsg').textContent=msg;
-  t.classList.add('visible');
-  clearTimeout(t._timer);
-  t._timer=setTimeout(()=>t.classList.remove('visible'),2200);
-}
-
-function applyTheme(dark){
-  document.documentElement.classList.toggle('dark',dark);
-  document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';
-  safeSet('app_theme',dark?'dark':'light');
-}
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('visible');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('visible'),2200)}
+function applyTheme(dark){document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';safeSet('app_theme',dark?'dark':'light')}
 function toggleTheme(){applyTheme(!document.documentElement.classList.contains('dark'))}
-
-function switchCountry(c){
-  activeCountry=c;
-  safeSet('app_activeCountry',c);
-  applyCountryTheme();
-  updateFormCountryIndicator();
-  currentFilter='all';
-  selectedCalDate=null;
-  initSelects();
-  renderAll();
-  showToast(`Passato a ${COUNTRY_CONFIG[c].flagText}`);
-}
-
-function applyCountryTheme(){
-  const cfg=COUNTRY_CONFIG[activeCountry];
-  document.body.classList.toggle('country-GB',activeCountry==='GB');
-  document.getElementById('btnIT').classList.toggle('active-country',activeCountry==='IT');
-  document.getElementById('btnGB').classList.toggle('active-country',activeCountry==='GB');
-  document.getElementById('countryLabel').textContent=cfg.label;
-  document.getElementById('countryPill1').textContent=cfg.currencyLabel;
-  document.getElementById('taskCurrency').value=cfg.currency;
-  document.getElementById('amountSymbol').textContent=cfg.currency;
-  document.getElementById('qaSymbol').textContent=cfg.currency;
-}
-
-function updateFormCountryIndicator(){
-  const cfg=COUNTRY_CONFIG[activeCountry];
-  document.getElementById('formCountryFlag').textContent=cfg.flag;
-  document.getElementById('formCountryLabel').textContent=cfg.flagText;
-  document.getElementById('formCountrySaving').textContent=cfg.savingNote;
-  document.getElementById('formCurHint').textContent=cfg.curHint;
-}
-
-function setTaskType(type){
-  document.getElementById('taskType').value=type;
-  const e=document.getElementById('typeExpenseBtn');
-  const i=document.getElementById('typeIncomeBtn');
-
-  if(type==='expense'){
-    e.className='py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense';
-    i.className='py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all';
-  } else {
-    i.className='py-2.5 rounded-xl text-xs font-bold border transition-all badge-income';
-    e.className='py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all';
-  }
-  updateRecurrenceLabel();
-}
-
-function updateRecurrenceLabel(){
-  const type=document.getElementById('taskType')?.value || 'expense';
-  const label=document.getElementById('recurrenceLabel');
-  const help=document.getElementById('recurrenceHelp');
-  if(!label || !help) return;
-
-  if(type==='income'){
-    label.textContent='Ricorrenza Entrata';
-    help.textContent='Questa entrata può essere settimanale, mensile, annuale oppure non ricorrente.';
-  } else {
-    label.textContent='Ricorrenza Spesa';
-    help.textContent='Questa spesa può essere settimanale, mensile, annuale oppure non ricorrente.';
-  }
-}
-
-function onRecurrenceSelectChange(){
-  const recurrence=document.getElementById('taskRecurrence').value;
-  const map={
-    none:'Ricorrenza deselezionata',
-    weekly:'Ricorrenza settimanale impostata',
-    monthly:'Ricorrenza mensile impostata',
-    yearly:'Ricorrenza annuale impostata'
-  };
-  showToast(map[recurrence] || 'Ricorrenza aggiornata');
-}
-
+function switchCountry(c){activeCountry=c;safeSet('app_activeCountry',c);applyCountryTheme();updateFormCountryIndicator();currentFilter='all';selectedCalDate=null;initSelects();renderAll();showToast(`Passato a ${COUNTRY_CONFIG[c].flagText}`)}
+function applyCountryTheme(){const cfg=COUNTRY_CONFIG[activeCountry];document.body.classList.toggle('country-GB',activeCountry==='GB');document.getElementById('btnIT').classList.toggle('active-country',activeCountry==='IT');document.getElementById('btnGB').classList.toggle('active-country',activeCountry==='GB');document.getElementById('countryLabel').textContent=cfg.label;document.getElementById('countryPill1').textContent=cfg.currencyLabel;document.getElementById('taskCurrency').value=cfg.currency;document.getElementById('amountSymbol').textContent=cfg.currency;document.getElementById('qaSymbol').textContent=cfg.currency}
+function updateFormCountryIndicator(){const cfg=COUNTRY_CONFIG[activeCountry];document.getElementById('formCountryFlag').textContent=cfg.flag;document.getElementById('formCountryLabel').textContent=cfg.flagText;document.getElementById('formCountrySaving').textContent=cfg.savingNote;document.getElementById('formCurHint').textContent=cfg.curHint}
+function setTaskType(type){document.getElementById('taskType').value=type;const e=document.getElementById('typeExpenseBtn'),i=document.getElementById('typeIncomeBtn');if(type==='expense'){e.className='py-2.5 rounded-xl text-xs font-bold border transition-all badge-expense';i.className='py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all'}else{i.className='py-2.5 rounded-xl text-xs font-bold border transition-all badge-income';e.className='py-2.5 rounded-xl text-xs font-bold border border-slate-700 text-slate-500 transition-all'}updateRecurrenceLabel()}
+function updateRecurrenceLabel(){const type=document.getElementById('taskType')?.value||'expense';const label=document.getElementById('recurrenceLabel'),help=document.getElementById('recurrenceHelp');if(type==='income'){label.textContent='Ricorrenza Entrata';help.textContent='Questa entrata può essere settimanale, mensile, annuale oppure non ricorrente.'}else{label.textContent='Ricorrenza Spesa';help.textContent='Questa spesa può essere settimanale, mensile, annuale oppure non ricorrente.'}}
+function onRecurrenceSelectChange(){const r=document.getElementById('taskRecurrence').value;showToast(({none:'Ricorrenza deselezionata',weekly:'Ricorrenza settimanale impostata',monthly:'Ricorrenza mensile impostata',yearly:'Ricorrenza annuale impostata'})[r]||'Ricorrenza aggiornata')}
 function initSelects(){
-  const cats=[...getCategories()].sort((a,b)=>a.name.localeCompare(b.name));
-  const cs=document.getElementById('taskCategory');
-  const qc=document.getElementById('qaCategory');
-  const cl=document.getElementById('taskClient');
-  const ql=document.getElementById('qaClient');
-
-  const cv=cs.value;
-  cs.innerHTML='<option value="">Seleziona categoria…</option>';
-  qc.innerHTML='<option value="">Categoria…</option>';
-  cats.forEach(c=>{
-    cs.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`;
-    qc.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`;
-  });
-  if(cv)cs.value=cv;
-
-  cl.innerHTML='<option value="">Generico</option>';
-  ql.innerHTML='<option value="">Generico</option>';
-  state.clients.forEach(c=>{
-    cl.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`;
-    ql.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`;
-  });
+  const cats=[...getCategories()].sort((a,b)=>a.name.localeCompare(b.name));const cs=document.getElementById('taskCategory'),qc=document.getElementById('qaCategory'),cl=document.getElementById('taskClient'),ql=document.getElementById('qaClient');
+  const cv=cs.value;cs.innerHTML='<option value="">Seleziona categoria…</option>';qc.innerHTML='<option value="">Categoria…</option>';
+  cats.forEach(c=>{cs.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`;qc.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`});if(cv)cs.value=cv;
+  cl.innerHTML='<option value="">Generico</option>';ql.innerHTML='<option value="">Generico</option>';state.clients.forEach(c=>{cl.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`;ql.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`});
 }
 
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-}
-
-document.getElementById('mainForm').addEventListener('submit', function(e){
+document.getElementById('mainForm').addEventListener('submit',function(e){
   e.preventDefault();
-
-  const editId=document.getElementById('editTaskId').value;
-  const date=document.getElementById('taskDate').value;
-  const category=document.getElementById('taskCategory').value;
-  const clientId=document.getElementById('taskClient').value;
-  const amountRaw=document.getElementById('taskAmount').value;
-  const note=document.getElementById('taskNote').value.trim();
-  const type=document.getElementById('taskType').value;
-  const recurrence=document.getElementById('taskRecurrence').value;
-  const tags=document.getElementById('taskTags').value.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
-
-  if(!date){showToast('Inserisci una data');return}
-  if(!category){showToast('Seleziona una categoria');return}
-  if(amountRaw==='' || Number(amountRaw)<0){showToast('Inserisci un importo valido');return}
-
-  const payload={
-    date,
-    category,
-    clientId:clientId?Number(clientId):null,
-    amount:Number(amountRaw),
-    note,
-    type,
-    recurrence,
-    tags,
-    currency:getActiveCurrency(),
-    country:activeCountry
-  };
-
-  if(editId){
-    const idx=state.tasks.findIndex(t=>String(t.id)===String(editId));
-    if(idx>=0) state.tasks[idx]={...state.tasks[idx],...payload};
-    showToast('Task aggiornato');
-  } else {
-    state.tasks.push({
-      id:Date.now(),
-      ...payload,
-      done:false,
-      history:[{ts:Date.now(),action:'Creato',note:category}]
-    });
-    showToast('Task salvato');
-  }
-
-  saveState();
-  resetForm();
-  renderAll();
+  const editId=document.getElementById('editTaskId').value,date=document.getElementById('taskDate').value,category=document.getElementById('taskCategory').value,clientId=document.getElementById('taskClient').value,amountRaw=document.getElementById('taskAmount').value,note=document.getElementById('taskNote').value.trim(),type=document.getElementById('taskType').value,recurrence=document.getElementById('taskRecurrence').value,tags=document.getElementById('taskTags').value.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
+  if(!date){showToast('Inserisci una data');return} if(!category){showToast('Seleziona una categoria');return} if(amountRaw===''||Number(amountRaw)<0){showToast('Inserisci un importo valido');return}
+  const payload={date,category,clientId:clientId?Number(clientId):null,amount:Number(amountRaw),note,type,recurrence,tags,currency:getActiveCurrency(),country:activeCountry};
+  if(editId){const idx=state.tasks.findIndex(t=>String(t.id)===String(editId));if(idx>=0){state.tasks[idx]={...state.tasks[idx],...payload,excludedDates:normalizeExcludedDates(state.tasks[idx].excludedDates)}}showToast('Task aggiornato')}
+  else{state.tasks.push({id:Date.now(),...payload,excludedDates:[],done:false,history:[{ts:Date.now(),action:'Creato',note:category}]});showToast('Task salvato')}
+  saveState();resetForm();renderAll();
 });
+function resetForm(){document.getElementById('mainForm').reset();document.getElementById('editTaskId').value='';document.getElementById('taskDate').value=todayStr();document.getElementById('taskRecurrence').value='none';document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>Nuovo Task / Movimento';document.getElementById('submitBtn').textContent='Salva';document.getElementById('cancelEdit').classList.add('hidden');setTaskType('expense');updateFormCountryIndicator();applyCountryTheme()}
+function editTask(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;document.getElementById('formDetails').open=true;document.getElementById('editTaskId').value=t.id;document.getElementById('taskDate').value=t.date;document.getElementById('taskCategory').value=t.category;document.getElementById('taskClient').value=t.clientId||'';document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';document.getElementById('taskNote').value=t.note||'';document.getElementById('taskTags').value=(t.tags||[]).join(', ');document.getElementById('taskRecurrence').value=t.recurrence||'none';setTaskType(t.type||'expense');document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 rounded-full animate-pulse bg-yellow-400"></span> Modifica Task';document.getElementById('submitBtn').textContent='💾 Aggiorna';document.getElementById('cancelEdit').classList.remove('hidden');document.getElementById('formDetails').scrollIntoView({behavior:'smooth',block:'start'})}
+function duplicateTask(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;state.tasks.push({...t,id:Date.now(),done:false,date:todayStr(),excludedDates:[],history:[{ts:Date.now(),action:'Duplicato',note:t.category}]});saveState();renderAll();showToast('Task duplicato')}
 
-function resetForm(){
-  document.getElementById('mainForm').reset();
-  document.getElementById('editTaskId').value='';
-  document.getElementById('taskDate').value=todayStr();
-  document.getElementById('taskRecurrence').value='none';
-  document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>Nuovo Task / Movimento';
-  document.getElementById('submitBtn').textContent='Salva';
-  document.getElementById('cancelEdit').classList.add('hidden');
-  setTaskType('expense');
-  updateFormCountryIndicator();
-  applyCountryTheme();
-}
-
-function editTask(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(!t)return;
-
-  document.getElementById('formDetails').open=true;
-  document.getElementById('editTaskId').value=t.id;
-  document.getElementById('taskDate').value=t.date;
-  document.getElementById('taskCategory').value=t.category;
-  document.getElementById('taskClient').value=t.clientId || '';
-  document.getElementById('taskAmount').value=t.amount!=null?t.amount:'';
-  document.getElementById('taskNote').value=t.note || '';
-  document.getElementById('taskTags').value=(t.tags||[]).join(', ');
-  document.getElementById('taskRecurrence').value=t.recurrence || 'none';
-
-  setTaskType(t.type || 'expense');
-  document.getElementById('formTitle').innerHTML='<span class="w-1.5 h-1.5 rounded-full animate-pulse bg-yellow-400"></span> Modifica Task';
-  document.getElementById('submitBtn').textContent='💾 Aggiorna';
-  document.getElementById('cancelEdit').classList.remove('hidden');
-
-  document.getElementById('formDetails').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function duplicateTask(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(!t)return;
-  state.tasks.push({...t,id:Date.now(),done:false,date:todayStr(),history:[{ts:Date.now(),action:'Duplicato',note:t.category}]});
-  saveState();
-  renderAll();
-  showToast('Task duplicato');
-}
-
-function deleteTask(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(!t)return;
-  if(!confirm(`Eliminare "${t.category}"?`))return;
-  state.tasks=state.tasks.filter(x=>x.id!==id);
-  saveState();
-  renderAll();
-  showToast('Task eliminato');
-}
-
-function toggleTaskStatus(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(!t)return;
-  t.done=!t.done;
-  saveState();
-  renderAll();
-}
-
-function setFilter(filter){
-  currentFilter=filter;
-  selectedCalDate=null;
-
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  const btn=document.getElementById(`filter-${filter}`);
-  if(btn)btn.classList.add('active');
-
-  const titles={
-    all:['Attività e Scadenze','Timeline'],
-    expired:['⚠ Scaduti','Non completati'],
-    expense:['📤 Spese','Uscite'],
-    income:['📥 Entrate','Guadagni'],
-
-    weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],
-    monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],
-    annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],
-
-    expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],
-    incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],
-
-    expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],
-    expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],
-    expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],
-
-    incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],
-    incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],
-    incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']
-  };
-
-  const [title,sub]=titles[filter] || titles.all;
-  document.getElementById('mainTitle').textContent=title;
-  document.getElementById('mainSubtitle').textContent=sub;
-
-  renderCalendar();
-  renderTasks();
-}
-
-function setSort(mode){
-  currentSort=mode;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`sort-${mode}`)?.classList.add('active');
-  renderTasks();
-}
-
-function getFilteredTasks(){
-  const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();
-  const today=parseDateLocal(todayStr());
-  let filtered=getCountryTasks();
-
-  if(selectedCalDate) filtered=filtered.filter(t=>t.date===selectedCalDate);
-  else if(currentFilter==='expired') filtered=filtered.filter(t=>parseDateLocal(t.date)<today && !t.done);
-  else if(currentFilter==='expense') filtered=filtered.filter(t=>t.type==='expense');
-  else if(currentFilter==='income') filtered=filtered.filter(t=>t.type==='income');
-
-  else if(currentFilter==='weekly') filtered=filtered.filter(t=>t.recurrence==='weekly');
-  else if(currentFilter==='monthly') filtered=filtered.filter(t=>t.recurrence==='monthly');
-  else if(currentFilter==='annual') filtered=filtered.filter(t=>t.recurrence==='yearly');
-
-  else if(currentFilter==='expenseRecurring') filtered=filtered.filter(t=>t.type==='expense' && t.recurrence && t.recurrence!=='none');
-  else if(currentFilter==='incomeRecurring') filtered=filtered.filter(t=>t.type==='income' && t.recurrence && t.recurrence!=='none');
-
-  else if(currentFilter==='expenseWeekly') filtered=filtered.filter(t=>t.type==='expense' && t.recurrence==='weekly');
-  else if(currentFilter==='expenseMonthly') filtered=filtered.filter(t=>t.type==='expense' && t.recurrence==='monthly');
-  else if(currentFilter==='expenseYearly') filtered=filtered.filter(t=>t.type==='expense' && t.recurrence==='yearly');
-
-  else if(currentFilter==='incomeWeekly') filtered=filtered.filter(t=>t.type==='income' && t.recurrence==='weekly');
-  else if(currentFilter==='incomeMonthly') filtered=filtered.filter(t=>t.type==='income' && t.recurrence==='monthly');
-  else if(currentFilter==='incomeYearly') filtered=filtered.filter(t=>t.type==='income' && t.recurrence==='yearly');
-
-  else if(typeof currentFilter==='number') filtered=filtered.filter(t=>t.clientId===currentFilter);
-
-  if(activeTagFilter) filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
-
-  if(search){
-    filtered=filtered.filter(t=>{
-      const client=state.clients.find(c=>c.id===t.clientId);
-      const typeWords=t.type==='income'?'entrata income ricavo guadagno':'spesa expense costo uscita';
-      const recWords={weekly:'settimanale weekly settimana',monthly:'mensile monthly mese',yearly:'annuale annual anno',none:'nessuna'}[t.recurrence||'none'];
-      const text=[
-        t.category,
-        t.note,
-        (t.tags||[]).join(' '),
-        client?client.name:'generico',
-        typeWords,
-        recWords,
-        String(t.amount),
-        t.date
-      ].join(' ').toLowerCase();
-      return text.includes(search);
-    });
+function deleteTask(id, occurrenceDate){
+  const t=state.tasks.find(x=>x.id===id);if(!t)return;
+  const occDate=getOccurrenceDate(t,occurrenceDate);
+  if(isRecurring(t)){
+    openDeleteRecurringModal(id,occDate);
+    return;
   }
+  if(!confirm(`Eliminare "${t.category}"?`))return;
+  state.tasks=state.tasks.filter(x=>x.id!==id);saveState();renderAll();showToast('Task eliminato');
+}
+function openDeleteRecurringModal(id,occurrenceDate){
+  const t=state.tasks.find(x=>x.id===id);if(!t)return;
+  pendingDelete={id,occurrenceDate};
+  const tipo=t.type==='income'?'entrata':'spesa';
+  document.getElementById('deleteRecurringText').textContent=`"${t.category}" è una ${tipo} ricorrente ${repeatLabel(t.recurrence)}. Puoi eliminare solo l'occorrenza del ${parseDateLocal(occurrenceDate).toLocaleDateString('it-IT')} oppure tutta la serie.`;
+  const modal=document.getElementById('deleteRecurringModal');
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+}
+function closeDeleteRecurringModal(){pendingDelete=null;const modal=document.getElementById('deleteRecurringModal');modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+function confirmDeleteOccurrenceOnly(){
+  if(!pendingDelete)return;
+  const t=state.tasks.find(x=>x.id===pendingDelete.id);if(!t)return closeDeleteRecurringModal();
+  const date=pendingDelete.occurrenceDate;
+  t.excludedDates=normalizeExcludedDates(t.excludedDates);
+  if(!t.excludedDates.includes(date))t.excludedDates.push(date);
+  t.history=Array.isArray(t.history)?t.history:[];
+  t.history.push({ts:Date.now(),action:'Occorrenza eliminata',note:date});
+  saveState();closeDeleteRecurringModal();renderAll();showToast('Occorrenza eliminata');
+}
+function confirmDeleteRecurringSeries(){
+  if(!pendingDelete)return;
+  state.tasks=state.tasks.filter(x=>x.id!==pendingDelete.id);
+  saveState();closeDeleteRecurringModal();renderAll();showToast('Serie ricorrente eliminata');
+}
+document.getElementById('deleteRecurringModal').addEventListener('click',e=>{if(e.target.id==='deleteRecurringModal')closeDeleteRecurringModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDeleteRecurringModal()});
 
-  if(currentSort==='date') filtered.sort((a,b)=>b.date.localeCompare(a.date));
-  else if(currentSort==='amount') filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));
-  else if(currentSort==='status') filtered.sort((a,b)=>Number(a.done)-Number(b.done));
-
+function toggleTaskStatus(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;saveState();renderAll()}
+function setFilter(filter){currentFilter=filter;selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`filter-${filter}`)?.classList.add('active');const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};const [title,sub]=titles[filter]||titles.all;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;renderCalendar();renderTasks()}
+function setSort(mode){currentSort=mode;document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`sort-${mode}`)?.classList.add('active');renderTasks()}
+function getFilteredTasks(){
+  const search=(document.getElementById('searchInput').value||'').toLowerCase().trim();const today=parseDateLocal(todayStr());let filtered=getCountryTasks();
+  if(selectedCalDate)filtered=filtered.filter(t=>isOccurrenceDueOnDate(t,selectedCalDate));
+  else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
+  else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
+  else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
+  else if(currentFilter==='weekly')filtered=filtered.filter(t=>t.recurrence==='weekly');
+  else if(currentFilter==='monthly')filtered=filtered.filter(t=>t.recurrence==='monthly');
+  else if(currentFilter==='annual')filtered=filtered.filter(t=>t.recurrence==='yearly');
+  else if(currentFilter==='expenseRecurring')filtered=filtered.filter(t=>t.type==='expense'&&isRecurring(t));
+  else if(currentFilter==='incomeRecurring')filtered=filtered.filter(t=>t.type==='income'&&isRecurring(t));
+  else if(currentFilter==='expenseWeekly')filtered=filtered.filter(t=>t.type==='expense'&&t.recurrence==='weekly');
+  else if(currentFilter==='expenseMonthly')filtered=filtered.filter(t=>t.type==='expense'&&t.recurrence==='monthly');
+  else if(currentFilter==='expenseYearly')filtered=filtered.filter(t=>t.type==='expense'&&t.recurrence==='yearly');
+  else if(currentFilter==='incomeWeekly')filtered=filtered.filter(t=>t.type==='income'&&t.recurrence==='weekly');
+  else if(currentFilter==='incomeMonthly')filtered=filtered.filter(t=>t.type==='income'&&t.recurrence==='monthly');
+  else if(currentFilter==='incomeYearly')filtered=filtered.filter(t=>t.type==='income'&&t.recurrence==='yearly');
+  else if(typeof currentFilter==='number')filtered=filtered.filter(t=>t.clientId===currentFilter);
+  if(activeTagFilter)filtered=filtered.filter(t=>(t.tags||[]).includes(activeTagFilter));
+  if(search){filtered=filtered.filter(t=>{const client=state.clients.find(c=>c.id===t.clientId);const typeWords=t.type==='income'?'entrata income ricavo guadagno':'spesa expense costo uscita';const recWords={weekly:'settimanale weekly settimana',monthly:'mensile monthly mese',yearly:'annuale annual anno',none:'nessuna'}[t.recurrence||'none'];const text=[t.category,t.note,(t.tags||[]).join(' '),client?client.name:'generico',typeWords,recWords,String(t.amount),t.date].join(' ').toLowerCase();return text.includes(search)})}
+  if(currentSort==='date')filtered.sort((a,b)=>b.date.localeCompare(a.date));else if(currentSort==='amount')filtered.sort((a,b)=>(b.amount||0)-(a.amount||0));else if(currentSort==='status')filtered.sort((a,b)=>Number(a.done)-Number(b.done));
   return filtered;
 }
-
 function renderTasks(){
-  const grid=document.getElementById('taskGrid');
-  const empty=document.getElementById('emptyTasks');
-  grid.innerHTML='';
-
-  const filtered=getFilteredTasks();
-  empty.classList.toggle('hidden',filtered.length>0);
-  empty.classList.toggle('flex',filtered.length===0);
-
-  const total=filtered.filter(t=>!t.done && t.amount).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
-  const ftBox=document.getElementById('filterTotalBox');
-  const ftEl=document.getElementById('filterTotal');
-  if(currentFilter!=='all' || selectedCalDate){
-    ftBox.classList.remove('hidden');
-    ftEl.textContent=(total>=0?'+':'-')+fmtCur(Math.abs(total));
-    ftEl.style.color=total>=0?'#10b981':'#ef4444';
-  }else{
-    ftBox.classList.add('hidden');
-  }
-
+  const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');grid.innerHTML='';const filtered=getFilteredTasks();empty.classList.toggle('hidden',filtered.length>0);empty.classList.toggle('flex',filtered.length===0);
+  const total=filtered.filter(t=>!t.done&&t.amount&&!isExcluded(t,selectedCalDate||t.date)).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
+  if(currentFilter!=='all'||selectedCalDate){ftBox.classList.remove('hidden');ftEl.textContent=(total>=0?'+':'-')+fmtCur(Math.abs(total));ftEl.style.color=total>=0?'#10b981':'#ef4444'}else ftBox.classList.add('hidden');
   const cats=getCategories();
-
   filtered.forEach(t=>{
-    const client=state.clients.find(c=>c.id===t.clientId);
-    const clientColor=client?client.color:'#475569';
-    const catObj=cats.find(c=>c.name===t.category);
-    const catColor=catObj?catObj.color:'#6366f1';
-    const isIncome=t.type==='income';
-    const dateLabel=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
-    const recBadge=getRecurrenceBadge(t.recurrence);
-    const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag cursor-pointer" onclick="setActiveTag('${escapeJs(tag)}')">#${escapeHtml(tag)}</span>`).join('');
-
-    const card=document.createElement('div');
-    card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;
-    card.style.borderLeftColor=clientColor;
+    const client=state.clients.find(c=>c.id===t.clientId),clientColor=client?client.color:'#475569',catObj=cats.find(c=>c.name===t.category),catColor=catObj?catObj.color:'#6366f1',isIncome=t.type==='income';
+    const occurrenceDate=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:t.date;
+    const dateLabel=parseDateLocal(occurrenceDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});const recBadge=getRecurrenceBadge(t.recurrence);const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag cursor-pointer" onclick="setActiveTag('${escapeJs(tag)}')">#${escapeHtml(tag)}</span>`).join('');
+    const card=document.createElement('div');card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;card.style.borderLeftColor=clientColor;
     card.innerHTML=`
       <div class="flex justify-between items-start mb-3">
         <div class="flex items-center gap-2 flex-wrap">
@@ -1205,534 +501,54 @@ function renderTasks(){
         <div class="flex gap-1 items-center">
           <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-500 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
           <button onclick="editTask(${t.id})" class="text-xs text-slate-500 hover:text-slate-300 p-1 transition-colors" title="Modifica">✏️</button>
-          <button onclick="deleteTask(${t.id})" class="text-xs text-slate-500 hover:text-red-400 p-1 transition-colors" title="Elimina">✕</button>
+          <button onclick="deleteTask(${t.id}, '${occurrenceDate}')" class="text-xs text-slate-500 hover:text-red-400 p-1 transition-colors" title="Elimina">✕</button>
         </div>
       </div>
-
-      <div class="flex items-center gap-2 mb-1">
-        <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span>
-        <span class="font-black text-base leading-tight ${t.done?'line-through text-slate-500':'text-white'}">${escapeHtml(t.category)}</span>
-      </div>
-
-      <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${escapeHtml(t.note || '—')}</p>
+      <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span><span class="font-black text-base leading-tight ${t.done?'line-through text-slate-500':'text-white'}">${escapeHtml(t.category)}</span></div>
+      <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${escapeHtml(t.note||'—')}</p>
       ${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
-
-      <div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50">
-        <div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(t.amount,t.currency)}</div>
-        <div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${clientColor}">
-          ${client?escapeHtml(client.name):'Generico'}
-        </div>
-      </div>
-    `;
+      <div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50"><div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(t.amount,t.currency)}</div><div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${clientColor}">${client?escapeHtml(client.name):'Generico'}</div></div>`;
     grid.appendChild(card);
   });
 }
-
-function getRecurrenceBadge(r){
-  if(r==='weekly') return '<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/15 px-1.5 py-0.5 rounded">7g</span>';
-  if(r==='monthly') return '<span class="text-[9px] text-amber-400 font-bold bg-amber-500/15 px-1.5 py-0.5 rounded">1M</span>';
-  if(r==='yearly') return '<span class="text-[9px] text-orange-400 font-bold bg-orange-500/15 px-1.5 py-0.5 rounded">1A</span>';
-  return '';
+function getRecurrenceBadge(r){if(r==='weekly')return'<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/15 px-1.5 py-0.5 rounded">7g</span>';if(r==='monthly')return'<span class="text-[9px] text-amber-400 font-bold bg-amber-500/15 px-1.5 py-0.5 rounded">1M</span>';if(r==='yearly')return'<span class="text-[9px] text-orange-400 font-bold bg-orange-500/15 px-1.5 py-0.5 rounded">1A</span>';return''}
+function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;renderTagFilters();renderTasks()}
+function renderTagFilters(){const list=document.getElementById('tagFilterList');list.innerHTML='';const set=new Set();getCountryTasks().forEach(t=>(t.tags||[]).forEach(tag=>set.add(tag)));[...set].sort().forEach(tag=>{const btn=document.createElement('button');btn.className='task-tag cursor-pointer '+(activeTagFilter===tag?'ring-2 ring-indigo-400':'');btn.textContent='#'+tag;btn.onclick=()=>setActiveTag(tag);list.appendChild(btn)})}
+function renderClientFilters(){const list=document.getElementById('clientFilterList');list.innerHTML='';state.clients.forEach(c=>{const btn=document.createElement('button');btn.className='filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';btn.style.color=c.color;btn.textContent=c.name;btn.onclick=()=>{currentFilter=c.id;selectedCalDate=null;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('mainTitle').textContent=`👤 ${c.name}`;document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;renderTasks()};list.appendChild(btn)})}
+function renderClientManagement(){const list=document.getElementById('clientListDisplay');list.innerHTML='';state.clients.forEach(c=>{const count=getCountryTasks().filter(t=>t.clientId===c.id).length;const div=document.createElement('div');div.className='p-2.5 rounded-xl group flex items-center justify-between';div.style.background=hexToRgba(c.color,.25);div.style.border='1px solid '+hexToRgba(c.color,.5);div.innerHTML=`<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span><span class="text-xs font-black text-white">${escapeHtml(c.name)}</span><span class="text-[9px] mono text-slate-500">${count}</span></div><button onclick="removeClient(${c.id})" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>`;list.appendChild(div)})}
+function addClient(){const name=document.getElementById('newClientName').value.trim(),color=document.getElementById('newClientColor').value;if(!name){showToast('Inserisci un nome');return}state.clients.push({id:Date.now(),name,color});document.getElementById('newClientName').value='';saveState();initSelects();renderAll()}
+function removeClient(id){if(!confirm('Rimuovere questa persona?'))return;state.clients=state.clients.filter(c=>c.id!==id);state.tasks.forEach(t=>{if(t.clientId===id)t.clientId=null});saveState();initSelects();renderAll()}
+function renderCategories(){const list=document.getElementById('categoryListDisplay');list.innerHTML='';getCategories().sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{const count=getCountryTasks().filter(t=>t.category===c.name).length;const div=document.createElement('div');div.className='p-2.5 rounded-xl group flex items-center justify-between';div.style.background=hexToRgba(c.color,.25);div.style.border='1px solid '+hexToRgba(c.color,.5);div.innerHTML=`<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span><span class="text-xs font-black text-white">${escapeHtml(c.name)}</span><span class="text-[9px] mono text-slate-500">${count}</span></div><button onclick="removeCategory('${escapeJs(c.name)}')" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>`;list.appendChild(div)})}
+function addCategory(){const name=document.getElementById('newCatName').value.trim(),color=document.getElementById('newCatColor').value;if(!name){showToast('Inserisci una categoria');return}getCategories().push({name,color});document.getElementById('newCatName').value='';saveState();initSelects();renderAll()}
+function removeCategory(name){if(!confirm(`Rimuovere "${name}"?`))return;if(activeCountry==='GB')state.categoriesGB=state.categoriesGB.filter(c=>c.name!==name);else state.categoriesIT=state.categoriesIT.filter(c=>c.name!==name);saveState();initSelects();renderAll()}
+function renderRecurringFinance(){renderRecurringFinanceList('expense','weekly','weeklyExpensesList','#6366f1','7g');renderRecurringFinanceList('expense','monthly','monthlyExpensesList','#f59e0b','1M');renderRecurringFinanceList('expense','yearly','annualExpensesList','#f97316','1A');renderRecurringFinanceList('income','weekly','weeklyIncomeList','#6366f1','7g');renderRecurringFinanceList('income','monthly','monthlyIncomeList','#f59e0b','1M');renderRecurringFinanceList('income','yearly','annualIncomeList','#f97316','1A')}
+function renderRecurringFinanceList(type,recurrence,containerId,color,badge){
+  const list=document.getElementById(containerId);if(!list)return;const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0).sort((a,b)=>a.date.localeCompare(b.date));const isIncome=type==='income',emptyLabel=isIncome?'entrata':'spesa';
+  if(!tasks.length){list.innerHTML=`<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ${emptyLabel} ${badge.toLowerCase()}</p>`;return}
+  let total=0;list.innerHTML='';tasks.forEach(t=>{total+=t.amount;const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color,dateLbl=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'}),amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button><button onclick="deleteTask(${t.id}, '${todayStr()}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="flex items-center justify-between mt-1.5 pl-3.5"><span class="text-[8px] text-white/60 mono">Data: ${dateLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(t.amount,t.currency)}</span></div>`;list.appendChild(div)});
+  const totalDiv=document.createElement('div');totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
 }
-
-function escapeJs(str){return String(str).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
-
-function setActiveTag(tag){
-  activeTagFilter=activeTagFilter===tag?null:tag;
-  renderTagFilters();
-  renderTasks();
-}
-
-function renderTagFilters(){
-  const list=document.getElementById('tagFilterList');
-  list.innerHTML='';
-  const set=new Set();
-  getCountryTasks().forEach(t=>(t.tags||[]).forEach(tag=>set.add(tag)));
-  [...set].sort().forEach(tag=>{
-    const btn=document.createElement('button');
-    btn.className='task-tag cursor-pointer '+(activeTagFilter===tag?'ring-2 ring-indigo-400':'');
-    btn.textContent='#'+tag;
-    btn.onclick=()=>setActiveTag(tag);
-    list.appendChild(btn);
-  });
-}
-
-function renderClientFilters(){
-  const list=document.getElementById('clientFilterList');
-  list.innerHTML='';
-  state.clients.forEach(c=>{
-    const btn=document.createElement('button');
-    btn.className='filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';
-    btn.style.color=c.color;
-    btn.textContent=c.name;
-    btn.onclick=()=>{
-      currentFilter=c.id;
-      selectedCalDate=null;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('mainTitle').textContent=`👤 ${c.name}`;
-      document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;
-      renderTasks();
-    };
-    list.appendChild(btn);
-  });
-}
-
-function renderClientManagement(){
-  const list=document.getElementById('clientListDisplay');
-  list.innerHTML='';
-  state.clients.forEach(c=>{
-    const count=getCountryTasks().filter(t=>t.clientId===c.id).length;
-    const div=document.createElement('div');
-    div.className='p-2.5 rounded-xl group flex items-center justify-between';
-    div.style.background=hexToRgba(c.color,.25);
-    div.style.border='1px solid '+hexToRgba(c.color,.5);
-    div.innerHTML=`
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span>
-        <span class="text-xs font-black text-white">${escapeHtml(c.name)}</span>
-        <span class="text-[9px] mono text-slate-500">${count}</span>
-      </div>
-      <button onclick="removeClient(${c.id})" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>
-    `;
-    list.appendChild(div);
-  });
-}
-
-function addClient(){
-  const name=document.getElementById('newClientName').value.trim();
-  const color=document.getElementById('newClientColor').value;
-  if(!name){showToast('Inserisci un nome');return}
-  state.clients.push({id:Date.now(),name,color});
-  document.getElementById('newClientName').value='';
-  saveState();
-  initSelects();
-  renderAll();
-}
-
-function removeClient(id){
-  if(!confirm('Rimuovere questa persona?'))return;
-  state.clients=state.clients.filter(c=>c.id!==id);
-  state.tasks.forEach(t=>{if(t.clientId===id)t.clientId=null});
-  saveState();
-  initSelects();
-  renderAll();
-}
-
-function renderCategories(){
-  const list=document.getElementById('categoryListDisplay');
-  list.innerHTML='';
-  getCategories().sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
-    const count=getCountryTasks().filter(t=>t.category===c.name).length;
-    const div=document.createElement('div');
-    div.className='p-2.5 rounded-xl group flex items-center justify-between';
-    div.style.background=hexToRgba(c.color,.25);
-    div.style.border='1px solid '+hexToRgba(c.color,.5);
-    div.innerHTML=`
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span>
-        <span class="text-xs font-black text-white">${escapeHtml(c.name)}</span>
-        <span class="text-[9px] mono text-slate-500">${count}</span>
-      </div>
-      <button onclick="removeCategory('${escapeJs(c.name)}')" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>
-    `;
-    list.appendChild(div);
-  });
-}
-
-function addCategory(){
-  const name=document.getElementById('newCatName').value.trim();
-  const color=document.getElementById('newCatColor').value;
-  if(!name){showToast('Inserisci una categoria');return}
-  getCategories().push({name,color});
-  document.getElementById('newCatName').value='';
-  saveState();
-  initSelects();
-  renderAll();
-}
-
-function removeCategory(name){
-  if(!confirm(`Rimuovere "${name}"?`))return;
-  if(activeCountry==='GB') state.categoriesGB=state.categoriesGB.filter(c=>c.name!==name);
-  else state.categoriesIT=state.categoriesIT.filter(c=>c.name!==name);
-  saveState();
-  initSelects();
-  renderAll();
-}
-
-function renderRecurringFinance(){
-  renderRecurringFinanceList('expense','weekly','weeklyExpensesList','#6366f1','7g');
-  renderRecurringFinanceList('expense','monthly','monthlyExpensesList','#f59e0b','1M');
-  renderRecurringFinanceList('expense','yearly','annualExpensesList','#f97316','1A');
-
-  renderRecurringFinanceList('income','weekly','weeklyIncomeList','#6366f1','7g');
-  renderRecurringFinanceList('income','monthly','monthlyIncomeList','#f59e0b','1M');
-  renderRecurringFinanceList('income','yearly','annualIncomeList','#f97316','1A');
-}
-
-function renderRecurringFinanceList(type, recurrence, containerId, color, badge){
-  const list=document.getElementById(containerId);
-  if(!list)return;
-
-  const tasks=getCountryTasks()
-    .filter(t=>t.recurrence===recurrence && t.type===type && !t.done && t.amount>0)
-    .sort((a,b)=>a.date.localeCompare(b.date));
-
-  const isIncome=type==='income';
-  const emptyLabel=isIncome?'entrata':'spesa';
-
-  if(!tasks.length){
-    list.innerHTML=`<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ${emptyLabel} ${badge.toLowerCase()}</p>`;
-    return;
-  }
-
-  let total=0;
-  list.innerHTML='';
-
-  tasks.forEach(t=>{
-    total+=t.amount;
-    const co=getCategories().find(c=>c.name===t.category);
-    const col=co?co.color:color;
-    const dateLbl=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
-    const amountClass=isIncome?'text-emerald-300':'text-red-300';
-    const amountSign=isIncome?'+':'-';
-
-    const div=document.createElement('div');
-    div.className='p-2.5 rounded-xl border group';
-    div.style.background=hexToRgba(col,0.25);
-    div.style.borderColor=hexToRgba(col,0.45);
-    div.innerHTML=`
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span>
-          <span class="text-[10px] font-black text-white truncate">
-            ${escapeHtml(t.category)}
-            <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span>
-          </span>
-        </div>
-        <div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-          <button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button>
-          <button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button>
-        </div>
-      </div>
-      <div class="flex items-center justify-between mt-1.5 pl-3.5">
-        <span class="text-[8px] text-white/60 mono">Data: ${dateLbl}</span>
-        <span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(t.amount,t.currency)}</span>
-      </div>
-    `;
-    list.appendChild(div);
-  });
-
-  const totalDiv=document.createElement('div');
-  totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';
-  totalDiv.innerHTML=`
-    <span class="text-slate-400 uppercase tracking-widest">Totale</span>
-    <span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>
-  `;
-  list.appendChild(totalDiv);
-}
-
-function registerOccurrence(id){
-  const source=state.tasks.find(t=>t.id===id);
-  if(!source)return;
-  const amount=prompt('Importo occorrenza:', Number(source.amount||0).toFixed(2));
-  if(amount===null)return;
-  const parsed=Number(amount.replace(',','.'));
-  if(Number.isNaN(parsed)||parsed<0){showToast('Importo non valido');return}
-
-  state.tasks.push({
-    ...source,
-    id:Date.now(),
-    date:todayStr(),
-    amount:parsed,
-    recurrence:'none',
-    done:false,
-    note:source.note ? `${source.note} [occorrenza registrata]` : '[occorrenza registrata]',
-    history:[{ts:Date.now(),action:'Occorrenza registrata',note:source.category}]
-  });
-
-  saveState();
-  renderAll();
-  showToast('Occorrenza registrata');
-}
-
-function renderSummaries(){
-  const tasks=getCountryTasks();
-  const today=todayStr();
-  const now=parseDateLocal(today);
-  let daily=0,weekly=0,inc30=0,exp30=0;
-
-  tasks.forEach(t=>{
-    if(t.done || !t.amount)return;
-    const d=parseDateLocal(t.date);
-    const diff=Math.round((now-d)/86400000);
-
-    if(t.date===today && t.type==='expense') daily+=t.amount;
-    if(diff>=0 && diff<7 && t.type==='expense') weekly+=t.amount;
-    if(diff>=0 && diff<30){
-      if(t.type==='income') inc30+=t.amount;
-      else exp30+=t.amount;
-    }
-  });
-
-  document.getElementById('summaryDaily').textContent=fmtCur(daily);
-  document.getElementById('summaryWeekly').textContent=fmtCur(weekly);
-  document.getElementById('balanceIncome').textContent=fmtCur(inc30);
-  document.getElementById('balanceExpense').textContent=fmtCur(exp30);
-
-  const net=inc30-exp30;
-  const netEl=document.getElementById('balanceNet');
-  netEl.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));
-  netEl.style.color=net>=0?'#10b981':'#ef4444';
-
-  document.getElementById('heroActive').textContent=tasks.filter(t=>!t.done).length;
-  document.getElementById('heroExpenses').textContent=fmtCur(exp30);
-  document.getElementById('heroIncome').textContent=fmtCur(inc30);
-  const heroNet=document.getElementById('heroNet');
-  heroNet.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));
-  heroNet.style.color=net>=0?'#10b981':'#ef4444';
-}
-
+function registerOccurrence(id){const source=state.tasks.find(t=>t.id===id);if(!source)return;const amount=prompt('Importo occorrenza:',Number(source.amount||0).toFixed(2));if(amount===null)return;const parsed=Number(String(amount).replace(',','.'));if(Number.isNaN(parsed)||parsed<0){showToast('Importo non valido');return}state.tasks.push({...source,id:Date.now(),date:todayStr(),amount:parsed,recurrence:'none',excludedDates:[],done:false,note:source.note?`${source.note} [occorrenza registrata]`:'[occorrenza registrata]',history:[{ts:Date.now(),action:'Occorrenza registrata',note:source.category}]});saveState();renderAll();showToast('Occorrenza registrata')}
+function renderSummaries(){const tasks=getCountryTasks();const today=todayStr();const now=parseDateLocal(today);let daily=0,weekly=0,inc30=0,exp30=0;tasks.forEach(t=>{if(t.done||!t.amount)return;const d=parseDateLocal(t.date);const diff=Math.round((now-d)/86400000);if(t.date===today&&t.type==='expense')daily+=t.amount;if(diff>=0&&diff<7&&t.type==='expense')weekly+=t.amount;if(diff>=0&&diff<30){if(t.type==='income')inc30+=t.amount;else exp30+=t.amount}});document.getElementById('summaryDaily').textContent=fmtCur(daily);document.getElementById('summaryWeekly').textContent=fmtCur(weekly);document.getElementById('balanceIncome').textContent=fmtCur(inc30);document.getElementById('balanceExpense').textContent=fmtCur(exp30);const net=inc30-exp30,netEl=document.getElementById('balanceNet');netEl.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));netEl.style.color=net>=0?'#10b981':'#ef4444';document.getElementById('heroActive').textContent=tasks.filter(t=>!t.done).length;document.getElementById('heroExpenses').textContent=fmtCur(exp30);document.getElementById('heroIncome').textContent=fmtCur(inc30);const heroNet=document.getElementById('heroNet');heroNet.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));heroNet.style.color=net>=0?'#10b981':'#ef4444'}
 function renderCalendar(){
-  const grid=document.getElementById('calGrid');
-  grid.innerHTML='';
-  const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-  document.getElementById('calMonthLabel').textContent=`${months[calMonth]} ${calYear}`;
-
-  const firstDay=new Date(calYear,calMonth,1);
-  let startDow=firstDay.getDay();
-  startDow=startDow===0?6:startDow-1;
-
-  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
-  const daysInPrev=new Date(calYear,calMonth,0).getDate();
-  const dateMap={};
-
-  getCountryTasks().forEach(t=>{
-    if(!dateMap[t.date])dateMap[t.date]={expense:0,income:0,hasTasks:false};
-    dateMap[t.date].hasTasks=true;
-    if(!t.done && t.amount>0){
-      if(t.type==='income')dateMap[t.date].income+=t.amount;
-      else dateMap[t.date].expense+=t.amount;
-    }
-  });
-
-  let maxExp=0;
-  for(let d=1;d<=daysInMonth;d++){
-    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if(dateMap[ds])maxExp=Math.max(maxExp,dateMap[ds].expense);
-  }
-
-  for(let i=startDow-1;i>=0;i--){
-    const day=daysInPrev-i;
-    grid.appendChild(makeCalDay(day,'',true,dateMap,maxExp));
-  }
-  for(let d=1;d<=daysInMonth;d++){
-    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    grid.appendChild(makeCalDay(d,ds,false,dateMap,maxExp));
-  }
-  const rem=(7-((startDow+daysInMonth)%7))%7;
-  for(let d=1;d<=rem;d++) grid.appendChild(makeCalDay(d,'',true,dateMap,maxExp));
+  const grid=document.getElementById('calGrid');grid.innerHTML='';const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];document.getElementById('calMonthLabel').textContent=`${months[calMonth]} ${calYear}`;
+  const firstDay=new Date(calYear,calMonth,1);let startDow=firstDay.getDay();startDow=startDow===0?6:startDow-1;const daysInMonth=new Date(calYear,calMonth+1,0).getDate(),daysInPrev=new Date(calYear,calMonth,0).getDate();const dateMap={};
+  for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;getCountryTasks().forEach(t=>{if(isOccurrenceDueOnDate(t,ds)){if(!dateMap[ds])dateMap[ds]={expense:0,income:0,hasTasks:false};dateMap[ds].hasTasks=true;if(!t.done&&t.amount>0){if(t.type==='income')dateMap[ds].income+=t.amount;else dateMap[ds].expense+=t.amount}}})}
+  let maxExp=0;for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(dateMap[ds])maxExp=Math.max(maxExp,dateMap[ds].expense)}
+  for(let i=startDow-1;i>=0;i--)grid.appendChild(makeCalDay(daysInPrev-i,'',true,dateMap,maxExp));for(let d=1;d<=daysInMonth;d++){const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;grid.appendChild(makeCalDay(d,ds,false,dateMap,maxExp))}const rem=(7-((startDow+daysInMonth)%7))%7;for(let d=1;d<=rem;d++)grid.appendChild(makeCalDay(d,'',true,dateMap,maxExp));
 }
-
-function makeCalDay(num,ds,other,dateMap,maxExp){
-  const el=document.createElement('div');
-  el.className='cal-day';
-  el.textContent=num;
-  if(other)el.classList.add('other-month');
-  if(ds===todayStr())el.classList.add('today');
-  if(ds===selectedCalDate)el.classList.add('selected');
-
-  const data=dateMap[ds];
-  if(!other && data){
-    if(data.expense>0 && maxExp>0){
-      const r=data.expense/maxExp;
-      el.classList.add(r<=.2?'heat-1':r<=.4?'heat-2':r<=.6?'heat-3':r<=.8?'heat-4':'heat-5');
-    }else if(data.hasTasks){
-      el.classList.add('has-dot');
-    }
-    el.title=`${ds} · Spese ${fmtCur(data.expense)} · Entrate ${fmtCur(data.income)}`;
-  }
-
-  if(!other){
-    el.onclick=()=>{
-      selectedCalDate=selectedCalDate===ds?null:ds;
-      currentFilter='all';
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      document.getElementById('filter-all').classList.add('active');
-      if(selectedCalDate){
-        const d=parseDateLocal(ds);
-        const lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});
-        document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);
-        document.getElementById('mainSubtitle').textContent='Task del giorno';
-        document.getElementById('taskDate').value=ds;
-      }else{
-        document.getElementById('mainTitle').textContent='Attività e Scadenze';
-        document.getElementById('mainSubtitle').textContent='Timeline';
-      }
-      renderCalendar();
-      renderTasks();
-    };
-  }
-  return el;
-}
-
+function makeCalDay(num,ds,other,dateMap,maxExp){const el=document.createElement('div');el.className='cal-day';el.textContent=num;if(other)el.classList.add('other-month');if(ds===todayStr())el.classList.add('today');if(ds===selectedCalDate)el.classList.add('selected');const data=dateMap[ds];if(!other&&data){if(data.expense>0&&maxExp>0){const r=data.expense/maxExp;el.classList.add(r<=.2?'heat-1':r<=.4?'heat-2':r<=.6?'heat-3':r<=.8?'heat-4':'heat-5')}else if(data.hasTasks)el.classList.add('has-dot');el.title=`${ds} · Spese ${fmtCur(data.expense)} · Entrate ${fmtCur(data.income)}`}if(!other){el.onclick=()=>{selectedCalDate=selectedCalDate===ds?null:ds;currentFilter='all';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');if(selectedCalDate){const d=parseDateLocal(ds),lbl=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);document.getElementById('mainSubtitle').textContent='Task del giorno';document.getElementById('taskDate').value=ds}else{document.getElementById('mainTitle').textContent='Attività e Scadenze';document.getElementById('mainSubtitle').textContent='Timeline'}renderCalendar();renderTasks()}}return el}
 function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()}
 function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()}
-
-function showTodayTasks(){
-  const now=new Date();
-  selectedCalDate=todayStr();
-  currentFilter='all';
-  calYear=now.getFullYear();
-  calMonth=now.getMonth();
-  document.getElementById('taskDate').value=selectedCalDate;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('filter-all').classList.add('active');
-  const lbl=now.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});
-  document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);
-  document.getElementById('mainSubtitle').textContent='Task del giorno';
-  renderCalendar();
-  renderTasks();
-}
-
-function renderChart(){
-  if(typeof Chart==='undefined')return;
-  const ctx=document.getElementById('expenseChart');
-  if(!ctx)return;
-  const cats=getCategories();
-  const totals={};
-  getCountryTasks().forEach(t=>{
-    if(t.done || t.type!=='expense' || !t.amount)return;
-    totals[t.category]=(totals[t.category]||0)+t.amount;
-  });
-
-  const labels=Object.keys(totals);
-  const data=labels.map(k=>totals[k]);
-  const colors=labels.map(name=>cats.find(c=>c.name===name)?.color || '#6366f1');
-
-  if(!chart){
-    chart=new Chart(ctx.getContext('2d'),{
-      type:'doughnut',
-      data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}
-    });
-  }else{
-    chart.data.labels=labels;
-    chart.data.datasets[0].data=data;
-    chart.data.datasets[0].backgroundColor=colors;
-    chart.update();
-  }
-
-  const legend=document.getElementById('chartLegend');
-  legend.innerHTML='';
-  labels.forEach((l,i)=>{
-    const item=document.createElement('div');
-    item.className='flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-lg border border-slate-700 bg-slate-900/60';
-    item.innerHTML=`<span class="w-2 h-2 rounded-full" style="background:${colors[i]}"></span><span>${escapeHtml(l)}</span><span class="mono text-slate-500">${fmtCur(data[i])}</span>`;
-    legend.appendChild(item);
-  });
-  if(!labels.length) legend.innerHTML='<span class="text-[9px] text-slate-600 italic">Nessun dato spese</span>';
-}
-
-function qaToggleType(){
-  qaType=qaType==='expense'?'income':'expense';
-  const btn=document.getElementById('qaTypeBtn');
-  if(qaType==='expense'){
-    btn.textContent='📤';
-    btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-expense';
-  }else{
-    btn.textContent='📥';
-    btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-income';
-  }
-}
-
-function quickAdd(){
-  const amount=Number(document.getElementById('qaAmount').value);
-  const category=document.getElementById('qaCategory').value;
-  const clientId=document.getElementById('qaClient').value;
-  if(!category){showToast('Seleziona categoria');return}
-  if(Number.isNaN(amount)||amount<=0){showToast('Importo non valido');return}
-
-  state.tasks.push({
-    id:Date.now(),
-    date:todayStr(),
-    category,
-    type:qaType,
-    currency:getActiveCurrency(),
-    country:activeCountry,
-    clientId:clientId?Number(clientId):null,
-    amount,
-    note:'',
-    recurrence:'none',
-    tags:[],
-    done:false,
-    history:[{ts:Date.now(),action:'Quick add',note:category}]
-  });
-  document.getElementById('qaAmount').value='';
-  saveState();
-  selectedCalDate=todayStr();
-  renderAll();
-  showToast('Aggiunto');
-}
-
-function exportBackup(){
-  const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));
-  const a=document.createElement('a');
-  a.href=data;
-  a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`;
-  a.click();
-}
-
-function importBackup(event){
-  const file=event.target.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    try{
-      const imp=JSON.parse(e.target.result);
-      if(!imp.tasks || !imp.clients) throw new Error('invalid');
-      state={
-        tasks:migrateTasks(imp.tasks),
-        clients:imp.clients,
-        categoriesIT:migrateCats(imp.categoriesIT || imp.categories,'IT'),
-        categoriesGB:migrateCats(imp.categoriesGB,'GB')
-      };
-      saveState();
-      initSelects();
-      renderAll();
-      showToast('Backup caricato');
-    }catch(err){
-      showToast('File non valido');
-    }
-  };
-  reader.readAsText(file);
-}
-
-function printSummary(){
-  window.print();
-}
-
-function renderAll(){
-  renderCalendar();
-  renderTasks();
-  renderSummaries();
-  renderRecurringFinance();
-  renderClientManagement();
-  renderClientFilters();
-  renderCategories();
-  renderTagFilters();
-  renderChart();
-}
-
-window.addEventListener('load',()=>{
-  applyTheme(safeGet('app_theme')!=='light');
-  applyCountryTheme();
-  updateFormCountryIndicator();
-  document.getElementById('taskDate').value=todayStr();
-  initSelects();
-  updateRecurrenceLabel();
-  renderAll();
-});
+function showTodayTasks(){const now=new Date();selectedCalDate=todayStr();currentFilter='all';calYear=now.getFullYear();calMonth=now.getMonth();document.getElementById('taskDate').value=selectedCalDate;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');const lbl=now.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);document.getElementById('mainSubtitle').textContent='Task del giorno';renderCalendar();renderTasks()}
+function renderChart(){if(typeof Chart==='undefined')return;const ctx=document.getElementById('expenseChart');if(!ctx)return;const cats=getCategories(),totals={};getCountryTasks().forEach(t=>{if(t.done||t.type!=='expense'||!t.amount)return;totals[t.category]=(totals[t.category]||0)+t.amount});const labels=Object.keys(totals),data=labels.map(k=>totals[k]),colors=labels.map(name=>cats.find(c=>c.name===name)?.color||'#6366f1');if(!chart){chart=new Chart(ctx.getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}})}else{chart.data.labels=labels;chart.data.datasets[0].data=data;chart.data.datasets[0].backgroundColor=colors;chart.update()}const legend=document.getElementById('chartLegend');legend.innerHTML='';labels.forEach((l,i)=>{const item=document.createElement('div');item.className='flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-lg border border-slate-700 bg-slate-900/60';item.innerHTML=`<span class="w-2 h-2 rounded-full" style="background:${colors[i]}"></span><span>${escapeHtml(l)}</span><span class="mono text-slate-500">${fmtCur(data[i])}</span>`;legend.appendChild(item)});if(!labels.length)legend.innerHTML='<span class="text-[9px] text-slate-600 italic">Nessun dato spese</span>'}
+function qaToggleType(){qaType=qaType==='expense'?'income':'expense';const btn=document.getElementById('qaTypeBtn');if(qaType==='expense'){btn.textContent='📤';btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-expense'}else{btn.textContent='📥';btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-income'}}
+function quickAdd(){const amount=Number(document.getElementById('qaAmount').value),category=document.getElementById('qaCategory').value,clientId=document.getElementById('qaClient').value;if(!category){showToast('Seleziona categoria');return}if(Number.isNaN(amount)||amount<=0){showToast('Importo non valido');return}state.tasks.push({id:Date.now(),date:todayStr(),category,type:qaType,currency:getActiveCurrency(),country:activeCountry,clientId:clientId?Number(clientId):null,amount,note:'',recurrence:'none',excludedDates:[],tags:[],done:false,history:[{ts:Date.now(),action:'Quick add',note:category}]});document.getElementById('qaAmount').value='';saveState();selectedCalDate=todayStr();renderAll();showToast('Aggiunto')}
+function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`;a.click()}
+function importBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const imp=JSON.parse(e.target.result);if(!imp.tasks||!imp.clients)throw new Error('invalid');state={tasks:migrateTasks(imp.tasks),clients:imp.clients,categoriesIT:migrateCats(imp.categoriesIT||imp.categories,'IT'),categoriesGB:migrateCats(imp.categoriesGB,'GB')};saveState();initSelects();renderAll();showToast('Backup caricato')}catch(err){showToast('File non valido')}};reader.readAsText(file)}
+function printSummary(){window.print()}
+function renderAll(){renderCalendar();renderTasks();renderSummaries();renderRecurringFinance();renderClientManagement();renderClientFilters();renderCategories();renderTagFilters();renderChart()}
+window.addEventListener('load',()=>{state.tasks=migrateTasks(state.tasks);saveState();applyTheme(safeGet('app_theme')!=='light');applyCountryTheme();updateFormCountryIndicator();document.getElementById('taskDate').value=todayStr();initSelects();updateRecurrenceLabel();renderAll()});
 </script>
 </body>
 </html>
