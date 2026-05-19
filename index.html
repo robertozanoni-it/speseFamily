@@ -235,7 +235,32 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
 
 <div id="peopleSection" class="section-card">
   <details class="group"><summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-pink-400 group-open:mb-4">👥 Persone <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
-    <div class="space-y-3 pt-3 border-t border-slate-800/60"><div class="flex gap-2 items-center"><input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-pink-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}"><input type="color" id="newClientColor" value="#8b5cf6" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5"><button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#ec4899">✓</button></div><div id="clientListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div></div>
+    <div class="space-y-3 pt-3 border-t border-slate-800/60">
+      <div class="flex gap-2 items-center"><input type="text" id="newClientName" placeholder="Nome persona…" class="flex-1 bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:border-pink-400" onkeydown="if(event.key==='Enter'){event.preventDefault();addClient();}"><input type="color" id="newClientColor" value="#8b5cf6" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-700 bg-transparent p-0.5"><button type="button" onclick="addClient()" class="px-3 py-2 rounded-xl text-white font-bold transition-colors" style="background:#ec4899">✓</button></div>
+
+      <div class="rounded-2xl border border-pink-500/30 bg-pink-500/10 p-3 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <div class="text-[10px] font-black uppercase tracking-widest text-pink-300">Cambio massivo persona</div>
+            <div id="bulkClientHint" class="text-[9px] text-slate-500 mt-0.5">Esempio: Roberto + Food → Family</div>
+          </div>
+          <span id="bulkClientCount" class="mono text-[10px] font-black text-pink-300 px-2 py-1 rounded-lg bg-slate-900/70 border border-pink-500/20">0</span>
+        </div>
+        <div class="grid grid-cols-1 gap-2">
+          <select id="bulkFromClient" onchange="renderBulkClientTool()" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-400 appearance-none cursor-pointer"></select>
+          <select id="bulkCategory" onchange="renderBulkClientTool()" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-400 appearance-none cursor-pointer"></select>
+          <select id="bulkType" onchange="renderBulkClientTool()" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-400 appearance-none cursor-pointer">
+            <option value="all">Spese + entrate</option>
+            <option value="expense">Solo spese</option>
+            <option value="income">Solo entrate</option>
+          </select>
+          <select id="bulkToClient" onchange="renderBulkClientTool()" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-400 appearance-none cursor-pointer"></select>
+        </div>
+        <button type="button" onclick="applyBulkClientChange()" class="w-full px-3 py-2.5 rounded-xl text-white text-xs font-black transition-colors" style="background:#ec4899">Cambia persona ai movimenti selezionati</button>
+      </div>
+
+      <div id="clientListDisplay" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
+    </div>
   </details>
 </div>
 
@@ -409,6 +434,7 @@ function initSelects(){
   const cv=cs.value;cs.innerHTML='<option value="">Seleziona categoria…</option>';qc.innerHTML='<option value="">Categoria…</option>';
   cats.forEach(c=>{cs.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`;qc.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`});if(cv)cs.value=cv;
   cl.innerHTML='<option value="">Generico</option>';ql.innerHTML='<option value="">Generico</option>';state.clients.forEach(c=>{cl.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`;ql.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`});
+  renderBulkClientTool();
 }
 
 document.getElementById('mainForm').addEventListener('submit',function(e){
@@ -568,6 +594,58 @@ function setActiveTag(tag){activeTagFilter=activeTagFilter===tag?null:tag;render
 function renderTagFilters(){const list=document.getElementById('tagFilterList');list.innerHTML='';const set=new Set();getCountryTasks().forEach(t=>(t.tags||[]).forEach(tag=>set.add(tag)));[...set].sort().forEach(tag=>{const btn=document.createElement('button');btn.className='task-tag cursor-pointer '+(activeTagFilter===tag?'ring-2 ring-indigo-400':'');btn.textContent='#'+tag;btn.onclick=()=>setActiveTag(tag);list.appendChild(btn)})}
 function renderClientFilters(){const list=document.getElementById('clientFilterList');list.innerHTML='';state.clients.forEach(c=>{const btn=document.createElement('button');btn.className='filter-btn px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold transition-all hover:border-accent';btn.style.color=c.color;btn.textContent=c.name;btn.onclick=()=>{currentFilter=c.id;selectedCalDate=null;const si=document.getElementById('searchInput');if(si)si.value='';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('mainTitle').textContent=`👤 ${c.name}`;document.getElementById('mainSubtitle').textContent=`Task di ${c.name}`;renderTasks()};list.appendChild(btn)})}
 function renderClientManagement(){const list=document.getElementById('clientListDisplay');list.innerHTML='';state.clients.forEach(c=>{const count=getCountryTasks().filter(t=>t.clientId===c.id).length;const div=document.createElement('div');div.className='p-2.5 rounded-xl group flex items-center justify-between';div.style.background=hexToRgba(c.color,.25);div.style.border='1px solid '+hexToRgba(c.color,.5);div.innerHTML=`<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span><span class="text-xs font-black text-white">${escapeHtml(c.name)}</span><span class="text-[9px] mono text-slate-500">${count}</span></div><button onclick="removeClient(${c.id})" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>`;list.appendChild(div)})}
+
+function getBulkClientMatches(){
+  const fromEl=document.getElementById('bulkFromClient'),catEl=document.getElementById('bulkCategory'),typeEl=document.getElementById('bulkType'),toEl=document.getElementById('bulkToClient');
+  if(!fromEl||!catEl||!typeEl||!toEl)return[];
+  const fromId=Number(fromEl.value),category=catEl.value,type=typeEl.value,toId=Number(toEl.value);
+  if(!fromId||!toId||fromId===toId)return[];
+  return state.tasks.filter(t=>
+    t.country===activeCountry&&
+    t.clientId===fromId&&
+    (category==='all'||t.category===category)&&
+    (type==='all'||t.type===type)
+  );
+}
+function renderBulkClientTool(){
+  const fromEl=document.getElementById('bulkFromClient'),catEl=document.getElementById('bulkCategory'),toEl=document.getElementById('bulkToClient'),countEl=document.getElementById('bulkClientCount'),hintEl=document.getElementById('bulkClientHint');
+  if(!fromEl||!catEl||!toEl)return;
+  const oldFrom=fromEl.value,oldCat=catEl.value,oldTo=toEl.value;
+  fromEl.innerHTML='<option value="">Da persona…</option>';
+  toEl.innerHTML='<option value="">A persona…</option>';
+  state.clients.forEach(c=>{fromEl.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`;toEl.innerHTML+=`<option value="${c.id}">${escapeHtml(c.name)}</option>`});
+  catEl.innerHTML='<option value="all">Tutte le categorie</option>';
+  getCategories().sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{catEl.innerHTML+=`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`});
+  if(oldFrom)fromEl.value=oldFrom;if(oldCat)catEl.value=oldCat;if(oldTo)toEl.value=oldTo;
+  const matches=getBulkClientMatches();
+  if(countEl)countEl.textContent=`${matches.length} mov.`;
+  if(hintEl){
+    const from=state.clients.find(c=>String(c.id)===String(fromEl.value))?.name||'persona origine';
+    const to=state.clients.find(c=>String(c.id)===String(toEl.value))?.name||'persona destinazione';
+    const cat=catEl.value==='all'?'tutte le categorie':(catEl.value||'categoria');
+    hintEl.textContent=`${from} + ${cat} → ${to}`;
+  }
+}
+function applyBulkClientChange(){
+  const fromEl=document.getElementById('bulkFromClient'),toEl=document.getElementById('bulkToClient');
+  const fromId=Number(fromEl?.value),toId=Number(toEl?.value);
+  if(!fromId||!toId){showToast('Seleziona persona origine e destinazione');return}
+  if(fromId===toId){showToast('Origine e destinazione coincidono');return}
+  const matches=getBulkClientMatches();
+  if(!matches.length){showToast('Nessun movimento da cambiare');return}
+  const fromName=state.clients.find(c=>c.id===fromId)?.name||'origine';
+  const toName=state.clients.find(c=>c.id===toId)?.name||'destinazione';
+  const cat=document.getElementById('bulkCategory')?.value||'all';
+  const labelCat=cat==='all'?'tutte le categorie':cat;
+  if(!confirm(`Cambiare ${matches.length} movimenti (${labelCat}) da ${fromName} a ${toName}?`))return;
+  matches.forEach(t=>{
+    t.clientId=toId;
+    t.history=Array.isArray(t.history)?t.history:[];
+    t.history.push({ts:Date.now(),action:'Cambio persona massivo',note:`${fromName} → ${toName}`});
+  });
+  saveState();initSelects();renderAll();showToast(`${matches.length} movimenti aggiornati`);
+}
+
 function addClient(){const name=document.getElementById('newClientName').value.trim(),color=document.getElementById('newClientColor').value;if(!name){showToast('Inserisci un nome');return}if(state.clients.some(c=>normalizeSearchText(c.name)===normalizeSearchText(name))){showToast('Persona già presente');return}state.clients.push({id:Date.now(),name,color});document.getElementById('newClientName').value='';saveState();initSelects();renderAll()}
 function removeClient(id){if(!confirm('Rimuovere questa persona?'))return;state.clients=state.clients.filter(c=>c.id!==id);state.tasks.forEach(t=>{if(t.clientId===id)t.clientId=null});saveState();initSelects();renderAll()}
 function renderCategories(){const list=document.getElementById('categoryListDisplay');list.innerHTML='';getCategories().sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{const count=getCountryTasks().filter(t=>t.category===c.name).length;const div=document.createElement('div');div.className='p-2.5 rounded-xl group flex items-center justify-between';div.style.background=hexToRgba(c.color,.25);div.style.border='1px solid '+hexToRgba(c.color,.5);div.innerHTML=`<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${c.color}"></span><span class="text-xs font-black text-white">${escapeHtml(c.name)}</span><span class="text-[9px] mono text-slate-500">${count}</span></div><button onclick="removeCategory('${escapeJs(c.name)}')" class="text-[10px] text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100">✕</button>`;list.appendChild(div)})}
@@ -599,7 +677,7 @@ function quickAdd(){const amount=Number(String(document.getElementById('qaAmount
 function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`;a.click()}
 function importBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const imp=JSON.parse(e.target.result);if(!imp.tasks||!imp.clients)throw new Error('invalid');state={tasks:migrateTasks(imp.tasks),clients:imp.clients,categoriesIT:migrateCats(imp.categoriesIT||imp.categories,'IT'),categoriesGB:migrateCats(imp.categoriesGB,'GB')};saveState();initSelects();renderAll();showToast('Backup caricato')}catch(err){showToast('File non valido')}};reader.readAsText(file)}
 function printSummary(){window.print()}
-function renderAll(){renderCalendar();renderTasks();renderSummaries();renderRecurringFinance();renderClientManagement();renderClientFilters();renderCategories();renderTagFilters();renderChart()}
+function renderAll(){renderCalendar();renderTasks();renderSummaries();renderRecurringFinance();renderClientManagement();renderClientFilters();renderCategories();renderTagFilters();renderBulkClientTool();renderChart()}
 window.addEventListener('load',()=>{state.tasks=migrateTasks(state.tasks);saveState();applyTheme(safeGet('app_theme')!=='light');applyCountryTheme();updateFormCountryIndicator();syncDateInputs(todayStr());initSelects();updateRecurrenceLabel();renderAll()});
 </script>
 </body>
