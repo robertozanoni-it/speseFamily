@@ -34,6 +34,8 @@ body.country-GB{--accent:#7c3aed;--accent-glow:rgba(124,58,237,.25)}
 .custom-scrollbar::-webkit-scrollbar-thumb{background:#374151;border-radius:10px}
 .section-card{background:#111827;border:1px solid #1f2937;border-radius:16px;padding:16px}
 .card-task{transition:all .2s ease}.card-task:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(0,0,0,.4)}
+.task-description{font-size:15px;line-height:1.55;color:#fff;font-weight:600;margin:4px 0 12px;padding-left:16px;overflow-wrap:anywhere;white-space:pre-wrap}
+.task-recurrence-info{font-size:10px;line-height:1.4;color:#cbd5e1;font-weight:700;margin:0 0 10px;padding-left:16px}
 .filter-btn.active{background:var(--accent);color:white!important;border-color:var(--accent)!important}
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
 .badge-income{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)}
@@ -75,6 +77,7 @@ html:not(.dark) .section-card,html:not(.dark) .bg-darkCard{background:#fff!impor
 html:not(.dark) .bg-darkBg{background:#f1f5f9!important}html:not(.dark) .bg-slate-900{background:#f8fafc!important}html:not(.dark) .bg-slate-800{background:#e2e8f0!important}
 html:not(.dark) .border-slate-800{border-color:#e2e8f0!important}html:not(.dark) .border-slate-700{border-color:#cbd5e1!important}
 html:not(.dark) .text-white{color:#0f172a!important}html:not(.dark) .text-slate-200{color:#1e293b!important}html:not(.dark) .text-slate-400{color:#64748b!important}html:not(.dark) .text-slate-500{color:#94a3b8!important}
+html:not(.dark) .task-description{color:#0f172a!important}html:not(.dark) .task-recurrence-info{color:#475569!important}
 html:not(.dark) input,html:not(.dark) select,html:not(.dark) textarea{color:#1e293b!important;color-scheme:light}
 html:not(.dark) .country-hero{background:linear-gradient(135deg,#dbeafe,#ede9fe)}html:not(.dark) .country-btn-wrap{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-color:rgba(0,0,0,.1)}
@@ -283,7 +286,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
   </div>
 
   <div class="mb-4 flex flex-col sm:flex-row gap-3 filter-bar-wrapper">
-    <div class="relative flex-1"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span><input type="text" id="searchInput" placeholder="Cerca: mese, categoria, persona, tag, tipo o importo…" oninput="handleSearchInput()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"></div>
+    <div class="relative flex-1"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">🔍</span><input type="text" id="searchInput" placeholder="Cerca tutto: es. entrate annuali, spese mensili, persona, data, nota, tag o importo…" oninput="handleSearchInput()" class="w-full bg-darkCard border border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"></div>
     <div class="flex items-center gap-1.5 bg-darkCard border border-slate-800 rounded-xl px-3 py-2 flex-shrink-0"><span class="text-[9px] uppercase tracking-widest text-slate-600 font-bold mr-1">Ordina</span><button onclick="setSort('date')" id="sort-date" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all active">📅</button><button onclick="setSort('amount')" id="sort-amount" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">💰</button><button onclick="setSort('status')" id="sort-status" class="sort-btn text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-700 transition-all">✓</button></div>
   </div>
 
@@ -407,18 +410,57 @@ function isRecurring(t){return t&&t.recurrence&&t.recurrence!=='none'}
 function repeatLabel(r){return r==='weekly'?'settimanale':r==='monthly'?'mensile':r==='yearly'?'annuale':'nessuna'}
 function getOccurrenceDate(t,explicitDate){return explicitDate||selectedCalDate||t.date||todayStr()}
 function isExcluded(t,dateStr){return normalizeExcludedDates(t.excludedDates).includes(dateStr)}
-function isOccurrenceDueOnDate(t,dateStr){
-  if(!t||!dateStr)return false;
-  if(isExcluded(t,dateStr))return false;
-  if(t.date===dateStr)return true;
-  if(!isRecurring(t))return false;
-  const base=parseDateLocal(t.date), target=parseDateLocal(dateStr);
-  if(base>target)return false;
-  if(t.recurrence==='weekly')return base.getDay()===target.getDay();
-  if(t.recurrence==='monthly')return base.getDate()===target.getDate();
-  if(t.recurrence==='yearly')return base.getDate()===target.getDate()&&base.getMonth()===target.getMonth();
-  return false;
+function getDaysInMonth(year,month){return new Date(year,month+1,0).getDate()}
+function getRecurrenceStepDate(base,recurrence,index){
+  if(recurrence==='weekly'){
+    const d=new Date(base);d.setDate(d.getDate()+(index*7));return d;
+  }
+  if(recurrence==='monthly'){
+    const absoluteMonth=base.getMonth()+index;
+    const year=base.getFullYear()+Math.floor(absoluteMonth/12);
+    const month=((absoluteMonth%12)+12)%12;
+    const day=Math.min(base.getDate(),getDaysInMonth(year,month));
+    return new Date(year,month,day);
+  }
+  if(recurrence==='yearly'){
+    const year=base.getFullYear()+index;
+    const month=base.getMonth();
+    const day=Math.min(base.getDate(),getDaysInMonth(year,month));
+    return new Date(year,month,day);
+  }
+  return new Date(base);
 }
+function getOccurrenceDatesInRange(t,startStr,endStr,limit=2000){
+  if(!t||!startStr||!endStr)return[];
+  const start=parseDateLocal(startStr),end=parseDateLocal(endStr),base=parseDateLocal(t.date);
+  if(Number.isNaN(start.getTime())||Number.isNaN(end.getTime())||Number.isNaN(base.getTime())||start>end)return[];
+  if(!isRecurring(t))return base>=start&&base<=end&&!isExcluded(t,t.date)?[t.date]:[];
+  if(base>end)return[];
+  let index=0;
+  if(t.recurrence==='weekly')index=Math.max(0,Math.ceil((start-base)/604800000));
+  else if(t.recurrence==='monthly')index=Math.max(0,(start.getFullYear()-base.getFullYear())*12+(start.getMonth()-base.getMonth()));
+  else if(t.recurrence==='yearly')index=Math.max(0,start.getFullYear()-base.getFullYear());
+  let current=getRecurrenceStepDate(base,t.recurrence,index);
+  while(current<start){index++;current=getRecurrenceStepDate(base,t.recurrence,index)}
+  const out=[];let guard=0;
+  while(current<=end&&out.length<limit&&guard<25000){
+    const ds=getLocalDateStr(current);
+    if(!isExcluded(t,ds))out.push(ds);
+    index++;guard++;current=getRecurrenceStepDate(base,t.recurrence,index);
+  }
+  return out;
+}
+function isOccurrenceDueOnDate(t,dateStr){return getOccurrenceDatesInRange(t,dateStr,dateStr,2).length>0}
+function getNextOccurrenceDate(t,fromStr=todayStr()){
+  if(!t)return null;
+  if(!isRecurring(t))return t.date;
+  const from=parseDateLocal(fromStr),base=parseDateLocal(t.date);
+  const start=from>base?from:base;
+  const end=new Date(start);end.setFullYear(end.getFullYear()+30);
+  return getOccurrenceDatesInRange(t,getLocalDateStr(start),getLocalDateStr(end),1)[0]||null;
+}
+function getRecurrenceLongLabel(r){return r==='weekly'?'Ogni settimana':r==='monthly'?'Ogni mese':r==='yearly'?'Ogni anno':''}
+
 
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('visible');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('visible'),2200)}
 function applyTheme(dark){document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';safeSet('app_theme',dark?'dark':'light')}
@@ -501,7 +543,54 @@ function normalizeSearchText(value){
     .replace(/\s+/g,' ')
     .trim();
 }
+const SEARCH_STOPWORDS=new Set(['a','al','alla','alle','allo','ai','agli','da','dal','dalla','dalle','di','del','della','delle','dei','degli','e','ed','il','lo','la','i','gli','le','un','uno','una','per','ogni','con','in','nel','nella','nelle','su','che','sono','fammi','mostra','mostrami','cerca','cercami','dammi','tutte','tutti']);
+const SEARCH_ALIASES={
+  entrata:['entrata','entrate','income','incomes','ricavo','ricavi','guadagno','guadagni','accredito','accrediti','stipendio','stipendi','incasso','incassi','positivo','positivi'],
+  entrate:['entrata','entrate','income','ricavo','ricavi','guadagno','guadagni','accredito','accrediti','stipendio','stipendi','incasso','incassi'],
+  spesa:['spesa','spese','expense','expenses','costo','costi','uscita','uscite','pagamento','pagamenti','addebito','addebiti','negativo','negativi'],
+  spese:['spesa','spese','expense','costo','costi','uscita','uscite','pagamento','pagamenti','addebito','addebiti'],
+  annuale:['annuale','annuali','annual','yearly','anno','anni','1a'],
+  annuali:['annuale','annuali','annual','yearly','anno','anni','1a'],
+  mensile:['mensile','mensili','monthly','mese','mesi','1m'],
+  mensili:['mensile','mensili','monthly','mese','mesi','1m'],
+  settimanale:['settimanale','settimanali','weekly','settimana','settimane','7g'],
+  settimanali:['settimanale','settimanali','weekly','settimana','settimane','7g'],
+  ricorrente:['ricorrente','ricorrenti','ricorrenza','ricorrenze','recurring','periodico','periodici'],
+  ricorrenti:['ricorrente','ricorrenti','ricorrenza','ricorrenze','recurring','periodico','periodici'],
+  completato:['completato','completati','completata','completate','fatto','fatti','pagato','pagati','chiuso','chiusi'],
+  completati:['completato','completati','completata','completate','fatto','fatti','pagato','pagati','chiuso','chiusi'],
+  aperto:['aperto','aperti','aperta','aperte','attivo','attivi','attiva','attive','da fare','non pagato','non pagati'],
+  attivi:['aperto','aperti','attivo','attivi','attiva','attive','da fare','non pagato','non pagati']
+};
+const SEARCH_MONTHS={
+  gennaio:0,gen:0,january:0,jan:0,febbraio:1,feb:1,february:1,marzo:2,mar:2,march:2,
+  aprile:3,apr:3,april:3,maggio:4,mag:4,may:4,giugno:5,giu:5,june:5,jun:5,
+  luglio:6,lug:6,july:6,jul:6,agosto:7,ago:7,august:7,aug:7,settembre:8,set:8,september:8,sep:8,
+  ottobre:9,ott:9,october:9,oct:9,novembre:10,nov:10,november:10,dicembre:11,dic:11,december:11,dec:11
+};
 function getSearchQuery(){return normalizeSearchText(document.getElementById('searchInput')?.value||'')}
+function getSearchTokens(query){return query.split(' ').filter(Boolean).filter(token=>!SEARCH_STOPWORDS.has(token))}
+function getTokenVariants(token){return SEARCH_ALIASES[token]||[token]}
+function searchVariantMatches(haystack,variant){
+  const normalized=normalizeSearchText(variant);
+  if(!normalized)return true;
+  if(haystack.includes(normalized))return true;
+  const words=haystack.split(' ').filter(Boolean);
+  const stem=normalized.length>4&&/[aeio]$/.test(normalized)?normalized.slice(0,-1):normalized;
+  return words.some(word=>word.startsWith(stem));
+}
+function taskHasOccurrenceInYear(t,year){
+  if(year<1900||year>2200)return false;
+  return getOccurrenceDatesInRange(t,`${year}-01-01`,`${year}-12-31`,1).length>0;
+}
+function taskHasOccurrenceInMonth(t,monthIndex,year=null){
+  if(year!=null){const last=getDaysInMonth(year,monthIndex);return getOccurrenceDatesInRange(t,`${year}-${String(monthIndex+1).padStart(2,'0')}-01`,`${year}-${String(monthIndex+1).padStart(2,'0')}-${String(last).padStart(2,'0')}`,1).length>0}
+  const base=parseDateLocal(t.date);
+  if(!isRecurring(t))return base.getMonth()===monthIndex;
+  const firstYear=Math.max(base.getFullYear(),calYear-1);
+  for(let y=firstYear;y<=firstYear+4;y++)if(taskHasOccurrenceInMonth(t,monthIndex,y))return true;
+  return false;
+}
 function getTaskSearchText(t){
   const client=state.clients.find(c=>c.id===t.clientId);
   const d=parseDateLocal(t.date);
@@ -509,25 +598,39 @@ function getTaskSearchText(t){
   const monthShort=d.toLocaleDateString('it-IT',{month:'short'});
   const fullDate=d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   const compactDate=d.toLocaleDateString('it-IT');
-  const typeWords=t.type==='income'?'entrata income ricavo guadagno accredito stipendio positivo':'spesa expense costo uscita pagamento negativo';
-  const recWords={weekly:'settimanale weekly settimana 7g ricorrente',monthly:'mensile monthly mese 1m ricorrente',yearly:'annuale annual anno 1a ricorrente',none:'nessuna no ricorrenza singola'}[t.recurrence||'none'];
-  const statusWords=t.done?'completato fatto pagato chiuso':'aperto attivo da fare non pagato';
+  const typeWords=t.type==='income'?'entrata entrate income incomes ricavo ricavi guadagno guadagni accredito accrediti stipendio stipendi incasso incassi positivo positivi':'spesa spese expense expenses costo costi uscita uscite pagamento pagamenti addebito addebiti negativo negativi';
+  const recWords={weekly:'settimanale settimanali weekly settimana settimane 7g ricorrente ricorrenti ricorrenza ricorrenze ogni settimana',monthly:'mensile mensili monthly mese mesi 1m ricorrente ricorrenti ricorrenza ricorrenze ogni mese',yearly:'annuale annuali annual yearly anno anni 1a ricorrente ricorrenti ricorrenza ricorrenze ogni anno',none:'nessuna nessun no ricorrenza singola una tantum'}[t.recurrence||'none'];
+  const statusWords=t.done?'completato completati completata completate fatto fatti pagato pagati chiuso chiusi':'aperto aperti aperta aperte attivo attivi attiva attive da fare non pagato non pagati';
+  const countryWords=t.country==='GB'?'inghilterra regno unito uk united kingdom gb sterline sterlina pound pounds':'italia italy it euro eur';
   return normalizeSearchText([
     t.category,t.note,(t.tags||[]).join(' '),client?client.name:'generico',
-    typeWords,recWords,statusWords,String(t.amount),fmtCur(t.amount,t.currency),
-    t.currency,t.date,compactDate,fullDate,monthLong,monthShort,d.getFullYear()
+    typeWords,recWords,statusWords,countryWords,String(t.amount),Number(t.amount||0).toFixed(2),fmtCur(t.amount,t.currency),
+    t.currency,t.date,compactDate,fullDate,monthLong,monthShort,d.getFullYear(),getRecurrenceLongLabel(t.recurrence)
   ].join(' '));
 }
 function matchesSearch(t,query){
   if(!query)return true;
   const haystack=getTaskSearchText(t);
-  return query.split(' ').filter(Boolean).every(token=>haystack.includes(token));
+  const tokens=getSearchTokens(query);
+  const requestedYearToken=tokens.find(token=>/^(19|20|21)\d{2}$/.test(token));
+  const requestedYear=requestedYearToken?Number(requestedYearToken):null;
+  return tokens.every(token=>{
+    if(/^(19|20|21)\d{2}$/.test(token))return taskHasOccurrenceInYear(t,Number(token));
+    if(Object.prototype.hasOwnProperty.call(SEARCH_MONTHS,token))return taskHasOccurrenceInMonth(t,SEARCH_MONTHS[token],requestedYear);
+    return getTokenVariants(token).some(variant=>searchVariantMatches(haystack,variant));
+  });
 }
 function handleSearchInput(){
   const query=getSearchQuery();
+  const raw=(document.getElementById('searchInput')?.value||'').trim();
   if(query){
     selectedCalDate=null;
     document.querySelectorAll('.cal-day.selected').forEach(el=>el.classList.remove('selected'));
+    document.getElementById('mainTitle').textContent=`🔍 ${raw}`;
+    document.getElementById('mainSubtitle').textContent='Ricerca su tipo, ricorrenza, categoria, persona, descrizione, tag, data, stato e importo';
+  }else{
+    const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};
+    const [title,sub]=titles[currentFilter]||titles.all;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;
   }
   renderCalendar();
   renderTasks();
@@ -565,8 +668,10 @@ function renderTasks(){
   const cats=getCategories();
   filtered.forEach(t=>{
     const client=state.clients.find(c=>c.id===t.clientId),clientColor=client?client.color:'#475569',catObj=cats.find(c=>c.name===t.category),catColor=catObj?catObj.color:'#6366f1',isIncome=t.type==='income';
-    const occurrenceDate=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:t.date;
+    const occurrenceDate=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:(isRecurring(t)?(getNextOccurrenceDate(t)||t.date):t.date);
     const dateLabel=parseDateLocal(occurrenceDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});const recBadge=getRecurrenceBadge(t.recurrence);const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag cursor-pointer" onclick="setActiveTag('${escapeJs(tag)}')">#${escapeHtml(tag)}</span>`).join('');
+    const nextOccurrence=isRecurring(t)?(selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:getNextOccurrenceDate(t)):null;
+    const recurrenceInfo=nextOccurrence?`${getRecurrenceLongLabel(t.recurrence)} · ${selectedCalDate?'occorrenza':'prossima'} ${parseDateLocal(nextOccurrence).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})}`:'';
     const card=document.createElement('div');card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;card.style.borderLeftColor=clientColor;
     card.innerHTML=`
       <div class="flex justify-between items-start mb-3">
@@ -583,7 +688,8 @@ function renderTasks(){
         </div>
       </div>
       <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span><span class="font-black text-base leading-tight ${t.done?'line-through text-slate-500':'text-white'}">${escapeHtml(t.category)}</span></div>
-      <p class="text-xs text-slate-500 mb-2 line-clamp-2 italic pl-4">${escapeHtml(t.note||'—')}</p>
+      <p class="task-description">${escapeHtml(t.note||'—')}</p>
+      ${recurrenceInfo?`<div class="task-recurrence-info">🔁 ${escapeHtml(recurrenceInfo)}</div>`:''}
       ${tagsHtml?`<div class="flex flex-wrap gap-1 pl-4 mb-2">${tagsHtml}</div>`:''}
       <div class="flex justify-between items-end mt-auto pt-3 border-t border-slate-800/50"><div class="mono font-black text-xl ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(t.amount,t.currency)}</div><div class="text-[9px] font-black px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 uppercase tracking-wider" style="color:${clientColor}">${client?escapeHtml(client.name):'Generico'}</div></div>`;
     grid.appendChild(card);
@@ -655,11 +761,38 @@ function renderRecurringFinance(){renderRecurringFinanceList('expense','weekly',
 function renderRecurringFinanceList(type,recurrence,containerId,color,badge){
   const list=document.getElementById(containerId);if(!list)return;const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0).sort((a,b)=>a.date.localeCompare(b.date));const isIncome=type==='income',emptyLabel=isIncome?'entrata':'spesa';
   if(!tasks.length){list.innerHTML=`<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ${emptyLabel} ${badge.toLowerCase()}</p>`;return}
-  let total=0;list.innerHTML='';tasks.forEach(t=>{total+=t.amount;const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color,dateLbl=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'}),amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button><button onclick="deleteTask(${t.id}, '${todayStr()}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="flex items-center justify-between mt-1.5 pl-3.5"><span class="text-[8px] text-white/60 mono">Data: ${dateLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(t.amount,t.currency)}</span></div>`;list.appendChild(div)});
+  let total=0;list.innerHTML='';tasks.forEach(t=>{total+=t.amount;const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color,dateLbl=parseDateLocal(getNextOccurrenceDate(t)||t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'}),amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button><button onclick="deleteTask(${t.id}, '${getNextOccurrenceDate(t)||t.date}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="flex items-center justify-between mt-1.5 pl-3.5"><span class="text-[8px] text-white/60 mono">Prossima: ${dateLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(t.amount,t.currency)}</span></div>`;list.appendChild(div)});
   const totalDiv=document.createElement('div');totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
 }
 function registerOccurrence(id){const source=state.tasks.find(t=>t.id===id);if(!source)return;const amount=prompt('Importo occorrenza:',Number(source.amount||0).toFixed(2));if(amount===null)return;const parsed=Number(String(amount).replace(',','.'));if(Number.isNaN(parsed)||parsed<0){showToast('Importo non valido');return}const occDate=selectedCalDate||getQuickAddDate()||todayStr();state.tasks.push({...source,id:Date.now(),date:occDate,amount:parsed,recurrence:'none',excludedDates:[],done:false,note:source.note?`${source.note} [occorrenza registrata]`:'[occorrenza registrata]',history:[{ts:Date.now(),action:'Occorrenza registrata',note:source.category}]});const d=parseDateLocal(occDate);calYear=d.getFullYear();calMonth=d.getMonth();syncDateInputs(occDate);saveState();renderAll();showToast('Occorrenza registrata')}
-function renderSummaries(){const tasks=getCountryTasks();const today=todayStr();const now=parseDateLocal(today);let daily=0,weekly=0,inc30=0,exp30=0;tasks.forEach(t=>{if(t.done||!t.amount)return;const d=parseDateLocal(t.date);const diff=Math.round((now-d)/86400000);if(t.date===today&&t.type==='expense')daily+=t.amount;if(diff>=0&&diff<7&&t.type==='expense')weekly+=t.amount;if(diff>=0&&diff<30){if(t.type==='income')inc30+=t.amount;else exp30+=t.amount}});document.getElementById('summaryDaily').textContent=fmtCur(daily);document.getElementById('summaryWeekly').textContent=fmtCur(weekly);document.getElementById('balanceIncome').textContent=fmtCur(inc30);document.getElementById('balanceExpense').textContent=fmtCur(exp30);const net=inc30-exp30,netEl=document.getElementById('balanceNet');netEl.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));netEl.style.color=net>=0?'#10b981':'#ef4444';document.getElementById('heroActive').textContent=tasks.filter(t=>!t.done).length;document.getElementById('heroExpenses').textContent=fmtCur(exp30);document.getElementById('heroIncome').textContent=fmtCur(inc30);const heroNet=document.getElementById('heroNet');heroNet.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));heroNet.style.color=net>=0?'#10b981':'#ef4444'}
+function renderSummaries(){
+  const tasks=getCountryTasks().filter(t=>!t.done&&t.amount>0);
+  const today=todayStr(),now=parseDateLocal(today);
+  const start7=new Date(now);start7.setDate(start7.getDate()-6);
+  const start30=new Date(now);start30.setDate(start30.getDate()-29);
+  const start7Str=getLocalDateStr(start7),start30Str=getLocalDateStr(start30);
+  let daily=0,weekly=0,inc30=0,exp30=0;
+  tasks.forEach(t=>{
+    const countToday=isOccurrenceDueOnDate(t,today)?1:0;
+    const count7=getOccurrenceDatesInRange(t,start7Str,today,1000).length;
+    const count30=getOccurrenceDatesInRange(t,start30Str,today,2000).length;
+    if(t.type==='expense'){
+      daily+=t.amount*countToday;
+      weekly+=t.amount*count7;
+      exp30+=t.amount*count30;
+    }else inc30+=t.amount*count30;
+  });
+  document.getElementById('summaryDaily').textContent=fmtCur(daily);
+  document.getElementById('summaryWeekly').textContent=fmtCur(weekly);
+  document.getElementById('balanceIncome').textContent=fmtCur(inc30);
+  document.getElementById('balanceExpense').textContent=fmtCur(exp30);
+  const net=inc30-exp30,netEl=document.getElementById('balanceNet');
+  netEl.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));netEl.style.color=net>=0?'#10b981':'#ef4444';
+  document.getElementById('heroActive').textContent=tasks.length;
+  document.getElementById('heroExpenses').textContent=fmtCur(exp30);
+  document.getElementById('heroIncome').textContent=fmtCur(inc30);
+  const heroNet=document.getElementById('heroNet');heroNet.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));heroNet.style.color=net>=0?'#10b981':'#ef4444';
+}
 function renderCalendar(){
   const grid=document.getElementById('calGrid');grid.innerHTML='';const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];document.getElementById('calMonthLabel').textContent=`${months[calMonth]} ${calYear}`;
   const firstDay=new Date(calYear,calMonth,1);let startDow=firstDay.getDay();startDow=startDow===0?6:startDow-1;const daysInMonth=new Date(calYear,calMonth+1,0).getDate(),daysInPrev=new Date(calYear,calMonth,0).getDate();const dateMap={};
@@ -671,7 +804,7 @@ function makeCalDay(num,ds,other,dateMap,maxExp){const el=document.createElement
 function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()}
 function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()}
 function showTodayTasks(){const now=new Date();selectedCalDate=todayStr();currentFilter='all';const si=document.getElementById('searchInput');if(si)si.value='';calYear=now.getFullYear();calMonth=now.getMonth();syncDateInputs(selectedCalDate);document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById('filter-all').classList.add('active');const lbl=now.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'});document.getElementById('mainTitle').textContent=lbl.charAt(0).toUpperCase()+lbl.slice(1);document.getElementById('mainSubtitle').textContent='Task del giorno';renderCalendar();renderTasks()}
-function renderChart(){if(typeof Chart==='undefined')return;const ctx=document.getElementById('expenseChart');if(!ctx)return;const cats=getCategories(),totals={};getCountryTasks().forEach(t=>{if(t.done||t.type!=='expense'||!t.amount)return;totals[t.category]=(totals[t.category]||0)+t.amount});const labels=Object.keys(totals),data=labels.map(k=>totals[k]),colors=labels.map(name=>cats.find(c=>c.name===name)?.color||'#6366f1');if(!chart){chart=new Chart(ctx.getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}})}else{chart.data.labels=labels;chart.data.datasets[0].data=data;chart.data.datasets[0].backgroundColor=colors;chart.update()}const legend=document.getElementById('chartLegend');legend.innerHTML='';labels.forEach((l,i)=>{const item=document.createElement('div');item.className='flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-lg border border-slate-700 bg-slate-900/60';item.innerHTML=`<span class="w-2 h-2 rounded-full" style="background:${colors[i]}"></span><span>${escapeHtml(l)}</span><span class="mono text-slate-500">${fmtCur(data[i])}</span>`;legend.appendChild(item)});if(!labels.length)legend.innerHTML='<span class="text-[9px] text-slate-600 italic">Nessun dato spese</span>'}
+function renderChart(){if(typeof Chart==='undefined')return;const ctx=document.getElementById('expenseChart');if(!ctx)return;const cats=getCategories(),totals={};const now=parseDateLocal(todayStr()),start30=new Date(now);start30.setDate(start30.getDate()-29);const start30Str=getLocalDateStr(start30);getCountryTasks().forEach(t=>{if(t.done||t.type!=='expense'||!t.amount)return;const count=getOccurrenceDatesInRange(t,start30Str,todayStr(),2000).length;if(count)totals[t.category]=(totals[t.category]||0)+(t.amount*count)});const labels=Object.keys(totals),data=labels.map(k=>totals[k]),colors=labels.map(name=>cats.find(c=>c.name===name)?.color||'#6366f1');if(!chart){chart=new Chart(ctx.getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}})}else{chart.data.labels=labels;chart.data.datasets[0].data=data;chart.data.datasets[0].backgroundColor=colors;chart.update()}const legend=document.getElementById('chartLegend');legend.innerHTML='';labels.forEach((l,i)=>{const item=document.createElement('div');item.className='flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded-lg border border-slate-700 bg-slate-900/60';item.innerHTML=`<span class="w-2 h-2 rounded-full" style="background:${colors[i]}"></span><span>${escapeHtml(l)}</span><span class="mono text-slate-500">${fmtCur(data[i])}</span>`;legend.appendChild(item)});if(!labels.length)legend.innerHTML='<span class="text-[9px] text-slate-600 italic">Nessun dato spese</span>'}
 function qaToggleType(){qaType=qaType==='expense'?'income':'expense';const btn=document.getElementById('qaTypeBtn');if(qaType==='expense'){btn.textContent='📤';btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-expense'}else{btn.textContent='📥';btn.className='text-[9px] font-black px-2 py-1 rounded-lg border flex-shrink-0 badge-income'}}
 function quickAdd(){const amount=Number(String(document.getElementById('qaAmount').value).replace(',','.')),date=getQuickAddDate(),category=document.getElementById('qaCategory').value,clientId=document.getElementById('qaClient').value;if(!date){showToast('Inserisci una data');return}if(!category){showToast('Seleziona categoria');return}if(Number.isNaN(amount)||amount<=0){showToast('Importo non valido');return}state.tasks.push({id:Date.now(),date,category,type:qaType,currency:getActiveCurrency(),country:activeCountry,clientId:clientId?Number(clientId):null,amount,note:'',recurrence:'none',excludedDates:[],tags:[],done:false,history:[{ts:Date.now(),action:'Quick add',note:category}]});document.getElementById('qaAmount').value='';saveState();selectedCalDate=date;const d=parseDateLocal(date);calYear=d.getFullYear();calMonth=d.getMonth();syncDateInputs(date);renderAll();showToast('Aggiunto alla data selezionata')}
 function exportBackup(){const data='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download=`Spese_Family_${activeCountry}_${todayStr()}.json`;a.click()}
