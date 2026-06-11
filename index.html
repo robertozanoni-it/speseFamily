@@ -212,11 +212,11 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
       <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">7 giorni</span><span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span></div>
       <div class="recurring-history-summary">
         <button type="button" onclick="setFilter('incomeRecurring')" class="recurring-history-kpi hover:border-emerald-500/40 transition-colors">
-          <div class="recurring-history-kpi-label">Entrate ricorrenti da inizio</div>
+          <div class="recurring-history-kpi-label">Entrate ricorrenti fino a oggi</div>
           <div id="summaryRecurringIncome" class="recurring-history-kpi-value text-emerald-400">+€0.00</div>
         </button>
         <button type="button" onclick="setFilter('expenseRecurring')" class="recurring-history-kpi hover:border-red-500/40 transition-colors">
-          <div class="recurring-history-kpi-label">Spese ricorrenti da inizio</div>
+          <div class="recurring-history-kpi-label">Spese ricorrenti fino a oggi</div>
           <div id="summaryRecurringExpense" class="recurring-history-kpi-value text-red-400">-€0.00</div>
         </button>
       </div>
@@ -464,7 +464,13 @@ function getOccurrenceDatesInRange(t,startStr,endStr,limit=2000){
   }
   return out;
 }
-function isOccurrenceDueOnDate(t,dateStr){return getOccurrenceDatesInRange(t,dateStr,dateStr,2).length>0}
+function isOccurrenceDueOnDate(t,dateStr){
+  if(!t||!dateStr)return false;
+  // Le ricorrenze vengono contabilizzate solo fino alla data odierna:
+  // nessuna occorrenza futura compare nel calendario o nelle liste.
+  if(isRecurring(t)&&parseDateLocal(dateStr)>parseDateLocal(todayStr()))return false;
+  return getOccurrenceDatesInRange(t,dateStr,dateStr,2).length>0;
+}
 function getNextOccurrenceDate(t,fromStr=todayStr()){
   if(!t)return null;
   if(!isRecurring(t))return t.date;
@@ -473,17 +479,27 @@ function getNextOccurrenceDate(t,fromStr=todayStr()){
   const end=new Date(start);end.setFullYear(end.getFullYear()+30);
   return getOccurrenceDatesInRange(t,getLocalDateStr(start),getLocalDateStr(end),1)[0]||null;
 }
+function getLatestOccurrenceDate(t,upToStr=todayStr()){
+  if(!t)return null;
+  if(!isRecurring(t))return parseDateLocal(t.date)<=parseDateLocal(upToStr)?t.date:null;
+  if(parseDateLocal(t.date)>parseDateLocal(upToStr))return null;
+  const dates=getOccurrenceDatesInRange(t,t.date,upToStr,10000);
+  return dates.length?dates[dates.length-1]:null;
+}
 function getRecurrenceLongLabel(r){return r==='weekly'?'Ogni settimana':r==='monthly'?'Ogni mese':r==='yearly'?'Ogni anno':''}
 
-const RECURRING_HISTORY_FILTERS=new Set(['weekly','monthly','annual','expenseRecurring','incomeRecurring','expenseWeekly','expenseMonthly','expenseYearly','incomeWeekly','incomeMonthly','incomeYearly']);
+// Anche i filtri generali Entrate e Spese devono espandere tutte le ricorrenze
+// dalla data iniziale fino a oggi.
+const RECURRING_HISTORY_FILTERS=new Set(['expense','income','weekly','monthly','annual','expenseRecurring','incomeRecurring','expenseWeekly','expenseMonthly','expenseYearly','incomeWeekly','incomeMonthly','incomeYearly']);
 function getRecurringHistoryEndDate(t,referenceStr=todayStr()){
-  const ref=parseDateLocal(referenceStr);
-  if(t?.recurrence==='yearly')return `${ref.getFullYear()}-12-31`;
-  return getLocalDateStr(new Date(ref.getFullYear(),ref.getMonth()+1,0));
+  // Non usare la fine del mese o dell'anno: il limite massimo è sempre oggi.
+  const today=todayStr();
+  const reference=referenceStr||today;
+  return parseDateLocal(reference)>parseDateLocal(today)?today:reference;
 }
-function getRecurringHistoryDates(t){
-  if(!isRecurring(t))return [t.date];
-  return getOccurrenceDatesInRange(t,t.date,getRecurringHistoryEndDate(t),10000);
+function getRecurringHistoryDates(t,referenceStr=todayStr()){
+  if(!isRecurring(t))return parseDateLocal(t.date)<=parseDateLocal(referenceStr)?[t.date]:[];
+  return getOccurrenceDatesInRange(t,t.date,getRecurringHistoryEndDate(t,referenceStr),10000);
 }
 function shouldExpandRecurringHistory(){
   return !selectedCalDate&&(RECURRING_HISTORY_FILTERS.has(currentFilter)||!!getSearchQuery());
@@ -491,12 +507,18 @@ function shouldExpandRecurringHistory(){
 function getFilteredTaskItems(){
   const sources=getFilteredTasks();
   const expand=shouldExpandRecurringHistory();
+  const today=todayStr();
   let items=[];
   sources.forEach(t=>{
     if(expand&&isRecurring(t)){
-      getRecurringHistoryDates(t).forEach(date=>items.push({task:t,occurrenceDate:date,isOccurrence:true}));
+      // Genera una scheda per ogni occorrenza realmente maturata, mai oltre oggi.
+      getRecurringHistoryDates(t,today).forEach(date=>items.push({task:t,occurrenceDate:date,isOccurrence:true}));
     }else{
-      const date=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:(isRecurring(t)?(getNextOccurrenceDate(t)||t.date):t.date);
+      const date=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)
+        ?selectedCalDate
+        :(isRecurring(t)?getLatestOccurrenceDate(t,today):t.date);
+      // Le serie che iniziano nel futuro non vengono mostrate come movimenti già avvenuti.
+      if(!date)return;
       items.push({task:t,occurrenceDate:date,isOccurrence:false});
     }
   });
@@ -518,7 +540,7 @@ function getOccurrenceGroupLabel(dateStr,mode){
 }
 function getRecurringHistorySubtitle(){
   const now=parseDateLocal(todayStr());
-  return `Occorrenze generate dalla data iniziale fino al periodo corrente (${now.toLocaleDateString('it-IT',{month:'long',year:'numeric'})})`;
+  return `Movimenti contabilizzati dalla data iniziale fino a oggi (${now.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})})`;
 }
 
 
@@ -590,7 +612,7 @@ document.getElementById('deleteRecurringModal').addEventListener('click',e=>{if(
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDeleteRecurringModal()});
 
 function toggleTaskStatus(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;saveState();renderAll()}
-function setFilter(filter){currentFilter=filter;selectedCalDate=null;const si=document.getElementById('searchInput');if(si)si.value='';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`filter-${filter}`)?.classList.add('active');const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],expenseRecurring:['📤 Spese ricorrenti','Tutte le occorrenze delle spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le occorrenze delle entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};const [title,defaultSub]=titles[filter]||titles.all;const sub=RECURRING_HISTORY_FILTERS.has(filter)?getRecurringHistorySubtitle():defaultSub;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;renderCalendar();renderTasks()}
+function setFilter(filter){currentFilter=filter;selectedCalDate=null;const si=document.getElementById('searchInput');if(si)si.value='';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`filter-${filter}`)?.classList.add('active');const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Tutte le spese fino a oggi, incluse le singole occorrenze ricorrenti'],income:['📥 Entrate','Tutte le entrate fino a oggi, incluse le singole occorrenze ricorrenti'],weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],expenseRecurring:['📤 Spese ricorrenti','Tutte le occorrenze delle spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le occorrenze delle entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};const [title,defaultSub]=titles[filter]||titles.all;const sub=RECURRING_HISTORY_FILTERS.has(filter)?getRecurringHistorySubtitle():defaultSub;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;renderCalendar();renderTasks()}
 function setSort(mode){currentSort=mode;document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`sort-${mode}`)?.classList.add('active');renderTasks()}
 
 function normalizeSearchText(value){
@@ -687,9 +709,9 @@ function handleSearchInput(){
     selectedCalDate=null;
     document.querySelectorAll('.cal-day.selected').forEach(el=>el.classList.remove('selected'));
     document.getElementById('mainTitle').textContent=`🔍 ${raw}`;
-    document.getElementById('mainSubtitle').textContent='Ricerca completa: le ricorrenze vengono mostrate come singole occorrenze dalla data iniziale al periodo corrente';
+    document.getElementById('mainSubtitle').textContent='Ricerca completa: le ricorrenze sono mostrate come singole occorrenze dalla data iniziale fino a oggi';
   }else{
-    const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};
+    const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Tutte le spese fino a oggi, incluse le singole occorrenze ricorrenti'],income:['📥 Entrate','Tutte le entrate fino a oggi, incluse le singole occorrenze ricorrenti'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};
     const [title,defaultSub]=titles[currentFilter]||titles.all;const sub=RECURRING_HISTORY_FILTERS.has(currentFilter)?getRecurringHistorySubtitle():defaultSub;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;
   }
   renderCalendar();
@@ -703,8 +725,8 @@ function getFilteredTasks(){
     filtered=filtered.filter(t=>matchesSearch(t,search));
   }else if(selectedCalDate)filtered=filtered.filter(t=>isOccurrenceDueOnDate(t,selectedCalDate));
   else if(currentFilter==='expired')filtered=filtered.filter(t=>parseDateLocal(t.date)<today&&!t.done);
-  else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense');
-  else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income');
+  else if(currentFilter==='expense')filtered=filtered.filter(t=>t.type==='expense'&&parseDateLocal(t.date)<=today);
+  else if(currentFilter==='income')filtered=filtered.filter(t=>t.type==='income'&&parseDateLocal(t.date)<=today);
   else if(currentFilter==='weekly')filtered=filtered.filter(t=>t.recurrence==='weekly');
   else if(currentFilter==='monthly')filtered=filtered.filter(t=>t.recurrence==='monthly');
   else if(currentFilter==='annual')filtered=filtered.filter(t=>t.recurrence==='yearly');
@@ -732,7 +754,11 @@ function renderTasks(){
   const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal'),ftLabel=document.getElementById('filterTotalLabel');
   if(currentFilter!=='all'||selectedCalDate||getSearchQuery()){
     ftBox.classList.remove('hidden');
-    if(ftLabel)ftLabel.textContent=expanded?'Totale da inizio ricorrenze':'Totale filtro';
+    if(ftLabel){
+      if(currentFilter==='income'||currentFilter==='expense')ftLabel.textContent='Totale fino a oggi';
+      else if(expanded)ftLabel.textContent='Totale occorrenze fino a oggi';
+      else ftLabel.textContent='Totale filtro';
+    }
     ftEl.textContent=(total>=0?'+':'-')+fmtCur(Math.abs(total));ftEl.style.color=total>=0?'#10b981':'#ef4444';
   }else ftBox.classList.add('hidden');
 
@@ -862,7 +888,8 @@ function removeCategory(name){if(!confirm(`Rimuovere "${name}"?`))return;if(acti
 function renderRecurringFinance(){renderRecurringFinanceList('expense','weekly','weeklyExpensesList','#6366f1','7g');renderRecurringFinanceList('expense','monthly','monthlyExpensesList','#f59e0b','1M');renderRecurringFinanceList('expense','yearly','annualExpensesList','#f97316','1A');renderRecurringFinanceList('income','weekly','weeklyIncomeList','#6366f1','7g');renderRecurringFinanceList('income','monthly','monthlyIncomeList','#f59e0b','1M');renderRecurringFinanceList('income','yearly','annualIncomeList','#f97316','1A')}
 function renderRecurringFinanceList(type,recurrence,containerId,color,badge){
   const list=document.getElementById(containerId);if(!list)return;
-  const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0).sort((a,b)=>a.date.localeCompare(b.date));
+  const today=parseDateLocal(todayStr());
+  const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0&&parseDateLocal(t.date)<=today).sort((a,b)=>a.date.localeCompare(b.date));
   const isIncome=type==='income',emptyLabel=isIncome?'entrata':'spesa';
   if(!tasks.length){list.innerHTML=`<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ${emptyLabel} ${badge.toLowerCase()}</p>`;return}
   let total=0,totalOccurrences=0;list.innerHTML='';
@@ -870,17 +897,17 @@ function renderRecurringFinanceList(type,recurrence,containerId,color,badge){
     const dates=getRecurringHistoryDates(t),count=dates.length,seriesTotal=t.amount*count;
     total+=seriesTotal;totalOccurrences+=count;
     const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color;
-    const nextDate=getNextOccurrenceDate(t)||t.date;
-    const nextLbl=parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
+    const lastAccountedDate=dates.length?dates[dates.length-1]:t.date;
+    const lastAccountedLbl=parseDateLocal(lastAccountedDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
     const startLbl=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
     const lastLbl=dates.length?parseDateLocal(dates[dates.length-1]).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}):startLbl;
     const amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';
     const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);
-    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza manuale">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica serie">✏️</button><button onclick="deleteTask(${t.id}, '${nextDate}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="mt-1.5 pl-3.5 space-y-1"><div class="flex items-center justify-between"><span class="text-[8px] text-white/60 mono">${count} ${count===1?'occorrenza':'occorrenze'} · ${startLbl} → ${lastLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(seriesTotal,t.currency)}</span></div><div class="flex items-center justify-between"><span class="text-[8px] text-white/45 mono">Prossima: ${nextLbl}</span><span class="text-[8px] text-white/45 mono">${amountSign}${fmtCur(t.amount,t.currency)} / volta</span></div></div>`;
+    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza manuale">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica serie">✏️</button><button onclick="deleteTask(${t.id}, '${lastAccountedDate}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="mt-1.5 pl-3.5 space-y-1"><div class="flex items-center justify-between"><span class="text-[8px] text-white/60 mono">${count} ${count===1?'occorrenza':'occorrenze'} · ${startLbl} → ${lastLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(seriesTotal,t.currency)}</span></div><div class="flex items-center justify-between"><span class="text-[8px] text-white/45 mono">Ultima contabilizzata: ${lastAccountedLbl}</span><span class="text-[8px] text-white/45 mono">${amountSign}${fmtCur(t.amount,t.currency)} / volta</span></div></div>`;
     list.appendChild(div)
   });
   const totalDiv=document.createElement('div');totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';
-  totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale storico · ${totalOccurrences} occ.</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
+  totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale fino a oggi · ${totalOccurrences} occ.</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
 }
 function registerOccurrence(id){const source=state.tasks.find(t=>t.id===id);if(!source)return;const amount=prompt('Importo occorrenza:',Number(source.amount||0).toFixed(2));if(amount===null)return;const parsed=Number(String(amount).replace(',','.'));if(Number.isNaN(parsed)||parsed<0){showToast('Importo non valido');return}const occDate=selectedCalDate||getQuickAddDate()||todayStr();state.tasks.push({...source,id:Date.now(),date:occDate,amount:parsed,recurrence:'none',excludedDates:[],done:false,note:source.note?`${source.note} [occorrenza registrata]`:'[occorrenza registrata]',history:[{ts:Date.now(),action:'Occorrenza registrata',note:source.category}]});const d=parseDateLocal(occDate);calYear=d.getFullYear();calMonth=d.getMonth();syncDateInputs(occDate);saveState();renderAll();showToast('Occorrenza registrata')}
 function renderSummaries(){
