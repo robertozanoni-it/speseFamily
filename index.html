@@ -36,6 +36,9 @@ body.country-GB{--accent:#7c3aed;--accent-glow:rgba(124,58,237,.25)}
 .card-task{transition:all .2s ease}.card-task:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(0,0,0,.4)}
 .task-description{font-size:15px;line-height:1.55;color:#fff;font-weight:600;margin:4px 0 12px;padding-left:16px;overflow-wrap:anywhere;white-space:pre-wrap}
 .task-recurrence-info{font-size:10px;line-height:1.4;color:#cbd5e1;font-weight:700;margin:0 0 10px;padding-left:16px}
+.occurrence-group-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;margin-top:4px;border-radius:14px;background:linear-gradient(90deg,rgba(59,130,246,.13),rgba(15,23,42,.72));border:1px solid rgba(148,163,184,.16);border-left:4px solid var(--accent)}
+.occurrence-group-title{font-size:13px;font-weight:900;color:#fff;text-transform:capitalize}.occurrence-group-meta{font-size:9px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-top:2px}.occurrence-group-total{font-family:'DM Mono',monospace;font-size:14px;font-weight:900;white-space:nowrap}
+.recurring-history-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px}.recurring-history-kpi{padding:10px;border-radius:12px;background:rgba(15,23,42,.48);border:1px solid rgba(255,255,255,.07);text-align:center}.recurring-history-kpi-label{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin-bottom:4px}.recurring-history-kpi-value{font-family:'DM Mono',monospace;font-size:11px;font-weight:900}
 .filter-btn.active{background:var(--accent);color:white!important;border-color:var(--accent)!important}
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
 .badge-income{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)}
@@ -78,6 +81,7 @@ html:not(.dark) .bg-darkBg{background:#f1f5f9!important}html:not(.dark) .bg-slat
 html:not(.dark) .border-slate-800{border-color:#e2e8f0!important}html:not(.dark) .border-slate-700{border-color:#cbd5e1!important}
 html:not(.dark) .text-white{color:#0f172a!important}html:not(.dark) .text-slate-200{color:#1e293b!important}html:not(.dark) .text-slate-400{color:#64748b!important}html:not(.dark) .text-slate-500{color:#94a3b8!important}
 html:not(.dark) .task-description{color:#0f172a!important}html:not(.dark) .task-recurrence-info{color:#475569!important}
+html:not(.dark) .occurrence-group-header{background:linear-gradient(90deg,rgba(59,130,246,.10),rgba(255,255,255,.90));border-color:#dbe4f0}html:not(.dark) .occurrence-group-title{color:#0f172a}html:not(.dark) .recurring-history-kpi{background:rgba(255,255,255,.72);border-color:rgba(0,0,0,.08)}
 html:not(.dark) input,html:not(.dark) select,html:not(.dark) textarea{color:#1e293b!important;color-scheme:light}
 html:not(.dark) .country-hero{background:linear-gradient(135deg,#dbeafe,#ede9fe)}html:not(.dark) .country-btn-wrap{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08)}
 html:not(.dark) .country-pill{background:rgba(0,0,0,.05);color:#64748b;border-color:rgba(0,0,0,.1)}
@@ -206,6 +210,16 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
       </div>
       <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">Oggi</span><span id="summaryDaily" class="mono font-bold text-sm text-white">0.00</span></div>
       <div class="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl"><span class="text-[10px] text-slate-500">7 giorni</span><span id="summaryWeekly" class="mono font-bold text-sm text-white">0.00</span></div>
+      <div class="recurring-history-summary">
+        <button type="button" onclick="setFilter('incomeRecurring')" class="recurring-history-kpi hover:border-emerald-500/40 transition-colors">
+          <div class="recurring-history-kpi-label">Entrate ricorrenti da inizio</div>
+          <div id="summaryRecurringIncome" class="recurring-history-kpi-value text-emerald-400">+€0.00</div>
+        </button>
+        <button type="button" onclick="setFilter('expenseRecurring')" class="recurring-history-kpi hover:border-red-500/40 transition-colors">
+          <div class="recurring-history-kpi-label">Spese ricorrenti da inizio</div>
+          <div id="summaryRecurringExpense" class="recurring-history-kpi-value text-red-400">-€0.00</div>
+        </button>
+      </div>
     </div>
   </details>
 </div>
@@ -214,7 +228,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
   <details class="group" open>
     <summary class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase tracking-widest text-indigo-400 group-open:mb-4">🔁 Ricorrenze <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span></summary>
     <div class="space-y-3 pt-3 border-t border-slate-800/60">
-      <details class="recurring-subsection" open><summary><span class="text-red-400">📤 Spese ricorrenti</span><span>▼</span></summary>
+      <details class="recurring-subsection" open><summary onclick="setFilter('expenseRecurring')"><span class="text-red-400">📤 Spese ricorrenti</span><span>▼</span></summary>
         <div class="recurring-subsection-body space-y-3">
           <div class="flex flex-wrap gap-1.5"><button type="button" onclick="setFilter('expenseWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button><button type="button" onclick="setFilter('expenseMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button><button type="button" onclick="setFilter('expenseYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button><button type="button" onclick="setFilter('expenseRecurring')" class="rec-filter-btn text-red-400 bg-red-500/15 border-red-500/25">Tutte</button></div>
           <div><div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div><div id="weeklyExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
@@ -222,7 +236,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
           <div><div class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-1.5">Annuali</div><div id="annualExpensesList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
         </div>
       </details>
-      <details class="recurring-subsection"><summary><span class="text-emerald-400">📥 Entrate ricorrenti</span><span>▼</span></summary>
+      <details class="recurring-subsection"><summary onclick="setFilter('incomeRecurring')"><span class="text-emerald-400">📥 Entrate ricorrenti</span><span>▼</span></summary>
         <div class="recurring-subsection-body space-y-3">
           <div class="flex flex-wrap gap-1.5"><button type="button" onclick="setFilter('incomeWeekly')" class="rec-filter-btn text-indigo-400 bg-indigo-500/15 border-indigo-500/25">Settimanali</button><button type="button" onclick="setFilter('incomeMonthly')" class="rec-filter-btn text-amber-400 bg-amber-500/15 border-amber-500/25">Mensili</button><button type="button" onclick="setFilter('incomeYearly')" class="rec-filter-btn text-orange-400 bg-orange-500/15 border-orange-500/25">Annuali</button><button type="button" onclick="setFilter('incomeRecurring')" class="rec-filter-btn text-emerald-400 bg-emerald-500/15 border-emerald-500/25">Tutte</button></div>
           <div><div class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1.5">Settimanali</div><div id="weeklyIncomeList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1"></div></div>
@@ -308,7 +322,7 @@ html:not(.dark) .recurring-subsection-body{border-color:rgba(0,0,0,.08)}
 
   <div class="flex justify-between items-end mb-5">
     <div><h2 id="mainTitle" class="text-xl font-black text-white">Attività e Scadenze</h2><p id="mainSubtitle" class="text-[10px] text-slate-500 mt-0.5">Timeline</p></div>
-    <div id="filterTotalBox" class="hidden text-right"><div class="text-[9px] text-slate-500 uppercase tracking-widest">Totale filtro</div><div id="filterTotal" class="mono font-bold text-sm" style="color:var(--accent)">0.00</div></div>
+    <div id="filterTotalBox" class="hidden text-right"><div id="filterTotalLabel" class="text-[9px] text-slate-500 uppercase tracking-widest">Totale filtro</div><div id="filterTotal" class="mono font-bold text-sm" style="color:var(--accent)">0.00</div></div>
   </div>
   <div id="taskGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
   <div id="emptyTasks" class="hidden flex-col items-center justify-center py-24 opacity-40 text-center"><span class="text-6xl mb-4">🎯</span><p class="text-lg font-semibold">Nessun task trovato</p></div>
@@ -461,6 +475,52 @@ function getNextOccurrenceDate(t,fromStr=todayStr()){
 }
 function getRecurrenceLongLabel(r){return r==='weekly'?'Ogni settimana':r==='monthly'?'Ogni mese':r==='yearly'?'Ogni anno':''}
 
+const RECURRING_HISTORY_FILTERS=new Set(['weekly','monthly','annual','expenseRecurring','incomeRecurring','expenseWeekly','expenseMonthly','expenseYearly','incomeWeekly','incomeMonthly','incomeYearly']);
+function getRecurringHistoryEndDate(t,referenceStr=todayStr()){
+  const ref=parseDateLocal(referenceStr);
+  if(t?.recurrence==='yearly')return `${ref.getFullYear()}-12-31`;
+  return getLocalDateStr(new Date(ref.getFullYear(),ref.getMonth()+1,0));
+}
+function getRecurringHistoryDates(t){
+  if(!isRecurring(t))return [t.date];
+  return getOccurrenceDatesInRange(t,t.date,getRecurringHistoryEndDate(t),10000);
+}
+function shouldExpandRecurringHistory(){
+  return !selectedCalDate&&(RECURRING_HISTORY_FILTERS.has(currentFilter)||!!getSearchQuery());
+}
+function getFilteredTaskItems(){
+  const sources=getFilteredTasks();
+  const expand=shouldExpandRecurringHistory();
+  let items=[];
+  sources.forEach(t=>{
+    if(expand&&isRecurring(t)){
+      getRecurringHistoryDates(t).forEach(date=>items.push({task:t,occurrenceDate:date,isOccurrence:true}));
+    }else{
+      const date=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:(isRecurring(t)?(getNextOccurrenceDate(t)||t.date):t.date);
+      items.push({task:t,occurrenceDate:date,isOccurrence:false});
+    }
+  });
+  if(currentSort==='date')items.sort((a,b)=>b.occurrenceDate.localeCompare(a.occurrenceDate));
+  else if(currentSort==='amount')items.sort((a,b)=>(b.task.amount||0)-(a.task.amount||0)||b.occurrenceDate.localeCompare(a.occurrenceDate));
+  else if(currentSort==='status')items.sort((a,b)=>Number(a.task.done)-Number(b.task.done)||b.occurrenceDate.localeCompare(a.occurrenceDate));
+  return items;
+}
+function getOccurrenceGroupingMode(items){
+  const yearlyFilters=new Set(['annual','expenseYearly','incomeYearly']);
+  if(yearlyFilters.has(currentFilter))return 'year';
+  if(items.length&&items.every(item=>item.task.recurrence==='yearly'))return 'year';
+  return 'month';
+}
+function getOccurrenceGroupKey(dateStr,mode){return mode==='year'?dateStr.slice(0,4):dateStr.slice(0,7)}
+function getOccurrenceGroupLabel(dateStr,mode){
+  const d=parseDateLocal(dateStr);
+  return mode==='year'?String(d.getFullYear()):d.toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+}
+function getRecurringHistorySubtitle(){
+  const now=parseDateLocal(todayStr());
+  return `Occorrenze generate dalla data iniziale fino al periodo corrente (${now.toLocaleDateString('it-IT',{month:'long',year:'numeric'})})`;
+}
+
 
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('visible');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('visible'),2200)}
 function applyTheme(dark){document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';safeSet('app_theme',dark?'dark':'light')}
@@ -530,7 +590,7 @@ document.getElementById('deleteRecurringModal').addEventListener('click',e=>{if(
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDeleteRecurringModal()});
 
 function toggleTaskStatus(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;saveState();renderAll()}
-function setFilter(filter){currentFilter=filter;selectedCalDate=null;const si=document.getElementById('searchInput');if(si)si.value='';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`filter-${filter}`)?.classList.add('active');const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};const [title,sub]=titles[filter]||titles.all;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;renderCalendar();renderTasks()}
+function setFilter(filter){currentFilter=filter;selectedCalDate=null;const si=document.getElementById('searchInput');if(si)si.value='';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`filter-${filter}`)?.classList.add('active');const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],weekly:['📅 Ricorrenze settimanali','Spese ed entrate settimanali'],monthly:['🗓 Ricorrenze mensili','Spese ed entrate mensili'],annual:['💶 Ricorrenze annuali','Spese ed entrate annuali'],expenseRecurring:['📤 Spese ricorrenti','Tutte le occorrenze delle spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le occorrenze delle entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};const [title,defaultSub]=titles[filter]||titles.all;const sub=RECURRING_HISTORY_FILTERS.has(filter)?getRecurringHistorySubtitle():defaultSub;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;renderCalendar();renderTasks()}
 function setSort(mode){currentSort=mode;document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`sort-${mode}`)?.classList.add('active');renderTasks()}
 
 function normalizeSearchText(value){
@@ -627,10 +687,10 @@ function handleSearchInput(){
     selectedCalDate=null;
     document.querySelectorAll('.cal-day.selected').forEach(el=>el.classList.remove('selected'));
     document.getElementById('mainTitle').textContent=`🔍 ${raw}`;
-    document.getElementById('mainSubtitle').textContent='Ricerca su tipo, ricorrenza, categoria, persona, descrizione, tag, data, stato e importo';
+    document.getElementById('mainSubtitle').textContent='Ricerca completa: le ricorrenze vengono mostrate come singole occorrenze dalla data iniziale al periodo corrente';
   }else{
     const titles={all:['Attività e Scadenze','Timeline'],expired:['⚠ Scaduti','Non completati'],expense:['📤 Spese','Uscite'],income:['📥 Entrate','Guadagni'],expenseRecurring:['📤 Spese ricorrenti','Tutte le spese ricorrenti'],incomeRecurring:['📥 Entrate ricorrenti','Tutte le entrate ricorrenti'],expenseWeekly:['📤 Spese settimanali','Spese con cadenza settimanale'],expenseMonthly:['📤 Spese mensili','Spese con cadenza mensile'],expenseYearly:['📤 Spese annuali','Spese con cadenza annuale'],incomeWeekly:['📥 Entrate settimanali','Entrate con cadenza settimanale'],incomeMonthly:['📥 Entrate mensili','Entrate con cadenza mensile'],incomeYearly:['📥 Entrate annuali','Entrate con cadenza annuale']};
-    const [title,sub]=titles[currentFilter]||titles.all;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;
+    const [title,defaultSub]=titles[currentFilter]||titles.all;const sub=RECURRING_HISTORY_FILTERS.has(currentFilter)?getRecurringHistorySubtitle():defaultSub;document.getElementById('mainTitle').textContent=title;document.getElementById('mainSubtitle').textContent=sub;
   }
   renderCalendar();
   renderTasks();
@@ -662,29 +722,71 @@ function getFilteredTasks(){
   return filtered;
 }
 function renderTasks(){
-  const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');grid.innerHTML='';const filtered=getFilteredTasks();empty.classList.toggle('hidden',filtered.length>0);empty.classList.toggle('flex',filtered.length===0);
-  const total=filtered.filter(t=>!t.done&&t.amount&&!isExcluded(t,selectedCalDate||t.date)).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal');
-  if(currentFilter!=='all'||selectedCalDate||getSearchQuery()){ftBox.classList.remove('hidden');ftEl.textContent=(total>=0?'+':'-')+fmtCur(Math.abs(total));ftEl.style.color=total>=0?'#10b981':'#ef4444'}else ftBox.classList.add('hidden');
+  const grid=document.getElementById('taskGrid'),empty=document.getElementById('emptyTasks');
+  grid.innerHTML='';
+  const items=getFilteredTaskItems();
+  const expanded=shouldExpandRecurringHistory();
+  empty.classList.toggle('hidden',items.length>0);empty.classList.toggle('flex',items.length===0);
+
+  const total=items.filter(item=>!item.task.done&&item.task.amount&&!isExcluded(item.task,item.occurrenceDate)).reduce((sum,item)=>sum+(item.task.type==='income'?item.task.amount:-item.task.amount),0);
+  const ftBox=document.getElementById('filterTotalBox'),ftEl=document.getElementById('filterTotal'),ftLabel=document.getElementById('filterTotalLabel');
+  if(currentFilter!=='all'||selectedCalDate||getSearchQuery()){
+    ftBox.classList.remove('hidden');
+    if(ftLabel)ftLabel.textContent=expanded?'Totale da inizio ricorrenze':'Totale filtro';
+    ftEl.textContent=(total>=0?'+':'-')+fmtCur(Math.abs(total));ftEl.style.color=total>=0?'#10b981':'#ef4444';
+  }else ftBox.classList.add('hidden');
+
   const cats=getCategories();
-  filtered.forEach(t=>{
+  let groupTotals={},groupCounts={},groupMode='month';
+  if(expanded){
+    groupMode=getOccurrenceGroupingMode(items);
+    items.forEach(item=>{
+      const key=getOccurrenceGroupKey(item.occurrenceDate,groupMode);
+      if(!groupTotals[key])groupTotals[key]=0;
+      if(!groupCounts[key])groupCounts[key]=0;
+      if(!item.task.done&&item.task.amount)groupTotals[key]+=item.task.type==='income'?item.task.amount:-item.task.amount;
+      groupCounts[key]++;
+    });
+  }
+  let lastGroup=null;
+
+  items.forEach(item=>{
+    const t=item.task,occurrenceDate=item.occurrenceDate;
+    if(expanded){
+      const groupKey=getOccurrenceGroupKey(occurrenceDate,groupMode);
+      if(groupKey!==lastGroup){
+        const groupTotal=groupTotals[groupKey]||0;
+        const header=document.createElement('div');header.className='occurrence-group-header';
+        header.innerHTML=`<div><div class="occurrence-group-title">${escapeHtml(getOccurrenceGroupLabel(occurrenceDate,groupMode))}</div><div class="occurrence-group-meta">${groupCounts[groupKey]} ${groupCounts[groupKey]===1?'occorrenza':'occorrenze'}</div></div><div class="occurrence-group-total" style="color:${groupTotal>=0?'#10b981':'#ef4444'}">${groupTotal>=0?'+':'-'}${fmtCur(Math.abs(groupTotal))}</div>`;
+        grid.appendChild(header);lastGroup=groupKey;
+      }
+    }
+
     const client=state.clients.find(c=>c.id===t.clientId),clientColor=client?client.color:'#475569',catObj=cats.find(c=>c.name===t.category),catColor=catObj?catObj.color:'#6366f1',isIncome=t.type==='income';
-    const occurrenceDate=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:(isRecurring(t)?(getNextOccurrenceDate(t)||t.date):t.date);
-    const dateLabel=parseDateLocal(occurrenceDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});const recBadge=getRecurrenceBadge(t.recurrence);const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag cursor-pointer" onclick="setActiveTag('${escapeJs(tag)}')">#${escapeHtml(tag)}</span>`).join('');
-    const nextOccurrence=isRecurring(t)?(selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:getNextOccurrenceDate(t)):null;
-    const recurrenceInfo=nextOccurrence?`${getRecurrenceLongLabel(t.recurrence)} · ${selectedCalDate?'occorrenza':'prossima'} ${parseDateLocal(nextOccurrence).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})}`:'';
+    const dateLabel=parseDateLocal(occurrenceDate).toLocaleDateString('it-IT',expanded?{day:'2-digit',month:'short',year:'numeric'}:{day:'2-digit',month:'short'});
+    const recBadge=getRecurrenceBadge(t.recurrence);const tagsHtml=(t.tags||[]).map(tag=>`<span class="task-tag cursor-pointer" onclick="setActiveTag('${escapeJs(tag)}')">#${escapeHtml(tag)}</span>`).join('');
+    let recurrenceInfo='';
+    if(isRecurring(t)){
+      if(expanded)recurrenceInfo=`${getRecurrenceLongLabel(t.recurrence)} · occorrenza ${parseDateLocal(occurrenceDate).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})} · serie iniziata il ${parseDateLocal(t.date).toLocaleDateString('it-IT')}`;
+      else{const nextOccurrence=selectedCalDate&&isOccurrenceDueOnDate(t,selectedCalDate)?selectedCalDate:getNextOccurrenceDate(t);if(nextOccurrence)recurrenceInfo=`${getRecurrenceLongLabel(t.recurrence)} · ${selectedCalDate?'occorrenza':'prossima'} ${parseDateLocal(nextOccurrence).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})}`}
+    }
     const card=document.createElement('div');card.className=`card-task relative flex flex-col bg-darkCard border border-slate-800 p-5 rounded-2xl shadow-sm border-l-[5px] ${t.done?'opacity-50':''}`;card.style.borderLeftColor=clientColor;
+    const statusControl=expanded&&isRecurring(t)
+      ?`<span class="w-5 h-5 rounded-md border border-slate-700 flex items-center justify-center text-[10px] text-slate-400" title="Occorrenza generata dalla serie">↻</span>`
+      :`<button onclick="toggleTaskStatus(${t.id})" class="w-5 h-5 rounded-md border-2 border-slate-700 flex items-center justify-center transition-all text-[10px] ${t.done?'bg-green-500 border-green-500 text-white':'hover:border-accent'}">${t.done?'✓':''}</button>`;
     card.innerHTML=`
       <div class="flex justify-between items-start mb-3">
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="toggleTaskStatus(${t.id})" class="w-5 h-5 rounded-md border-2 border-slate-700 flex items-center justify-center transition-all text-[10px] ${t.done?'bg-green-500 border-green-500 text-white':'hover:border-accent'}">${t.done?'✓':''}</button>
+          ${statusControl}
           <span class="text-[10px] font-black uppercase tracking-widest mono px-2 py-0.5 rounded-full border text-slate-400 bg-slate-800 border-slate-700">${dateLabel}</span>
           ${recBadge}
+          ${expanded&&isRecurring(t)?'<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-blue-500/15 text-blue-300 border border-blue-500/20">Occorrenza</span>':''}
           <span class="text-[8px] font-bold px-1.5 py-0.5 rounded ${isIncome?'badge-income':'badge-expense'}">${isIncome?'↑ Entrata':'↓ Spesa'}</span>
         </div>
         <div class="flex gap-1 items-center">
-          <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-500 hover:text-blue-400 p-1 transition-colors" title="Duplica">📋</button>
-          <button onclick="editTask(${t.id})" class="text-xs text-slate-500 hover:text-slate-300 p-1 transition-colors" title="Modifica">✏️</button>
-          <button onclick="deleteTask(${t.id}, '${occurrenceDate}')" class="text-xs text-slate-500 hover:text-red-400 p-1 transition-colors" title="Elimina">✕</button>
+          <button onclick="duplicateTask(${t.id})" class="text-xs text-slate-500 hover:text-blue-400 p-1 transition-colors" title="Duplica serie o movimento">📋</button>
+          <button onclick="editTask(${t.id})" class="text-xs text-slate-500 hover:text-slate-300 p-1 transition-colors" title="Modifica serie">✏️</button>
+          <button onclick="deleteTask(${t.id}, '${occurrenceDate}')" class="text-xs text-slate-500 hover:text-red-400 p-1 transition-colors" title="Elimina questa occorrenza o tutta la serie">✕</button>
         </div>
       </div>
       <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${catColor}"></span><span class="font-black text-base leading-tight ${t.done?'line-through text-slate-500':'text-white'}">${escapeHtml(t.category)}</span></div>
@@ -759,10 +861,26 @@ function addCategory(){const name=document.getElementById('newCatName').value.tr
 function removeCategory(name){if(!confirm(`Rimuovere "${name}"?`))return;if(activeCountry==='GB')state.categoriesGB=state.categoriesGB.filter(c=>c.name!==name);else state.categoriesIT=state.categoriesIT.filter(c=>c.name!==name);saveState();initSelects();renderAll()}
 function renderRecurringFinance(){renderRecurringFinanceList('expense','weekly','weeklyExpensesList','#6366f1','7g');renderRecurringFinanceList('expense','monthly','monthlyExpensesList','#f59e0b','1M');renderRecurringFinanceList('expense','yearly','annualExpensesList','#f97316','1A');renderRecurringFinanceList('income','weekly','weeklyIncomeList','#6366f1','7g');renderRecurringFinanceList('income','monthly','monthlyIncomeList','#f59e0b','1M');renderRecurringFinanceList('income','yearly','annualIncomeList','#f97316','1A')}
 function renderRecurringFinanceList(type,recurrence,containerId,color,badge){
-  const list=document.getElementById(containerId);if(!list)return;const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0).sort((a,b)=>a.date.localeCompare(b.date));const isIncome=type==='income',emptyLabel=isIncome?'entrata':'spesa';
+  const list=document.getElementById(containerId);if(!list)return;
+  const tasks=getCountryTasks().filter(t=>t.recurrence===recurrence&&t.type===type&&!t.done&&t.amount>0).sort((a,b)=>a.date.localeCompare(b.date));
+  const isIncome=type==='income',emptyLabel=isIncome?'entrata':'spesa';
   if(!tasks.length){list.innerHTML=`<p class="text-[10px] text-slate-600 italic text-center py-3">Nessuna ${emptyLabel} ${badge.toLowerCase()}</p>`;return}
-  let total=0;list.innerHTML='';tasks.forEach(t=>{total+=t.amount;const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color,dateLbl=parseDateLocal(getNextOccurrenceDate(t)||t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'}),amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica">✏️</button><button onclick="deleteTask(${t.id}, '${getNextOccurrenceDate(t)||t.date}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="flex items-center justify-between mt-1.5 pl-3.5"><span class="text-[8px] text-white/60 mono">Prossima: ${dateLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(t.amount,t.currency)}</span></div>`;list.appendChild(div)});
-  const totalDiv=document.createElement('div');totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
+  let total=0,totalOccurrences=0;list.innerHTML='';
+  tasks.forEach(t=>{
+    const dates=getRecurringHistoryDates(t),count=dates.length,seriesTotal=t.amount*count;
+    total+=seriesTotal;totalOccurrences+=count;
+    const co=getCategories().find(c=>c.name===t.category),col=co?co.color:color;
+    const nextDate=getNextOccurrenceDate(t)||t.date;
+    const nextLbl=parseDateLocal(nextDate).toLocaleDateString('it-IT',{day:'2-digit',month:'short'});
+    const startLbl=parseDateLocal(t.date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+    const lastLbl=dates.length?parseDateLocal(dates[dates.length-1]).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}):startLbl;
+    const amountClass=isIncome?'text-emerald-300':'text-red-300',amountSign=isIncome?'+':'-';
+    const div=document.createElement('div');div.className='p-2.5 rounded-xl border group';div.style.background=hexToRgba(col,0.25);div.style.borderColor=hexToRgba(col,0.45);
+    div.innerHTML=`<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></span><span class="text-[10px] font-black text-white truncate">${escapeHtml(t.category)} <span class="text-[8px] font-bold px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.15)">${badge}</span></span></div><div class="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><button onclick="registerOccurrence(${t.id})" class="vrec-action-btn" title="Registra occorrenza manuale">✅</button><button onclick="editTask(${t.id})" class="vrec-action-btn" title="Modifica serie">✏️</button><button onclick="deleteTask(${t.id}, '${nextDate}')" class="vrec-action-btn hover:!border-red-400" title="Elimina occorrenza o serie">🗑️</button></div></div><div class="mt-1.5 pl-3.5 space-y-1"><div class="flex items-center justify-between"><span class="text-[8px] text-white/60 mono">${count} ${count===1?'occorrenza':'occorrenze'} · ${startLbl} → ${lastLbl}</span><span class="mono text-[10px] font-black ${amountClass}">${amountSign}${fmtCur(seriesTotal,t.currency)}</span></div><div class="flex items-center justify-between"><span class="text-[8px] text-white/45 mono">Prossima: ${nextLbl}</span><span class="text-[8px] text-white/45 mono">${amountSign}${fmtCur(t.amount,t.currency)} / volta</span></div></div>`;
+    list.appendChild(div)
+  });
+  const totalDiv=document.createElement('div');totalDiv.className='mt-3 pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] font-bold';
+  totalDiv.innerHTML=`<span class="text-slate-400 uppercase tracking-widest">Totale storico · ${totalOccurrences} occ.</span><span class="mono ${isIncome?'text-emerald-400':'text-red-400'}">${isIncome?'+':'-'}${fmtCur(total)}</span>`;list.appendChild(totalDiv);
 }
 function registerOccurrence(id){const source=state.tasks.find(t=>t.id===id);if(!source)return;const amount=prompt('Importo occorrenza:',Number(source.amount||0).toFixed(2));if(amount===null)return;const parsed=Number(String(amount).replace(',','.'));if(Number.isNaN(parsed)||parsed<0){showToast('Importo non valido');return}const occDate=selectedCalDate||getQuickAddDate()||todayStr();state.tasks.push({...source,id:Date.now(),date:occDate,amount:parsed,recurrence:'none',excludedDates:[],done:false,note:source.note?`${source.note} [occorrenza registrata]`:'[occorrenza registrata]',history:[{ts:Date.now(),action:'Occorrenza registrata',note:source.category}]});const d=parseDateLocal(occDate);calYear=d.getFullYear();calMonth=d.getMonth();syncDateInputs(occDate);saveState();renderAll();showToast('Occorrenza registrata')}
 function renderSummaries(){
@@ -771,7 +889,7 @@ function renderSummaries(){
   const start7=new Date(now);start7.setDate(start7.getDate()-6);
   const start30=new Date(now);start30.setDate(start30.getDate()-29);
   const start7Str=getLocalDateStr(start7),start30Str=getLocalDateStr(start30);
-  let daily=0,weekly=0,inc30=0,exp30=0;
+  let daily=0,weekly=0,inc30=0,exp30=0,recurringIncome=0,recurringExpense=0;
   tasks.forEach(t=>{
     const countToday=isOccurrenceDueOnDate(t,today)?1:0;
     const count7=getOccurrenceDatesInRange(t,start7Str,today,1000).length;
@@ -781,11 +899,18 @@ function renderSummaries(){
       weekly+=t.amount*count7;
       exp30+=t.amount*count30;
     }else inc30+=t.amount*count30;
+    if(isRecurring(t)){
+      const historyCount=getRecurringHistoryDates(t).length;
+      if(t.type==='income')recurringIncome+=t.amount*historyCount;
+      else recurringExpense+=t.amount*historyCount;
+    }
   });
   document.getElementById('summaryDaily').textContent=fmtCur(daily);
   document.getElementById('summaryWeekly').textContent=fmtCur(weekly);
   document.getElementById('balanceIncome').textContent=fmtCur(inc30);
   document.getElementById('balanceExpense').textContent=fmtCur(exp30);
+  const sri=document.getElementById('summaryRecurringIncome'),sre=document.getElementById('summaryRecurringExpense');
+  if(sri)sri.textContent='+'+fmtCur(recurringIncome);if(sre)sre.textContent='-'+fmtCur(recurringExpense);
   const net=inc30-exp30,netEl=document.getElementById('balanceNet');
   netEl.textContent=(net>=0?'+':'-')+fmtCur(Math.abs(net));netEl.style.color=net>=0?'#10b981':'#ef4444';
   document.getElementById('heroActive').textContent=tasks.length;
