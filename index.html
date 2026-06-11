@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spese & Family — Dashboard Globale</title>
+<title>Spese & Family — Dashboard Globale con Ricerca</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,8 +33,18 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:
 .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.manager-list{display:grid;gap:7px;margin-top:12px}.manager-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);background:var(--panel3);padding:10px;border-radius:11px}.manager-name{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800}.color-dot{width:11px;height:11px;border-radius:50%}.inline-form{display:grid;grid-template-columns:1fr 42px auto;gap:8px}.inline-form input[type=color]{width:42px;height:42px;border:1px solid var(--border);background:var(--panel3);border-radius:10px;padding:3px}
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal-backdrop.open{display:flex}.modal{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);padding:19px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modal-head h3{margin:0;font-size:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:7px}.type-btn{border:1px solid var(--border);background:var(--panel3);color:var(--muted);padding:10px;border-radius:10px;font-weight:900}.type-btn.active.exp{border-color:var(--expense);color:#fca5a5;background:rgba(239,68,68,.1)}.type-btn.active.inc{border-color:var(--income);color:#6ee7b7;background:rgba(16,185,129,.1)}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.scope-options{display:grid;gap:8px}.scope-option{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--border);background:var(--panel3);padding:11px;border-radius:11px}.scope-option strong{font-size:12px}.scope-option small{display:block;color:var(--muted);margin-top:2px}
 #toast{position:fixed;right:22px;bottom:22px;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s;z-index:80;font-size:13px;font-weight:800}#toast.show{opacity:1;transform:none}
-@media(max-width:1200px){.hero{grid-template-columns:1fr repeat(3,1fr)}.country-control{grid-column:1/-1}.global-kpi{border-left:0}.kpi-grid{grid-template-columns:repeat(3,1fr)}.cards-grid{grid-template-columns:repeat(2,1fr)}.toolbar{grid-template-columns:1fr 1fr 1fr}.dashboard-grid{grid-template-columns:1fr}.calendar-layout{grid-template-columns:1fr}}
-@media(max-width:760px){.app{padding:11px}.hero{grid-template-columns:1fr}.global-kpi{border-top:1px solid var(--border)}.controlbar{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar .search-wrap{grid-column:1/-1}.cards-grid,.series-grid,.settings-grid{grid-template-columns:1fr}.filter-summary{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.calendar-grid{gap:3px}.cal-day{min-height:62px;padding:5px}.cal-totals{font-size:8px}.movement-description,.series-note{font-size:14px}.top-actions .btn span{display:none}}
+
+.global-search-panel{background:linear-gradient(135deg,rgba(var(--accent-rgb),.13),var(--panel));border:1px solid rgba(var(--accent-rgb),.28);border-radius:18px;padding:15px;margin-bottom:16px;box-shadow:var(--shadow)}
+.global-search-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:11px;flex-wrap:wrap}.global-search-head h2{font-size:17px;margin:0;font-weight:900}.global-search-head p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.global-search-quick{display:grid;grid-template-columns:minmax(260px,2fr) minmax(155px,.75fr) minmax(145px,.65fr) auto auto;gap:9px;align-items:center}
+.global-search-toolbar{display:grid;grid-template-columns:minmax(260px,1.8fr) minmax(155px,.75fr) minmax(145px,.65fr) repeat(3,minmax(145px,.75fr)) auto;gap:9px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:16px;margin-bottom:12px}
+.search-period-label{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;font-weight:800;margin:0 0 12px}.search-period-label strong{color:var(--text)}
+.search-result-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+.search-result-count{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center}.search-result-count span{font-size:11px;color:var(--muted);font-weight:800}.search-result-count strong{font-size:15px}
+.calendar-search-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.day-entry-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.day-entry .actions{flex-shrink:0}
+
+@media(max-width:1200px){.global-search-quick{grid-template-columns:1fr 1fr 1fr auto auto}.global-search-toolbar{grid-template-columns:1fr 1fr 1fr}.hero{grid-template-columns:1fr repeat(3,1fr)}.country-control{grid-column:1/-1}.global-kpi{border-left:0}.kpi-grid{grid-template-columns:repeat(3,1fr)}.cards-grid{grid-template-columns:repeat(2,1fr)}.toolbar{grid-template-columns:1fr 1fr 1fr}.dashboard-grid{grid-template-columns:1fr}.calendar-layout{grid-template-columns:1fr}}
+@media(max-width:760px){.global-search-quick,.global-search-toolbar{grid-template-columns:1fr}.search-result-meta{grid-template-columns:1fr 1fr}.app{padding:11px}.hero{grid-template-columns:1fr}.global-kpi{border-top:1px solid var(--border)}.controlbar{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar .search-wrap{grid-column:1/-1}.cards-grid,.series-grid,.settings-grid{grid-template-columns:1fr}.filter-summary{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.calendar-grid{gap:3px}.cal-day{min-height:62px;padding:5px}.cal-totals{font-size:8px}.movement-description,.series-note{font-size:14px}.top-actions .btn span{display:none}}
 @media(max-width:480px){.kpi-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.inline-form{grid-template-columns:1fr 42px}.inline-form .btn{grid-column:1/-1}.country-switch{width:100%}.country-btn{flex:1}.hero{padding:14px}}
 @media print{.topbar,.navbar,.controlbar,.toolbar,.top-actions,.actions,.modal-backdrop,#toast{display:none!important}.view{display:none!important}#view-dashboard{display:block!important}body{background:white;color:black}.panel,.kpi-card{box-shadow:none}}
 </style>
@@ -64,6 +74,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:
 
   <nav class="navbar">
     <button class="nav-btn active" data-view="dashboard" onclick="showView('dashboard')">▦ Dashboard</button>
+    <button class="nav-btn" data-view="search" onclick="showView('search')">⌕ Ricerca</button>
     <button class="nav-btn" data-view="movements" onclick="showView('movements')">↕ Movimenti</button>
     <button class="nav-btn" data-view="recurrences" onclick="showView('recurrences')">↻ Ricorrenze</button>
     <button class="nav-btn" data-view="calendar" onclick="showView('calendar')">▣ Calendario</button>
@@ -75,6 +86,23 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:
     <div class="control-group"><label>Periodo globale</label><select id="periodSelect" class="select" onchange="setGlobalPeriod(this.value)"></select></div>
     <div id="customDates" class="control-group hidden"><label>Intervallo personalizzato</label><div style="display:flex;gap:7px"><input id="customStart" class="input" type="date" onchange="setCustomRange()"><input id="customEnd" class="input" type="date" onchange="setCustomRange()"></div></div>
     <div id="periodNote" class="period-note">Questo mese, dalla prima data fino a oggi.</div>
+  </section>
+
+  <section class="global-search-panel" aria-label="Ricerca generale">
+    <div class="global-search-head">
+      <div>
+        <h2>Ricerca generale</h2>
+        <p>Cerca qualsiasi spesa o entrata nello storico, comprese tutte le occorrenze ricorrenti.</p>
+      </div>
+      <button class="btn btn-small" type="button" onclick="openGlobalSearch()">Apri ricerca avanzata</button>
+    </div>
+    <div class="global-search-quick">
+      <div class="search-wrap"><span>🔎</span><input id="globalSearchQuickText" class="input" placeholder="Cerca qualsiasi spesa o entrata…" onkeydown="if(event.key==='Enter'){event.preventDefault();runQuickGlobalSearch()}"></div>
+      <input id="globalSearchQuickMonth" class="input" type="month" title="Cerca in un mese specifico" onchange="if(this.value)document.getElementById('globalSearchQuickYear').value=''">
+      <select id="globalSearchQuickYear" class="select" title="Cerca in un anno specifico" onchange="if(this.value)document.getElementById('globalSearchQuickMonth').value=''"><option value="">Qualsiasi anno</option></select>
+      <button class="btn btn-primary" type="button" onclick="runQuickGlobalSearch()">Cerca</button>
+      <button class="btn" type="button" onclick="clearQuickGlobalSearch()">Azzera</button>
+    </div>
   </section>
 
   <main>
@@ -100,6 +128,37 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:
 
       <div class="section-title"><div><h2>Ultimi movimenti maturati</h2><p>Incluse tutte le occorrenze generate dalle serie ricorrenti</p></div><button class="btn btn-small" onclick="showView('movements')">Vedi tutti</button></div>
       <div id="recentMovements"></div>
+    </section>
+
+    <section id="view-search" class="view">
+      <div class="section-title">
+        <div><h2>Ricerca generale</h2><p id="globalSearchSubtitle">Trova qualsiasi spesa o entrata e modificala direttamente dai risultati.</p></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" type="button" onclick="clearGlobalSearch()">Azzera filtri</button>
+          <button class="btn btn-primary" type="button" onclick="openMovementModal()">＋ Aggiungi</button>
+        </div>
+      </div>
+
+      <div class="global-search-toolbar">
+        <div class="search-wrap"><span>🔎</span><input id="globalSearchText" class="input" placeholder="Cerca qualsiasi spesa o entrata: pensione, affitto, Roberto, annuale, importo…" oninput="renderGlobalSearch()"></div>
+        <input id="globalSearchMonth" class="input" type="month" title="Seleziona un singolo mese" onchange="setGlobalSearchMonth(this.value)">
+        <select id="globalSearchYear" class="select" title="Seleziona un singolo anno" onchange="setGlobalSearchYear(this.value)"><option value="">Qualsiasi anno</option></select>
+        <select id="globalSearchType" class="select" onchange="renderGlobalSearch()"><option value="all">Entrate + spese</option><option value="income">Solo entrate</option><option value="expense">Solo spese</option></select>
+        <select id="globalSearchRecurrence" class="select" onchange="renderGlobalSearch()"><option value="all">Singole + ricorrenti</option><option value="recurring">Solo ricorrenti</option><option value="none">Solo singole</option><option value="weekly">Settimanali</option><option value="monthly">Mensili</option><option value="yearly">Annuali</option></select>
+        <select id="globalSearchScope" class="select" onchange="renderGlobalSearch()"><option value="actual">Fino a oggi</option><option value="forecast">Solo future</option><option value="all">Storico + future</option></select>
+        <div class="segmented"><button id="globalSearchCardsBtn" class="active" type="button" onclick="setGlobalSearchView('cards')">Schede</button><button id="globalSearchTableBtn" type="button" onclick="setGlobalSearchView('table')">Tabella</button></div>
+      </div>
+
+      <p class="search-period-label">Periodo cercato: <strong id="globalSearchPeriodLabel">Tutto lo storico fino a oggi</strong></p>
+
+      <div class="search-result-meta">
+        <div class="search-result-count"><span>Voci trovate</span><strong id="globalSearchCount" class="mono">0</strong></div>
+        <div class="mini-total"><span>Entrate trovate</span><strong id="globalSearchIncome" class="mono income">€0.00</strong></div>
+        <div class="mini-total"><span>Spese trovate</span><strong id="globalSearchExpense" class="mono expense">€0.00</strong></div>
+        <div class="mini-total"><span>Saldo trovato</span><strong id="globalSearchNet" class="mono">€0.00</strong></div>
+      </div>
+
+      <div id="globalSearchResults"></div>
     </section>
 
     <section id="view-movements" class="view">
@@ -130,7 +189,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:
     <section id="view-calendar" class="view">
       <div class="section-title"><div><h2>Calendario</h2><p>Entrate, spese e ricorrenze nella data effettiva</p></div></div>
       <div class="calendar-layout">
-        <div class="calendar"><div class="calendar-head"><button class="btn btn-small" onclick="changeCalendarMonth(-1)">‹</button><h3 id="calendarTitle"></h3><button class="btn btn-small" onclick="changeCalendarMonth(1)">›</button></div><div class="calendar-week"><div>LU</div><div>MA</div><div>ME</div><div>GI</div><div>VE</div><div>SA</div><div>DO</div></div><div id="calendarGrid" class="calendar-grid"></div></div>
+        <div class="calendar"><div class="calendar-head"><button class="btn btn-small" onclick="changeCalendarMonth(-1)">‹</button><h3 id="calendarTitle"></h3><div class="calendar-search-actions"><button class="btn btn-small" onclick="searchCurrentCalendarMonth()">Cerca mese</button><button class="btn btn-small" onclick="searchCurrentCalendarYear()">Cerca anno</button><button class="btn btn-small" onclick="changeCalendarMonth(1)">›</button></div></div><div class="calendar-week"><div>LU</div><div>MA</div><div>ME</div><div>GI</div><div>VE</div><div>SA</div><div>DO</div></div><div id="calendarGrid" class="calendar-grid"></div></div>
         <article class="panel"><div class="panel-head"><h3 id="selectedDayTitle">Seleziona un giorno</h3><span id="selectedDayTotal"></span></div><div id="selectedDayList" class="day-list"><div class="empty">Clicca su un giorno del calendario.</div></div></article>
       </div>
     </section>
@@ -214,6 +273,7 @@ let globalMode=safeGet('app_globalMode')||'actual';
 let globalPeriod=safeGet('app_globalPeriod')||(globalMode==='actual'?'thisMonth':'next30');
 let customStart=safeGet('app_customStart')||todayStr(),customEnd=safeGet('app_customEnd')||todayStr();
 let movementView=safeGet('app_movementView')||'cards';
+let globalSearchView=safeGet('app_globalSearchView')||'cards';
 let recurrenceTab='series';
 let currentView='dashboard';
 let calendarYear=new Date().getFullYear(),calendarMonth=new Date().getMonth(),selectedCalendarDay='';
@@ -260,9 +320,9 @@ function renderPeriodOptions(){const select=document.getElementById('periodSelec
 function setGlobalMode(mode){globalMode=mode;globalPeriod=mode==='actual'?'thisMonth':'next30';safeSet('app_globalMode',mode);safeSet('app_globalPeriod',globalPeriod);document.getElementById('modeActual').classList.toggle('active',mode==='actual');document.getElementById('modeForecast').classList.toggle('active',mode==='forecast');renderPeriodOptions();renderAll()}
 function setGlobalPeriod(p){globalPeriod=p;safeSet('app_globalPeriod',p);renderPeriodOptions();renderAll()}
 function setCustomRange(){customStart=document.getElementById('customStart').value||todayStr();customEnd=document.getElementById('customEnd').value||customStart;safeSet('app_customStart',customStart);safeSet('app_customEnd',customEnd);renderAll()}
-function switchCountry(c){activeCountry=c;safeSet('app_activeCountry',c);document.body.classList.toggle('country-GB',c==='GB');document.getElementById('countryIT').classList.toggle('active',c==='IT');document.getElementById('countryGB').classList.toggle('active',c==='GB');document.getElementById('countryTitle').textContent=CONFIG[c].label;document.getElementById('settingsCountryLabel').textContent=c==='IT'?'Italia':'Inghilterra';populateFormSelects();renderAll();toast(`Gestione ${CONFIG[c].flag} ${c==='IT'?'Italia':'Inghilterra'}`)}
+function switchCountry(c){activeCountry=c;safeSet('app_activeCountry',c);document.body.classList.toggle('country-GB',c==='GB');document.getElementById('countryIT').classList.toggle('active',c==='IT');document.getElementById('countryGB').classList.toggle('active',c==='GB');document.getElementById('countryTitle').textContent=CONFIG[c].label;document.getElementById('settingsCountryLabel').textContent=c==='IT'?'Italia':'Inghilterra';populateFormSelects();populateGlobalSearchYears();renderAll();toast(`Gestione ${CONFIG[c].flag} ${c==='IT'?'Italia':'Inghilterra'}`)}
 function toggleTheme(){const dark=document.documentElement.classList.toggle('dark');safeSet('app_theme',dark?'dark':'light');document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';renderCharts()}
-function showView(view){currentView=view;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='calendar')renderCalendar();if(view==='settings')renderSettings();window.scrollTo({top:0,behavior:'smooth'})}
+function showView(view){currentView=view;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='search')renderGlobalSearch();if(view==='calendar')renderCalendar();if(view==='settings')renderSettings();window.scrollTo({top:0,behavior:'smooth'})}
 function openMovementsByType(type,period=null){if(period){globalMode='actual';globalPeriod=period;document.getElementById('modeActual').classList.add('active');document.getElementById('modeForecast').classList.remove('active');renderPeriodOptions()}showView('movements');document.getElementById('movementType').value=type;renderMovements()}
 function openRecurringExpenses(){showView('recurrences');document.getElementById('recurrenceTypeFilter').value='expense';recurrenceTab='series';renderRecurrences()}
 
@@ -273,7 +333,137 @@ function renderUpcoming(){const start=addDays(todayStr(),1),end=addDays(todayStr
 function renderRecent(){const end=todayStr(),start=addDays(end,-3650);let entries=countableEntries(entriesForRange(start,end,'actual')).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);document.getElementById('recentMovements').innerHTML=renderCards(entries,false)}
 function renderDashboard(){renderHeaderAndKpis();renderSummaryRows();renderUpcoming();renderRecent();renderCharts()}
 
-function matchesEntrySearch(e,q){if(!q)return true;const d=parseDate(e.date),client=clientName(e.clientId);const hay=normalize([e.category,e.note,(e.tags||[]).join(' '),client,e.type==='income'?'entrata entrate income ricavo pensione':'spesa spese uscita costo',e.recurrence,recurrenceLabel(e.recurrence),e.isRecurring?'ricorrente ricorrenza':'singola',statusLabel(e.status,e.type),e.amount,e.date,d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})].join(' '));return normalize(q).split(' ').every(tok=>{if(['entrata','entrate','income','ricavo','ricavi'].includes(tok))return e.type==='income';if(['spesa','spese','uscita','uscite','costo','costi'].includes(tok))return e.type==='expense';if(tok.startsWith('annual'))return e.recurrence==='yearly';if(tok.startsWith('mensil'))return e.recurrence==='monthly';if(tok.startsWith('settiman'))return e.recurrence==='weekly';if(tok.startsWith('ricorrent'))return e.isRecurring;return hay.includes(tok)})}
+
+function populateGlobalSearchYears(){
+  const years=new Set([new Date().getFullYear()]);
+  countryTasks().forEach(t=>{
+    if(t.date)years.add(parseDate(t.date).getFullYear());
+    if(t.endDate)years.add(parseDate(t.endDate).getFullYear());
+  });
+  const current=new Date().getFullYear();
+  for(let y=current+5;y>=current-1;y--)years.add(y);
+  const ordered=[...years].sort((a,b)=>b-a);
+  const options='<option value="">Qualsiasi anno</option>'+ordered.map(y=>`<option value="${y}">${y}</option>`).join('');
+  ['globalSearchYear','globalSearchQuickYear'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const value=el.value;
+    el.innerHTML=options;
+    if(ordered.includes(Number(value)))el.value=value;
+  });
+}
+function globalSearchRange(){
+  const month=document.getElementById('globalSearchMonth')?.value||'';
+  const year=document.getElementById('globalSearchYear')?.value||'';
+  const scope=document.getElementById('globalSearchScope')?.value||'actual';
+  const today=todayStr(),tomorrow=addDays(today,1),currentYear=parseDate(today).getFullYear();
+  let start,end,label;
+  if(month){
+    const [y,m]=month.split('-').map(Number);
+    start=`${y}-${String(m).padStart(2,'0')}-01`;
+    end=dateStr(new Date(y,m,0));
+    label=parseDate(start).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+  }else if(year){
+    start=`${year}-01-01`;end=`${year}-12-31`;label=`Anno ${year}`;
+  }else{
+    start=earliestTaskDate();
+    end=`${currentYear+5}-12-31`;
+    label='Tutto lo storico';
+  }
+  if(scope==='actual'){
+    if(parseDate(start)>parseDate(today))return {start:today,end:addDays(today,-1),label:`${label} · fino a oggi`,scope,empty:true};
+    end=minDate(end,today);label+=month||year?' · fino a oggi':' fino a oggi';
+  }else if(scope==='forecast'){
+    start=maxDate(start,tomorrow);label+=month||year?' · solo future':' · prossime ricorrenze';
+  }else label+=' · storico e future';
+  return {start,end,label,scope,empty:parseDate(end)<parseDate(start)};
+}
+function globalSearchEntries(){
+  const range=globalSearchRange();
+  if(range.empty)return [];
+  let entries=[];
+  if(range.scope==='actual')entries=entriesForRange(range.start,range.end,'actual');
+  else if(range.scope==='forecast')entries=entriesForRange(range.start,range.end,'forecast');
+  else{
+    const actualEnd=minDate(range.end,todayStr());
+    if(parseDate(range.start)<=parseDate(actualEnd))entries.push(...entriesForRange(range.start,actualEnd,'actual'));
+    const futureStart=maxDate(range.start,addDays(todayStr(),1));
+    if(parseDate(futureStart)<=parseDate(range.end))entries.push(...entriesForRange(futureStart,range.end,'forecast'));
+  }
+  const q=document.getElementById('globalSearchText')?.value||'';
+  const type=document.getElementById('globalSearchType')?.value||'all';
+  const rec=document.getElementById('globalSearchRecurrence')?.value||'all';
+  entries=entries.filter(e=>matchesEntrySearch(e,q));
+  if(type!=='all')entries=entries.filter(e=>e.type===type);
+  if(rec==='recurring')entries=entries.filter(e=>e.isRecurring);
+  else if(rec==='none')entries=entries.filter(e=>!e.isRecurring);
+  else if(['weekly','monthly','yearly'].includes(rec))entries=entries.filter(e=>e.recurrence===rec);
+  return entries.sort((a,b)=>b.date.localeCompare(a.date)||String(b.taskId).localeCompare(String(a.taskId)));
+}
+function renderGlobalSearch(){
+  const results=document.getElementById('globalSearchResults');
+  if(!results)return;
+  const entries=globalSearchEntries(),t=totals(entries),range=globalSearchRange();
+  document.getElementById('globalSearchPeriodLabel').textContent=range.label;
+  document.getElementById('globalSearchCount').textContent=entries.length;
+  document.getElementById('globalSearchIncome').textContent=money(t.income);
+  document.getElementById('globalSearchExpense').textContent=money(t.expense);
+  const net=document.getElementById('globalSearchNet');net.textContent=signedMoney(t.net);net.style.color=t.net>=0?'var(--income)':'var(--expense)';
+  const q=document.getElementById('globalSearchText').value.trim();
+  document.getElementById('globalSearchSubtitle').textContent=q?`Risultati modificabili per “${q}”`:'Trova qualsiasi spesa o entrata e modificala direttamente dai risultati.';
+  if(!entries.length){results.innerHTML='<div class="empty">Nessuna voce trovata con questa ricerca e con il periodo selezionato.</div>';return}
+  results.innerHTML=globalSearchView==='cards'?renderGroupedCards(entries):renderMovementTable(entries);
+}
+function setGlobalSearchMonth(value){
+  if(value)document.getElementById('globalSearchYear').value='';
+  renderGlobalSearch();
+}
+function setGlobalSearchYear(value){
+  if(value)document.getElementById('globalSearchMonth').value='';
+  renderGlobalSearch();
+}
+function setGlobalSearchView(view){
+  globalSearchView=view;safeSet('app_globalSearchView',view);
+  document.getElementById('globalSearchCardsBtn').classList.toggle('active',view==='cards');
+  document.getElementById('globalSearchTableBtn').classList.toggle('active',view==='table');
+  renderGlobalSearch();
+}
+function openGlobalSearch(query='',month='',year=''){
+  showView('search');
+  if(query!==null)document.getElementById('globalSearchText').value=query||'';
+  document.getElementById('globalSearchMonth').value=month||'';
+  document.getElementById('globalSearchYear').value=year||'';
+  if(month)document.getElementById('globalSearchYear').value='';
+  if(year)document.getElementById('globalSearchMonth').value='';
+  renderGlobalSearch();
+}
+function runQuickGlobalSearch(){
+  const query=document.getElementById('globalSearchQuickText').value;
+  const month=document.getElementById('globalSearchQuickMonth').value;
+  const year=document.getElementById('globalSearchQuickYear').value;
+  openGlobalSearch(query,month,year);
+}
+function clearQuickGlobalSearch(){
+  document.getElementById('globalSearchQuickText').value='';
+  document.getElementById('globalSearchQuickMonth').value='';
+  document.getElementById('globalSearchQuickYear').value='';
+}
+function clearGlobalSearch(){
+  document.getElementById('globalSearchText').value='';
+  document.getElementById('globalSearchMonth').value='';
+  document.getElementById('globalSearchYear').value='';
+  document.getElementById('globalSearchType').value='all';
+  document.getElementById('globalSearchRecurrence').value='all';
+  document.getElementById('globalSearchScope').value='actual';
+  renderGlobalSearch();
+}
+function searchCurrentCalendarMonth(){
+  const month=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}`;
+  openGlobalSearch('',month,'');
+}
+function searchCurrentCalendarYear(){openGlobalSearch('','',String(calendarYear))}
+
+function matchesEntrySearch(e,q){if(!q)return true;const d=parseDate(e.date),client=clientName(e.clientId);const hay=normalize([e.category,e.note,(e.tags||[]).join(' '),client,e.type==='income'?'entrata entrate income ricavo ricavi accredito accrediti guadagno guadagni':'spesa spese uscita uscite costo costi pagamento pagamenti',e.recurrence,recurrenceLabel(e.recurrence),e.isRecurring?'ricorrente ricorrenza':'singola',statusLabel(e.status,e.type),e.amount,e.date,d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})].join(' '));return normalize(q).split(' ').every(tok=>{if(['entrata','entrate','income','ricavo','ricavi'].includes(tok))return e.type==='income';if(['spesa','spese','uscita','uscite','costo','costi'].includes(tok))return e.type==='expense';if(tok.startsWith('annual'))return e.recurrence==='yearly';if(tok.startsWith('mensil'))return e.recurrence==='monthly';if(tok.startsWith('settiman'))return e.recurrence==='weekly';if(tok.startsWith('ricorrent'))return e.isRecurring;return hay.includes(tok)})}
 function filteredMovementEntries(){const range=getPeriodRange();let entries=entriesForRange(range.start,range.end);const q=document.getElementById('movementSearch').value,type=document.getElementById('movementType').value,rec=document.getElementById('movementRecurrence').value,status=document.getElementById('movementStatus').value,sort=document.getElementById('movementSort').value;entries=entries.filter(e=>matchesEntrySearch(e,q));if(type!=='all')entries=entries.filter(e=>e.type===type);if(rec==='recurring')entries=entries.filter(e=>e.isRecurring);else if(rec==='none')entries=entries.filter(e=>!e.isRecurring);else if(['weekly','monthly','yearly'].includes(rec))entries=entries.filter(e=>e.recurrence===rec);if(status==='matured')entries=entries.filter(e=>e.status==='matured');else if(status==='confirmed')entries=entries.filter(e=>['paid','received'].includes(e.status));else if(status==='planned')entries=entries.filter(e=>e.status==='planned');else if(status==='excluded')entries=entries.filter(e=>isExcludedStatus(e.status));entries.sort((a,b)=>sort==='dateAsc'?a.date.localeCompare(b.date):sort==='amountDesc'?b.amount-a.amount:sort==='amountAsc'?a.amount-b.amount:b.date.localeCompare(a.date));return entries}
 function renderMovements(){const range=getPeriodRange(),entries=filteredMovementEntries(),t=totals(entries);document.getElementById('movementSubtitle').textContent=`${range.label} · ogni occorrenza ricorrente è una riga autonoma`;document.getElementById('filteredIncome').textContent=money(t.income);document.getElementById('filteredExpense').textContent=money(t.expense);const n=document.getElementById('filteredNet');n.textContent=signedMoney(t.net);n.style.color=t.net>=0?'var(--income)':'var(--expense)';const container=document.getElementById('movementsContainer');if(!entries.length){container.innerHTML='<div class="empty">Nessun movimento trovato nel periodo e nei filtri selezionati.</div>';return}container.innerHTML=movementView==='cards'?renderGroupedCards(entries):renderMovementTable(entries)}
 function renderGroupedCards(entries){const groups={};entries.forEach(e=>{const k=e.date.slice(0,7);(groups[k]||(groups[k]=[])).push(e)});return Object.keys(groups).sort().reverse().map(k=>{const items=groups[k],t=totals(items),label=parseDate(`${k}-01`).toLocaleDateString('it-IT',{month:'long',year:'numeric'});return `<div class="group-header"><div><h3>${label}</h3><small style="color:var(--muted)">${items.length} movimenti</small></div><span class="mono" style="color:${t.net>=0?'var(--income)':'var(--expense)'}">${signedMoney(t.net)}</span></div>${renderCards(items,true)}`}).join('')}
@@ -297,7 +487,7 @@ function applyOccurrenceEdit(){const id=document.getElementById('occurrenceTaskI
 
 function renderCalendar(){const title=new Date(calendarYear,calendarMonth,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});document.getElementById('calendarTitle').textContent=title;const start=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-01`,end=dateStr(new Date(calendarYear,calendarMonth+1,0));let entries=entriesForRange(start,end,parseDate(end)<=parseDate(todayStr())?'actual':globalMode);if(globalMode==='actual')entries=entries.filter(e=>e.date<=todayStr());else entries=entries.filter(e=>e.date>todayStr());const map={};entries.forEach(e=>(map[e.date]||(map[e.date]=[])).push(e));const first=new Date(calendarYear,calendarMonth,1),offset=(first.getDay()+6)%7,days=daysInMonth(calendarYear,calendarMonth),prev=daysInMonth(calendarYear,calendarMonth-1);let html='';for(let i=offset-1;i>=0;i--)html+=`<div class="cal-day other"><span class="cal-number">${prev-i}</span></div>`;for(let day=1;day<=days;day++){const ds=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`,list=map[ds]||[],t=totals(list);html+=`<div class="cal-day ${ds===todayStr()?'today':''}" onclick="selectCalendarDay('${ds}')"><span class="cal-number">${day}</span><div class="cal-totals">${t.income?`<span class="income">+${money(t.income)}</span>`:''}${t.expense?`<span class="expense">-${money(t.expense)}</span>`:''}</div></div>`}const rem=(7-((offset+days)%7))%7;for(let i=1;i<=rem;i++)html+=`<div class="cal-day other"><span class="cal-number">${i}</span></div>`;document.getElementById('calendarGrid').innerHTML=html;if(selectedCalendarDay)selectCalendarDay(selectedCalendarDay,false)}
 function changeCalendarMonth(n){calendarMonth+=n;if(calendarMonth<0){calendarMonth=11;calendarYear--}if(calendarMonth>11){calendarMonth=0;calendarYear++}selectedCalendarDay='';document.getElementById('selectedDayTitle').textContent='Seleziona un giorno';document.getElementById('selectedDayList').innerHTML='<div class="empty">Clicca su un giorno del calendario.</div>';renderCalendar()}
-function selectCalendarDay(ds,rerender=true){selectedCalendarDay=ds;const mode=ds<=todayStr()?'actual':'forecast',entries=entriesForRange(ds,ds,mode),t=totals(entries);document.getElementById('selectedDayTitle').textContent=parseDate(ds).toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});document.getElementById('selectedDayTotal').textContent=`Saldo ${signedMoney(t.net)}`;document.getElementById('selectedDayList').innerHTML=entries.length?entries.map(e=>`<div class="day-entry"><strong>${esc(e.category)} · <span class="${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount)}</span></strong><div>${esc(e.note||'—')} · ${clientName(e.clientId)}${e.isRecurring?' · '+recurrenceLabel(e.recurrence):''}</div></div>`).join(''):'<div class="empty" style="padding:40px 10px">Nessun movimento.</div>';if(rerender)renderCalendar()}
+function selectCalendarDay(ds,rerender=true){selectedCalendarDay=ds;const mode=ds<=todayStr()?'actual':'forecast',entries=entriesForRange(ds,ds,mode),t=totals(entries);document.getElementById('selectedDayTitle').textContent=parseDate(ds).toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});document.getElementById('selectedDayTotal').textContent=`Saldo ${signedMoney(t.net)}`;document.getElementById('selectedDayList').innerHTML=entries.length?entries.map(e=>`<div class="day-entry"><div class="day-entry-head"><strong>${esc(e.category)} · <span class="${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount)}</span></strong><div class="actions"><button class="action-btn" onclick="editEntry('${e.taskId}','${e.date}')" title="Modifica">✎</button><button class="action-btn" onclick="deleteEntry('${e.taskId}','${e.date}')" title="Elimina">×</button></div></div><div>${esc(e.note||'—')} · ${clientName(e.clientId)}${e.isRecurring?' · '+recurrenceLabel(e.recurrence):''}</div></div>`).join(''):'<div class="empty" style="padding:40px 10px">Nessun movimento.</div>';if(rerender)renderCalendar()}
 
 function renderCharts(){if(typeof Chart==='undefined')return;const dark=document.documentElement.classList.contains('dark'),grid=dark?'rgba(148,163,184,.12)':'rgba(100,116,139,.16)',text=dark?'#94a3b8':'#64748b';const now=parseDate(todayStr()),labels=[],inc=[],exp=[],net=[];for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1),s=dateStr(d),e=minDate(dateStr(new Date(d.getFullYear(),d.getMonth()+1,0)),todayStr()),t=periodTotals(s,e);labels.push(d.toLocaleDateString('it-IT',{month:'short',year:'2-digit'}));inc.push(t.income);exp.push(t.expense);net.push(t.net)}const trendCtx=document.getElementById('trendChart');if(trendChart)trendChart.destroy();trendChart=new Chart(trendCtx,{type:'line',data:{labels,datasets:[{label:'Entrate',data:inc,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.12)',tension:.32,fill:false},{label:'Spese',data:exp,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',tension:.32,fill:false},{label:'Saldo',data:net,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.12)',tension:.32,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:text,boxWidth:12}}},scales:{x:{ticks:{color:text},grid:{color:grid}},y:{ticks:{color:text},grid:{color:grid}}}}});const range=getPeriodRange(),entries=countableEntries(entriesForRange(range.start,range.end)).filter(e=>e.type==='expense'),by={};entries.forEach(e=>by[e.category]=(by[e.category]||0)+e.amount);const catLabels=Object.keys(by),data=catLabels.map(k=>by[k]),colors=catLabels.map(categoryColor),ctx=document.getElementById('categoryChart');if(categoryChart)categoryChart.destroy();categoryChart=new Chart(ctx,{type:'doughnut',data:{labels:catLabels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}});document.getElementById('categoryChartLabel').textContent=range.label;document.getElementById('categoryLegend').innerHTML=catLabels.length?catLabels.map((l,i)=>`<span class="badge"><i style="width:7px;height:7px;border-radius:50%;background:${colors[i]}"></i>${esc(l)} ${money(data[i])}</span>`).join(''):'<span style="color:var(--muted);font-size:11px">Nessuna spesa nel periodo.</span>'}
 
@@ -308,7 +498,7 @@ function populateFormSelects(){document.getElementById('formCategory').innerHTML
 function setFormType(type){document.getElementById('formType').value=type;document.getElementById('formExpenseBtn').classList.toggle('active',type==='expense');document.getElementById('formIncomeBtn').classList.toggle('active',type==='income')}
 function toggleRecurrenceFields(){const show=document.getElementById('formRecurrence').value!=='none';document.querySelectorAll('.recurrence-field').forEach(el=>el.classList.toggle('hidden',!show))}
 function openMovementModal(id=null,forceRecurring=false){populateFormSelects();document.getElementById('movementForm').reset();document.getElementById('editTaskId').value='';document.getElementById('formDate').value=todayStr();document.getElementById('formRecurrence').value=forceRecurring?'monthly':'none';document.getElementById('movementModalTitle').textContent=id?'Modifica serie o movimento':'Nuovo movimento';setFormType('expense');if(id){const t=state.tasks.find(x=>String(x.id)===String(id));if(t){document.getElementById('editTaskId').value=t.id;document.getElementById('formDate').value=t.date;document.getElementById('formAmount').value=t.amount;document.getElementById('formCategory').value=t.category;document.getElementById('formClient').value=t.clientId||'';document.getElementById('formRecurrence').value=t.recurrence;document.getElementById('formEndDate').value=t.endDate||'';document.getElementById('formPauseFrom').value=t.pauseFrom||'';document.getElementById('formPauseUntil').value=t.pauseUntil||'';document.getElementById('formNote').value=t.note||'';document.getElementById('formTags').value=(t.tags||[]).join(', ');setFormType(t.type)}}toggleRecurrenceFields();openModal('movementModal')}
-function saveMovement(e){e.preventDefault();const id=document.getElementById('editTaskId').value,type=document.getElementById('formType').value,date=document.getElementById('formDate').value,amount=Number(document.getElementById('formAmount').value),category=document.getElementById('formCategory').value,client=document.getElementById('formClient').value,rec=document.getElementById('formRecurrence').value,note=document.getElementById('formNote').value.trim(),tags=document.getElementById('formTags').value.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean),endDate=document.getElementById('formEndDate').value,pauseFrom=document.getElementById('formPauseFrom').value,pauseUntil=document.getElementById('formPauseUntil').value;if(!date||!category||Number.isNaN(amount)||amount<0){toast('Compila data, categoria e importo');return}const payload={date,amount,category,clientId:client?Number(client):null,type,recurrence:rec,note,tags,endDate:rec==='none'?'':endDate,pauseFrom:rec==='none'?'':pauseFrom,pauseUntil:rec==='none'?'':pauseUntil,country:activeCountry,currency:getCurrency()};if(id){const t=state.tasks.find(x=>String(x.id)===String(id));Object.assign(t,payload);toast('Movimento aggiornato')}else{state.tasks.push({id:Date.now(),...payload,status:'matured',excludedDates:[],suspendedFrom:'',history:[{ts:Date.now(),action:'Creato',note:category}]});toast('Movimento salvato')}saveState();closeModal('movementModal');renderAll()}
+function saveMovement(e){e.preventDefault();const id=document.getElementById('editTaskId').value,type=document.getElementById('formType').value,date=document.getElementById('formDate').value,amount=Number(document.getElementById('formAmount').value),category=document.getElementById('formCategory').value,client=document.getElementById('formClient').value,rec=document.getElementById('formRecurrence').value,note=document.getElementById('formNote').value.trim(),tags=document.getElementById('formTags').value.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean),endDate=document.getElementById('formEndDate').value,pauseFrom=document.getElementById('formPauseFrom').value,pauseUntil=document.getElementById('formPauseUntil').value;if(!date||!category||Number.isNaN(amount)||amount<0){toast('Compila data, categoria e importo');return}const payload={date,amount,category,clientId:client?Number(client):null,type,recurrence:rec,note,tags,endDate:rec==='none'?'':endDate,pauseFrom:rec==='none'?'':pauseFrom,pauseUntil:rec==='none'?'':pauseUntil,country:activeCountry,currency:getCurrency()};if(id){const t=state.tasks.find(x=>String(x.id)===String(id));Object.assign(t,payload);toast('Movimento aggiornato')}else{state.tasks.push({id:Date.now(),...payload,status:'matured',excludedDates:[],suspendedFrom:'',history:[{ts:Date.now(),action:'Creato',note:category}]});toast('Movimento salvato')}saveState();closeModal('movementModal');populateGlobalSearchYears();renderAll()}
 
 function renderSettings(){document.getElementById('clientsManager').innerHTML=state.clients.map(c=>`<div class="manager-row"><div class="manager-name"><span class="color-dot" style="background:${c.color}"></span>${esc(c.name)}</div><button class="btn btn-small btn-danger" onclick="removeClient('${c.id}')">Rimuovi</button></div>`).join('');document.getElementById('categoriesManager').innerHTML=getCategories().sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<div class="manager-row"><div class="manager-name"><span class="color-dot" style="background:${c.color}"></span>${esc(c.name)}</div><button class="btn btn-small btn-danger" onclick="removeCategory('${String(c.name).replace(/'/g,"\\'")}')">Rimuovi</button></div>`).join('');const futureActual=allActualEntries().filter(e=>e.date>todayStr()).length,orphans=countryTasks().filter(t=>t.clientId&&!state.clients.some(c=>c.id===t.clientId)).length,invalid=countryTasks().filter(t=>!t.date||!t.category||t.amount<0).length;document.getElementById('dataIntegrity').innerHTML=`<div class="alert-item"><div><div class="alert-main">Occorrenze future nei totali effettivi</div><div class="alert-sub">Devono essere sempre zero.</div></div><span class="badge ${futureActual?'badge-warning':'badge-income'}">${futureActual}</span></div><div class="alert-item"><div><div class="alert-main">Persone mancanti</div><div class="alert-sub">Movimenti collegati a contatti rimossi.</div></div><span class="badge ${orphans?'badge-warning':'badge-income'}">${orphans}</span></div><div class="alert-item"><div><div class="alert-main">Movimenti non validi</div><div class="alert-sub">Data, categoria o importo da correggere.</div></div><span class="badge ${invalid?'badge-warning':'badge-income'}">${invalid}</span></div>`}
 function addClient(){const name=document.getElementById('newClientName').value.trim(),color=document.getElementById('newClientColor').value;if(!name){toast('Inserisci un nome');return}state.clients.push({id:Date.now(),name,color});document.getElementById('newClientName').value='';saveState();populateFormSelects();renderAll()}
@@ -316,11 +506,11 @@ function removeClient(id){if(!confirm('Rimuovere questa persona? I movimenti res
 function addCategory(){const name=document.getElementById('newCategoryName').value.trim(),color=document.getElementById('newCategoryColor').value;if(!name){toast('Inserisci una categoria');return}getCategories().push({name,color});document.getElementById('newCategoryName').value='';saveState();populateFormSelects();renderAll()}
 function removeCategory(name){if(!confirm(`Rimuovere la categoria “${name}”? I movimenti esistenti non verranno cancellati.`))return;if(activeCountry==='IT')state.categoriesIT=state.categoriesIT.filter(c=>c.name!==name);else state.categoriesGB=state.categoriesGB.filter(c=>c.name!==name);saveState();renderAll()}
 function exportBackup(){const blob=new Blob([JSON.stringify({...state,version:2,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Spese_Family_v2_${activeCountry}_${todayStr()}.json`;a.click();URL.revokeObjectURL(a.href)}
-function importBackup(event){const file=event.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);state={tasks:migrateTasks(x.tasks),clients:Array.isArray(x.clients)?x.clients:defaultClients(),categoriesIT:migrateCats(x.categoriesIT||x.categories,'IT'),categoriesGB:migrateCats(x.categoriesGB,'GB'),occurrenceStates:x.occurrenceStates||{},occurrenceOverrides:x.occurrenceOverrides||{}};saveState();populateFormSelects();renderAll();toast('Backup caricato')}catch(e){toast('File di backup non valido')}};r.readAsText(file)}
-function resetApplication(){if(!confirm('Azzera tutti i dati dell’app? Questa operazione non è reversibile senza backup.'))return;['app_tasks','app_clients','app_cats_IT','app_cats_GB','app_occurrenceStates','app_occurrenceOverrides'].forEach(k=>localStorage.removeItem(k));state=loadState();populateFormSelects();renderAll();toast('Dati azzerati')}
+function importBackup(event){const file=event.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);state={tasks:migrateTasks(x.tasks),clients:Array.isArray(x.clients)?x.clients:defaultClients(),categoriesIT:migrateCats(x.categoriesIT||x.categories,'IT'),categoriesGB:migrateCats(x.categoriesGB,'GB'),occurrenceStates:x.occurrenceStates||{},occurrenceOverrides:x.occurrenceOverrides||{}};saveState();populateFormSelects();populateGlobalSearchYears();renderAll();toast('Backup caricato')}catch(e){toast('File di backup non valido')}};r.readAsText(file)}
+function resetApplication(){if(!confirm('Azzera tutti i dati dell’app? Questa operazione non è reversibile senza backup.'))return;['app_tasks','app_clients','app_cats_IT','app_cats_GB','app_occurrenceStates','app_occurrenceOverrides'].forEach(k=>localStorage.removeItem(k));state=loadState();populateFormSelects();populateGlobalSearchYears();renderAll();toast('Dati azzerati')}
 
-function renderAll(){renderPeriodOptions();renderHeaderAndKpis();renderSummaryRows();renderUpcoming();renderRecent();renderMovements();renderRecurrences();renderCalendar();renderSettings();if(currentView==='dashboard')renderCharts()}
-(function init(){const dark=safeGet('app_theme')!=='light';document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';document.body.classList.toggle('country-GB',activeCountry==='GB');document.getElementById('countryIT').classList.toggle('active',activeCountry==='IT');document.getElementById('countryGB').classList.toggle('active',activeCountry==='GB');document.getElementById('countryTitle').textContent=CONFIG[activeCountry].label;document.getElementById('settingsCountryLabel').textContent=activeCountry==='IT'?'Italia':'Inghilterra';document.getElementById('modeActual').classList.toggle('active',globalMode==='actual');document.getElementById('modeForecast').classList.toggle('active',globalMode==='forecast');document.getElementById('viewCardsBtn').classList.toggle('active',movementView==='cards');document.getElementById('viewTableBtn').classList.toggle('active',movementView==='table');populateFormSelects();renderAll()})();
+function renderAll(){renderPeriodOptions();renderHeaderAndKpis();renderSummaryRows();renderUpcoming();renderRecent();renderMovements();renderRecurrences();renderCalendar();renderSettings();renderGlobalSearch();if(currentView==='dashboard')renderCharts()}
+(function init(){const dark=safeGet('app_theme')!=='light';document.documentElement.classList.toggle('dark',dark);document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';document.body.classList.toggle('country-GB',activeCountry==='GB');document.getElementById('countryIT').classList.toggle('active',activeCountry==='IT');document.getElementById('countryGB').classList.toggle('active',activeCountry==='GB');document.getElementById('countryTitle').textContent=CONFIG[activeCountry].label;document.getElementById('settingsCountryLabel').textContent=activeCountry==='IT'?'Italia':'Inghilterra';document.getElementById('modeActual').classList.toggle('active',globalMode==='actual');document.getElementById('modeForecast').classList.toggle('active',globalMode==='forecast');document.getElementById('viewCardsBtn').classList.toggle('active',movementView==='cards');document.getElementById('viewTableBtn').classList.toggle('active',movementView==='table');document.getElementById('globalSearchCardsBtn').classList.toggle('active',globalSearchView==='cards');document.getElementById('globalSearchTableBtn').classList.toggle('active',globalSearchView==='table');populateFormSelects();populateGlobalSearchYears();renderAll()})();
 </script>
 </body>
 </html>
