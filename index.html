@@ -78,6 +78,18 @@ button:focus-visible,.input:focus-visible,.select:focus-visible,.textarea:focus-
 .cal-more{font-size:10px;color:var(--muted);font-weight:800;margin-top:1px}
 @media(max-width:760px){.movement-description{font-size:24px}.series-note{font-size:22px}.day-entry strong{font-size:18px}.day-entry div:not(.actions):not(.day-entry-head){font-size:18px}.cal-day{min-height:92px}.cal-item-title{font-size:9px}.cal-item-note,.cal-item-amount,.cal-more{font-size:8px}.cal-count{font-size:8px;padding:1px 5px}}
 
+
+
+/* ===== V4 calendario leggibile ===== */
+.calendar-section-title{align-items:center}.calendar-title-actions{display:flex;gap:8px;flex-wrap:wrap}.calendar-shell{background:linear-gradient(180deg,rgba(var(--accent-rgb),.08),transparent);border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.calendar-top-panel{display:grid;gap:14px;margin-bottom:14px}.calendar-nav-zone{display:flex;align-items:center;justify-content:center;gap:14px;text-align:center}.calendar-nav-zone h3{font-size:30px;line-height:1;margin:0;text-transform:capitalize;letter-spacing:-.03em}.calendar-nav-btn{border-radius:14px}.calendar-mode-notice{margin:8px 0 0;color:var(--muted);font-size:14px;font-weight:700}.calendar-month-summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px}.month-summary-card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:13px 14px}.month-summary-card span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.month-summary-card strong{display:block;font-size:20px;margin-top:6px}.month-summary-card.income-card{border-color:rgba(16,185,129,.28);background:linear-gradient(180deg,rgba(16,185,129,.08),var(--panel))}.month-summary-card.expense-card{border-color:rgba(239,68,68,.28);background:linear-gradient(180deg,rgba(239,68,68,.08),var(--panel))}
+.calendar-tools-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.calendar-legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.calendar-legend span{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--border);border-radius:999px;background:var(--panel);font-size:12px;font-weight:900;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.income-dot{background:var(--income)}.expense-dot{background:var(--expense)}.rec-dot{background:var(--violet)}.today-dot{background:var(--accent)}.calendar-view-toggle button{font-size:12px}.calendar-empty-notice{border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.09);border-radius:16px;padding:13px 15px;color:var(--text)}.calendar-empty-notice strong{display:block;font-size:14px}.calendar-empty-notice p{margin:5px 0 10px;color:var(--muted);font-size:13px}.calendar-empty-notice div{display:flex;gap:8px;flex-wrap:wrap}
+.calendar-layout-pro{grid-template-columns:minmax(0,1.55fr) minmax(330px,.45fr);align-items:start}.calendar-main-panel{padding:14px;background:rgba(17,26,43,.78)}html:not(.dark) .calendar-main-panel{background:#fff}.calendar-week{gap:8px;margin-bottom:8px}.calendar-week div{font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:900}.calendar-grid{gap:8px}.cal-day{min-height:154px;padding:9px;border-radius:16px;border-color:#33435c;background:linear-gradient(180deg,rgba(255,255,255,.015),var(--panel3));transition:transform .15s,border-color .15s,box-shadow .15s,background .15s}.cal-day:hover{transform:translateY(-1px);border-color:var(--accent);box-shadow:0 12px 28px rgba(0,0,0,.22)}.cal-day.is-empty{background:rgba(13,23,40,.66)}html:not(.dark) .cal-day.is-empty{background:#f8fafc}.cal-day.only-income{border-left:4px solid var(--income)}.cal-day.only-expense{border-left:4px solid var(--expense)}.cal-day.mixed{border-left:4px solid var(--violet)}.cal-day.has-recurring:after{content:'↻';position:absolute;right:9px;bottom:7px;color:var(--violet);font-weight:900;font-size:13px;opacity:.9}.cal-day.today{box-shadow:inset 0 0 0 2px var(--accent),0 12px 28px rgba(var(--accent-rgb),.14)}.cal-day.selected{border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.32),0 16px 36px rgba(var(--accent-rgb),.18);background:linear-gradient(180deg,rgba(var(--accent-rgb),.14),var(--panel3))}.cal-day.other{opacity:.18;filter:saturate(.3)}.cal-number{font-size:16px;font-weight:1000}.today-label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:1000;color:#fff;background:var(--accent);padding:3px 6px;border-radius:999px}.cal-count{background:rgba(var(--accent-rgb),.18);color:var(--text);border:1px solid rgba(var(--accent-rgb),.35);font-size:11px;padding:2px 7px}.cal-add-btn{position:absolute;right:7px;top:7px;width:26px;height:26px;border-radius:9px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-weight:900;opacity:0;transition:.15s;z-index:2}.cal-day:hover .cal-add-btn{opacity:1}.cal-day-head{padding-right:26px}.cal-items{display:grid;gap:5px;margin-top:7px}.cal-item{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:5px;text-align:left;border:1px solid var(--border);background:rgba(2,6,23,.23);border-radius:10px;padding:6px;color:var(--text);cursor:pointer;min-width:0}.cal-item:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),.13)}.cal-item-icon{font-size:12px;line-height:1.1}.cal-item-title{font-size:12px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.cal-item-amount{font-size:11px;font-weight:1000;white-space:nowrap}.cal-item-note{grid-column:2/-1;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15}.cal-empty-label{font-size:11px;color:var(--muted2);font-weight:800;margin-top:12px;opacity:.72}.cal-more{border:1px dashed var(--border);background:transparent;color:var(--muted);border-radius:9px;padding:5px 7px;text-align:left;font-size:11px;font-weight:900}.cal-more:hover{color:var(--text);border-color:var(--accent)}.week-summary{grid-column:1/-1;display:flex;align-items:center;justify-content:flex-end;gap:14px;margin:-2px 0 6px;padding:7px 10px;border:1px solid var(--border);border-radius:11px;background:rgba(var(--accent-rgb),.055);font-size:12px}.week-summary span{margin-right:auto;color:var(--muted);font-weight:900}.week-summary strong{font-weight:1000}.selected-day-panel{position:sticky;top:12px}.selected-day-head{align-items:flex-start}.selected-day-head h3{font-size:19px;line-height:1.15}.selected-day-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.selected-day-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.selected-day-summary div{background:var(--panel3);border:1px solid var(--border);border-radius:12px;padding:9px}.selected-day-summary span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:900}.selected-day-summary strong{display:block;font-size:14px;margin-top:5px}.selected-day-add{width:100%;margin:0 0 12px}.day-list{max-height:720px;gap:10px}.calendar-list-view{display:grid;gap:12px}.calendar-list-group{border:1px solid var(--border);border-radius:15px;background:var(--panel);padding:10px}.calendar-list-date{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:3px 2px 10px}.calendar-list-date strong{text-transform:capitalize;font-size:15px}.calendar-list-date span{font-weight:1000}.calendar-list-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border:1px solid var(--border);background:var(--panel3);border-radius:12px;color:var(--text);text-align:left;margin-top:7px;cursor:pointer}.calendar-list-item:hover{border-color:var(--accent);transform:translateY(-1px)}.calendar-list-icon{font-size:18px}.calendar-list-main strong{display:block;font-size:14px}.calendar-list-main em{font-style:normal;color:var(--violet)}.calendar-list-note{display:block;color:var(--muted);font-size:13px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.calendar-list-amount{font-size:14px;font-weight:1000}.calendar-list-item.income-item{border-left:4px solid var(--income)}.calendar-list-item.expense-item{border-left:4px solid var(--expense)}
+.data-table td,.data-table th{font-size:14px}.data-table td:nth-child(2){font-size:20px!important;color:var(--text)!important;line-height:1.35;font-weight:700}.badge{font-size:11px}.movement-card{padding:18px}.movement-title{font-size:19px}.movement-amount{font-size:24px}.quick-edit-tip{font-size:12px}.simple-empty strong{font-size:18px}.simple-empty p{font-size:14px;color:var(--muted);line-height:1.45}
+@media(max-width:1400px){.calendar-layout-pro{grid-template-columns:1fr}.selected-day-panel{position:relative;top:auto}.calendar-month-summary{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.calendar-month-summary{grid-template-columns:1fr 1fr}.calendar-nav-zone h3{font-size:24px}.calendar-tools-row{align-items:stretch}.calendar-search-actions{width:100%}.calendar-grid{gap:5px}.cal-day{min-height:128px;padding:7px}.cal-item{grid-template-columns:1fr auto}.cal-item-icon{display:none}.cal-item-note{grid-column:1/-1}.week-summary{font-size:11px;gap:8px}.selected-day-summary{grid-template-columns:1fr}.calendar-list-item{grid-template-columns:1fr}.calendar-list-amount{justify-self:start}.movement-description{font-size:24px}.series-note{font-size:22px}}
+@media(max-width:620px){.calendar-shell{padding:10px}.calendar-month-summary{grid-template-columns:1fr}.calendar-week div{font-size:10px}.cal-day{min-height:88px;border-radius:12px}.cal-empty-label,.cal-item-note,.week-summary{display:none}.cal-item{padding:4px}.cal-item-title{font-size:10px}.cal-item-amount{font-size:9px}.cal-number{font-size:13px}.cal-add-btn{display:none}.today-label{display:none}}
+
 </style>
 </head>
 <body>
@@ -218,10 +230,68 @@ button:focus-visible,.input:focus-visible,.select:focus-visible,.textarea:focus-
     </section>
 
     <section id="view-calendar" class="view">
-      <div class="section-title"><div><h2>Calendario</h2><p>Entrate, spese e ricorrenze nella data effettiva</p></div></div>
-      <div class="calendar-layout">
-        <div class="calendar"><div class="calendar-head"><button class="btn btn-small" onclick="changeCalendarMonth(-1)">‹</button><h3 id="calendarTitle"></h3><div class="calendar-search-actions"><button class="btn btn-small" onclick="searchCurrentCalendarMonth()">Cerca mese</button><button class="btn btn-small" onclick="searchCurrentCalendarYear()">Cerca anno</button><button class="btn btn-small" onclick="changeCalendarMonth(1)">›</button></div></div><div class="calendar-week"><div>LU</div><div>MA</div><div>ME</div><div>GI</div><div>VE</div><div>SA</div><div>DO</div></div><div id="calendarGrid" class="calendar-grid"></div></div>
-        <article class="panel"><div class="panel-head"><h3 id="selectedDayTitle">Seleziona un giorno</h3><span id="selectedDayTotal"></span></div><div id="selectedDayList" class="day-list"><div class="empty">Clicca su un giorno del calendario.</div></div></article>
+      <div class="section-title calendar-section-title">
+        <div>
+          <h2>Calendario</h2>
+          <p id="calendarHelperText">Clicca su un giorno o su un movimento per modificare entrate, spese e ricorrenze.</p>
+        </div>
+        <div class="calendar-title-actions">
+          <button class="btn btn-primary" type="button" onclick="openMovementModalForDate(selectedCalendarDay || todayStr())">＋ Aggiungi movimento</button>
+        </div>
+      </div>
+
+      <div class="calendar-shell">
+        <div class="calendar-top-panel">
+          <div class="calendar-nav-zone">
+            <button class="btn icon-btn calendar-nav-btn" type="button" onclick="changeCalendarMonth(-1)" aria-label="Mese precedente">‹</button>
+            <div>
+              <h3 id="calendarTitle"></h3>
+              <p id="calendarModeNotice" class="calendar-mode-notice">Vista completa del mese: movimenti già avvenuti e prossime scadenze.</p>
+            </div>
+            <button class="btn icon-btn calendar-nav-btn" type="button" onclick="changeCalendarMonth(1)" aria-label="Mese successivo">›</button>
+          </div>
+
+          <div id="calendarMonthSummary" class="calendar-month-summary"></div>
+
+          <div class="calendar-tools-row">
+            <div class="calendar-legend" aria-label="Legenda calendario">
+              <span><i class="legend-dot income-dot"></i> Entrata</span>
+              <span><i class="legend-dot expense-dot"></i> Spesa</span>
+              <span><i class="legend-dot rec-dot"></i> Ricorrente</span>
+              <span><i class="legend-dot today-dot"></i> Oggi</span>
+            </div>
+            <div class="calendar-search-actions">
+              <button class="btn btn-small" type="button" onclick="searchCurrentCalendarMonth()">Filtra questo mese</button>
+              <button class="btn btn-small" type="button" onclick="searchCurrentCalendarYear()">Vedi anno</button>
+              <div class="segmented calendar-view-toggle">
+                <button id="calendarMonthBtn" class="active" type="button" onclick="setCalendarViewMode('month')">Mese</button>
+                <button id="calendarListBtn" type="button" onclick="setCalendarViewMode('list')">Lista</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="calendarEmptyNotice" class="calendar-empty-notice hidden"></div>
+        </div>
+
+        <div class="calendar-layout calendar-layout-pro">
+          <div class="calendar calendar-main-panel">
+            <div class="calendar-week"><div>LU</div><div>MA</div><div>ME</div><div>GI</div><div>VE</div><div>SA</div><div>DO</div></div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+            <div id="calendarListView" class="calendar-list-view hidden"></div>
+          </div>
+          <aside class="panel selected-day-panel">
+            <div class="panel-head selected-day-head">
+              <div>
+                <h3 id="selectedDayTitle">Seleziona un giorno</h3>
+                <p id="selectedDayHint">Vedrai il riepilogo e tutti i movimenti modificabili.</p>
+              </div>
+              <span id="selectedDayTotal"></span>
+            </div>
+            <div id="selectedDaySummary" class="selected-day-summary hidden"></div>
+            <button id="selectedDayAddBtn" class="btn btn-primary selected-day-add hidden" type="button" onclick="openMovementModalForDate(selectedCalendarDay)">＋ Aggiungi in questo giorno</button>
+            <div id="selectedDayList" class="day-list"><div class="empty">Clicca su un giorno del calendario.</div></div>
+          </aside>
+        </div>
       </div>
     </section>
 
@@ -335,6 +405,7 @@ let globalSearchView=safeGet('app_globalSearchView')||'cards';
 let recurrenceTab='series';
 let currentView='dashboard';
 let calendarYear=new Date().getFullYear(),calendarMonth=new Date().getMonth(),selectedCalendarDay='';
+let calendarViewMode=safeGet('app_calendarViewMode')||'month';
 let trendChart=null,categoryChart=null;
 function getCurrency(){return CONFIG[activeCountry].currency}
 function getCategories(){return activeCountry==='IT'?state.categoriesIT:state.categoriesGB}
@@ -558,53 +629,138 @@ function applyOccurrenceEdit(){const id=document.getElementById('occurrenceTaskI
 function calendarEntriesForRange(start,end){
   const entries=[];
   const today=todayStr();
-  if(parseDate(start)<=parseDate(minDate(end,today))){
-    entries.push(...entriesForRange(start,minDate(end,today),'actual'));
-  }
+  const actualEnd=minDate(end,today);
+  if(parseDate(start)<=parseDate(actualEnd))entries.push(...entriesForRange(start,actualEnd,'actual'));
   const futureStart=maxDate(start,addDays(today,1));
-  if(parseDate(futureStart)<=parseDate(end)){
-    entries.push(...entriesForRange(futureStart,end,'forecast'));
-  }
+  if(parseDate(futureStart)<=parseDate(end))entries.push(...entriesForRange(futureStart,end,'forecast'));
   return entries.sort((a,b)=>a.date.localeCompare(b.date)||String(a.taskId).localeCompare(String(b.taskId)));
+}
+function calendarMonthRange(){const start=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-01`;return {start,end:dateStr(new Date(calendarYear,calendarMonth+1,0))}}
+function categoryIcon(name){
+  const n=normalize(name);
+  if(n.includes('affitto')||n.includes('rent'))return '🏠';
+  if(n.includes('cibo')||n.includes('food')||n.includes('supermerc'))return '🛒';
+  if(n.includes('telefono')||n.includes('phone'))return '☎️';
+  if(n.includes('auto')||n.includes('transport'))return '🚗';
+  if(n.includes('internet'))return '🌐';
+  if(n.includes('elettric')||n.includes('gas')||n.includes('utilities')||n.includes('acqua'))return '💡';
+  if(n.includes('pensione')||n.includes('pension'))return '💶';
+  if(n.includes('tasse')||n.includes('tax'))return '🏛️';
+  if(n.includes('tv'))return '📺';
+  if(n.includes('corso')||n.includes('course'))return '🎓';
+  return '•';
+}
+function calendarCellStatus(list){
+  const valid=countableEntries(list);
+  const hasIncome=valid.some(e=>e.type==='income'),hasExpense=valid.some(e=>e.type==='expense'),hasRecurring=valid.some(e=>e.isRecurring);
+  return [list.length?'has-entries':'is-empty',hasIncome&&!hasExpense?'only-income':'',hasExpense&&!hasIncome?'only-expense':'',hasIncome&&hasExpense?'mixed':'',hasRecurring?'has-recurring':''].filter(Boolean).join(' ');
+}
+function calendarSummaryHtml(entries){
+  const t=totals(entries);
+  const valid=countableEntries(entries);
+  const rec=valid.filter(e=>e.isRecurring).length;
+  return `<div class="month-summary-card income-card"><span>Entrate mese</span><strong class="mono income">${money(t.income)}</strong></div><div class="month-summary-card expense-card"><span>Spese mese</span><strong class="mono expense">${money(t.expense)}</strong></div><div class="month-summary-card"><span>Saldo mese</span><strong class="mono" style="color:${t.net>=0?'var(--income)':'var(--expense)'}">${signedMoney(t.net)}</strong></div><div class="month-summary-card"><span>Movimenti</span><strong class="mono">${valid.length}</strong></div><div class="month-summary-card"><span>Ricorrenti</span><strong class="mono">${rec}</strong></div>`;
+}
+function calendarWeekSummaryHtml(cells){
+  const entries=cells.flatMap(c=>c.list||[]);
+  const t=totals(entries);
+  if(!entries.length)return '';
+  return `<div class="week-summary"><span>Riepilogo settimana</span><strong class="income">+${money(t.income)}</strong><strong class="expense">-${money(t.expense)}</strong><strong style="color:${t.net>=0?'var(--income)':'var(--expense)'}">${signedMoney(t.net)}</strong></div>`;
+}
+function calendarListItemHtml(e,compact=false){
+  const editDate=entryEditDate(e);
+  const note=e.note?`<span class="calendar-list-note">${esc(e.note)}</span>`:'';
+  return `<button class="calendar-list-item ${e.type==='income'?'income-item':'expense-item'}" type="button" onclick="editEntry('${e.taskId}','${editDate}')"><span class="calendar-list-icon">${categoryIcon(e.category)}</span><span class="calendar-list-main"><strong>${esc(e.category)} ${e.isRecurring?'<em>↻</em>':''}</strong>${note}</span><span class="calendar-list-amount mono ${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount,e.currency)}</span></button>`;
+}
+function updateCalendarEmptyNotice(entries,start,end){
+  const box=document.getElementById('calendarEmptyNotice');
+  if(!box)return;
+  if(entries.length){box.classList.add('hidden');box.innerHTML='';return}
+  const all=calendarEntriesForRange(earliestTaskDate(),`${parseDate(todayStr()).getFullYear()+5}-12-31`);
+  let help='Nessun movimento visibile in questo mese.';
+  if(countryTasks().length===0)help='Non ci sono ancora movimenti salvati per il paese selezionato.';
+  else if(all.length){
+    const first=all[0].date,last=all[all.length-1].date;
+    help+=` Sono presenti movimenti in altri mesi: dal ${first.split('-').reverse().join('/')} al ${last.split('-').reverse().join('/')}.`;
+  }
+  box.innerHTML=`<strong>${help}</strong><p>Controlla il paese selezionato, aggiungi un movimento o passa al mese che contiene movimenti.</p><div><button class="btn btn-primary btn-small" type="button" onclick="openMovementModalForDate('${start}')">＋ Aggiungi movimento a questo mese</button>${all.length?'<button class="btn btn-small" type="button" onclick="goToMonthWithMovements()">Vai al mese con movimenti</button>':''}</div>`;
+  box.classList.remove('hidden');
+}
+function goToMonthWithMovements(){
+  const all=calendarEntriesForRange(earliestTaskDate(),`${parseDate(todayStr()).getFullYear()+5}-12-31`);
+  if(!all.length)return;
+  const today=todayStr();
+  const future=all.find(e=>e.date>=today);
+  const target=future||all[all.length-1];
+  const d=parseDate(target.date);calendarYear=d.getFullYear();calendarMonth=d.getMonth();selectedCalendarDay=target.date;renderCalendar();selectCalendarDay(target.date,false);
+}
+function openMovementModalForDate(ds){openMovementModal();if(ds)document.getElementById('formDate').value=ds}
+function setCalendarViewMode(mode){calendarViewMode=mode;safeSet('app_calendarViewMode',mode);renderCalendar()}
+function renderCalendarList(entries){
+  const list=document.getElementById('calendarListView');
+  if(!list)return;
+  if(!entries.length){list.innerHTML='<div class="empty simple-empty"><strong>Nessun movimento nel mese</strong><p>Aggiungi una voce oppure vai al mese con movimenti.</p></div>';return}
+  const groups={};
+  entries.forEach(e=>(groups[e.date]||(groups[e.date]=[])).push(e));
+  list.innerHTML=Object.keys(groups).sort().map(ds=>{const items=groups[ds],t=totals(items);return `<div class="calendar-list-group"><div class="calendar-list-date"><strong>${parseDate(ds).toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})}</strong><span style="color:${t.net>=0?'var(--income)':'var(--expense)'}">${signedMoney(t.net)}</span></div>${items.map(e=>calendarListItemHtml(e)).join('')}</div>`}).join('');
 }
 function renderCalendar(){
   const title=new Date(calendarYear,calendarMonth,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
   document.getElementById('calendarTitle').textContent=title;
-  const start=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-01`,end=dateStr(new Date(calendarYear,calendarMonth+1,0));
+  const {start,end}=calendarMonthRange();
   const entries=calendarEntriesForRange(start,end);
-  const map={};
-  entries.forEach(e=>(map[e.date]||(map[e.date]=[])).push(e));
+  const map={};entries.forEach(e=>(map[e.date]||(map[e.date]=[])).push(e));
+  document.getElementById('calendarMonthSummary').innerHTML=calendarSummaryHtml(entries);
+  document.getElementById('calendarModeNotice').textContent=`Vista completa: movimenti già avvenuti e prossime scadenze per ${activeCountry==='IT'?'Italia':'Inghilterra'}.`;
+  updateCalendarEmptyNotice(entries,start,end);
+  document.getElementById('calendarMonthBtn').classList.toggle('active',calendarViewMode==='month');
+  document.getElementById('calendarListBtn').classList.toggle('active',calendarViewMode==='list');
+  document.getElementById('calendarGrid').classList.toggle('hidden',calendarViewMode!=='month');
+  document.querySelector('.calendar-week').classList.toggle('hidden',calendarViewMode!=='month');
+  document.getElementById('calendarListView').classList.toggle('hidden',calendarViewMode!=='list');
+  renderCalendarList(entries);
   const first=new Date(calendarYear,calendarMonth,1),offset=(first.getDay()+6)%7,days=daysInMonth(calendarYear,calendarMonth),prev=daysInMonth(calendarYear,calendarMonth-1);
-  let html='';
-  for(let i=offset-1;i>=0;i--)html+=`<div class="cal-day other"><span class="cal-number">${prev-i}</span></div>`;
+  const cells=[];
+  for(let i=offset-1;i>=0;i--)cells.push({other:true,label:prev-i,list:[]});
   for(let day=1;day<=days;day++){
     const ds=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const list=(map[ds]||[]).sort((a,b)=>(a.type===b.type?0:a.type==='income'?-1:1)||b.amount-a.amount);
-    const shown=list.slice(0,3);
-    const items=shown.map(e=>{
-      const editDate=entryEditDate(e);
-      const note=e.note?`<span class="cal-item-note">${esc(e.note)}</span>`:'';
-      return `<div class="cal-item" onclick="event.stopPropagation();editEntry('${e.taskId}','${editDate}')" title="${esc(e.category)} · ${esc(e.note||'')}" aria-label="Modifica ${esc(e.category)}"><span class="cal-item-title">${esc(e.category)}</span><span class="cal-item-amount ${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount,e.currency)}</span>${note}</div>`;
-    }).join('');
-    const more=list.length>shown.length?`<div class="cal-more">+${list.length-shown.length} altri movimenti</div>`:'';
-    html+=`<div class="cal-day ${ds===todayStr()?'today':''} ${list.length?'has-entries':''}" onclick="selectCalendarDay('${ds}')"><div class="cal-day-inner"><div class="cal-day-head"><span class="cal-number">${day}</span>${list.length?`<span class="cal-count">${list.length}</span>`:''}</div><div class="cal-items">${items}${more}</div></div></div>`;
+    cells.push({date:ds,label:day,list:(map[ds]||[]).sort((a,b)=>(a.type===b.type?0:a.type==='income'?-1:1)||b.amount-a.amount)});
   }
-  const rem=(7-((offset+days)%7))%7;
-  for(let i=1;i<=rem;i++)html+=`<div class="cal-day other"><span class="cal-number">${i}</span></div>`;
+  const rem=(7-(cells.length%7))%7;for(let i=1;i<=rem;i++)cells.push({other:true,label:i,list:[]});
+  let html='';
+  for(let i=0;i<cells.length;i+=7){
+    const week=cells.slice(i,i+7);
+    week.forEach(c=>{
+      if(c.other){html+=`<div class="cal-day other"><span class="cal-number">${c.label}</span></div>`;return}
+      const list=c.list,shown=list.slice(0,3);
+      const items=shown.map(e=>{
+        const editDate=entryEditDate(e);
+        const note=e.note?`<span class="cal-item-note">${esc(e.note)}</span>`:'';
+        return `<button class="cal-item ${e.type==='income'?'income-item':'expense-item'}" type="button" onclick="event.stopPropagation();editEntry('${e.taskId}','${editDate}')" title="${esc(e.category)} · ${esc(e.note||'')}"><span class="cal-item-icon">${categoryIcon(e.category)}</span><span class="cal-item-title">${esc(e.category)}${e.isRecurring?' ↻':''}</span><span class="cal-item-amount mono ${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount,e.currency)}</span>${note}</button>`;
+      }).join('');
+      const more=list.length>shown.length?`<button class="cal-more" type="button" onclick="event.stopPropagation();selectCalendarDay('${c.date}')">+${list.length-shown.length} altri</button>`:'';
+      const empty=!list.length?'<span class="cal-empty-label">Nessun movimento</span>':'';
+      html+=`<div class="cal-day ${calendarCellStatus(list)} ${c.date===todayStr()?'today':''} ${c.date===selectedCalendarDay?'selected':''}" onclick="selectCalendarDay('${c.date}')"><button class="cal-add-btn" type="button" onclick="event.stopPropagation();openMovementModalForDate('${c.date}')" aria-label="Aggiungi movimento">＋</button><div class="cal-day-inner"><div class="cal-day-head"><span class="cal-number">${c.label}</span>${c.date===todayStr()?'<span class="today-label">oggi</span>':''}${list.length?`<span class="cal-count">${list.length}</span>`:''}</div><div class="cal-items">${items}${more}${empty}</div></div></div>`;
+    });
+    html+=calendarWeekSummaryHtml(week);
+  }
   document.getElementById('calendarGrid').innerHTML=html;
   if(selectedCalendarDay)selectCalendarDay(selectedCalendarDay,false);
 }
-function changeCalendarMonth(n){calendarMonth+=n;if(calendarMonth<0){calendarMonth=11;calendarYear--}if(calendarMonth>11){calendarMonth=0;calendarYear++}selectedCalendarDay='';document.getElementById('selectedDayTitle').textContent='Seleziona un giorno';document.getElementById('selectedDayList').innerHTML='<div class="empty">Clicca su un giorno del calendario.</div>';renderCalendar()}
+function changeCalendarMonth(n){calendarMonth+=n;if(calendarMonth<0){calendarMonth=11;calendarYear--}if(calendarMonth>11){calendarMonth=0;calendarYear++}selectedCalendarDay='';document.getElementById('selectedDayTitle').textContent='Seleziona un giorno';document.getElementById('selectedDayHint').textContent='Vedrai il riepilogo e tutti i movimenti modificabili.';document.getElementById('selectedDayTotal').textContent='';document.getElementById('selectedDaySummary').classList.add('hidden');document.getElementById('selectedDayAddBtn').classList.add('hidden');document.getElementById('selectedDayList').innerHTML='<div class="empty">Clicca su un giorno del calendario.</div>';renderCalendar()}
 function selectCalendarDay(ds,rerender=true){
   selectedCalendarDay=ds;
   const entries=calendarEntriesForRange(ds,ds);
   const t=totals(entries);
-  document.getElementById('selectedDayTitle').textContent=parseDate(ds).toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-  document.getElementById('selectedDayTotal').textContent=`Saldo ${signedMoney(t.net)}`;
-  document.getElementById('selectedDayList').innerHTML=entries.length?entries.map(e=>{
-    const editDate=entryEditDate(e);
-    return `<div class="day-entry clickable" onclick="editEntry('${e.taskId}','${editDate}')" tabindex="0" onkeydown="entryKeyboardEdit(event,'${e.taskId}','${editDate}')"><div class="day-entry-head"><strong>${esc(e.category)} · <span class="${e.type==='income'?'income':'expense'}">${e.type==='income'?'+':'-'}${money(e.amount,e.currency)}</span></strong><div class="actions"><button class="action-btn" onclick="event.stopPropagation();editEntry('${e.taskId}','${editDate}')" title="Modifica" aria-label="Modifica movimento">✎</button><button class="action-btn" onclick="event.stopPropagation();deleteEntry('${e.taskId}','${editDate}')" title="Elimina" aria-label="Elimina movimento">×</button></div></div><div>${esc(e.note||'—')} · ${esc(clientName(e.clientId))}${e.isRecurring?' · '+recurrenceLabel(e.recurrence):''}</div></div>`;
-  }).join(''):'<div class="empty" style="padding:40px 10px">Nessun movimento.</div>';
+  const title=parseDate(ds).toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  document.getElementById('selectedDayTitle').textContent=title;
+  document.getElementById('selectedDayHint').textContent=entries.length?'Clicca una voce per modificare tutti i campi.':'Nessun movimento in questo giorno.';
+  document.getElementById('selectedDayTotal').textContent=entries.length?`Saldo ${signedMoney(t.net)}`:'';
+  const sum=document.getElementById('selectedDaySummary');
+  sum.innerHTML=`<div><span>Entrate</span><strong class="income">${money(t.income)}</strong></div><div><span>Spese</span><strong class="expense">${money(t.expense)}</strong></div><div><span>Saldo</span><strong style="color:${t.net>=0?'var(--income)':'var(--expense)'}">${signedMoney(t.net)}</strong></div>`;
+  sum.classList.remove('hidden');
+  document.getElementById('selectedDayAddBtn').classList.remove('hidden');
+  document.getElementById('selectedDayList').innerHTML=entries.length?entries.map(e=>calendarListItemHtml(e)).join(''):'<div class="empty simple-empty" style="padding:34px 10px"><strong>Nessun movimento</strong><p>Aggiungi una spesa o entrata già impostata su questa data.</p></div>';
   if(rerender)renderCalendar();
 }
 function renderCharts(){if(typeof Chart==='undefined')return;const dark=document.documentElement.classList.contains('dark'),grid=dark?'rgba(148,163,184,.12)':'rgba(100,116,139,.16)',text=dark?'#94a3b8':'#64748b';const now=parseDate(todayStr()),labels=[],inc=[],exp=[],net=[];for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1),s=dateStr(d),e=minDate(dateStr(new Date(d.getFullYear(),d.getMonth()+1,0)),todayStr()),t=periodTotals(s,e);labels.push(d.toLocaleDateString('it-IT',{month:'short',year:'2-digit'}));inc.push(t.income);exp.push(t.expense);net.push(t.net)}const trendCtx=document.getElementById('trendChart');if(trendChart)trendChart.destroy();trendChart=new Chart(trendCtx,{type:'line',data:{labels,datasets:[{label:'Entrate',data:inc,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.12)',tension:.32,fill:false},{label:'Spese',data:exp,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',tension:.32,fill:false},{label:'Saldo',data:net,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.12)',tension:.32,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:text,boxWidth:12}}},scales:{x:{ticks:{color:text},grid:{color:grid}},y:{ticks:{color:text},grid:{color:grid}}}}});const range=getPeriodRange(),entries=countableEntries(entriesForRange(range.start,range.end)).filter(e=>e.type==='expense'),by={};entries.forEach(e=>by[e.category]=(by[e.category]||0)+e.amount);const catLabels=Object.keys(by),data=catLabels.map(k=>by[k]),colors=catLabels.map(categoryColor),ctx=document.getElementById('categoryChart');if(categoryChart)categoryChart.destroy();categoryChart=new Chart(ctx,{type:'doughnut',data:{labels:catLabels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}});document.getElementById('categoryChartLabel').textContent=range.label;document.getElementById('categoryLegend').innerHTML=catLabels.length?catLabels.map((l,i)=>`<span class="badge"><i style="width:7px;height:7px;border-radius:50%;background:${colors[i]}"></i>${esc(l)} ${money(data[i])}</span>`).join(''):'<span style="color:var(--muted);font-size:11px">Nessuna spesa nel periodo.</span>'}
