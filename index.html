@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta id="themeColor" name="theme-color" content="#08101f">
 <meta name="color-scheme" content="dark light">
-<title>Spese & Family v14.0 — Gestione spese, entrate e ricorrenze</title>
+<title>Spese & Family v14.9 — Gestione spese, entrate e ricorrenze</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,12 +128,373 @@ body{line-height:1.45}.modal-open{overflow:hidden}.app{padding-bottom:34px}
 @media(max-width:1000px){.work-summary-grid{grid-template-columns:1fr 1fr}.work-report-grid{grid-template-columns:1fr}.recurrence-layout{grid-template-columns:1fr}.recurrence-sidebar{position:static;grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.work-summary-grid,.recurrence-sidebar{grid-template-columns:1fr}.work-summary-card strong{font-size:17px}.quick-entry-separator{display:none}.quick-entry .btn{flex:1 1 160px}}
 
+
+/* v14.9 — sfondi differenziati per aree */
+#view-dashboard .kpi-card:nth-child(1){background:linear-gradient(135deg,rgba(59,130,246,.14),var(--panel))}
+#view-dashboard .kpi-card:nth-child(2){background:linear-gradient(135deg,rgba(16,185,129,.14),var(--panel))}
+#view-dashboard .kpi-card:nth-child(3){background:linear-gradient(135deg,rgba(239,68,68,.14),var(--panel))}
+#view-dashboard .kpi-card:nth-child(4){background:linear-gradient(135deg,rgba(139,92,246,.14),var(--panel))}
+#view-dashboard .kpi-card:nth-child(5){background:linear-gradient(135deg,rgba(245,158,11,.14),var(--panel))}
+#view-dashboard .kpi-card:nth-child(6){background:linear-gradient(135deg,rgba(6,182,212,.14),var(--panel))}
+#view-dashboard .dashboard-grid > .panel:nth-child(1){background:linear-gradient(135deg,rgba(59,130,246,.10),var(--panel))}
+#view-dashboard .dashboard-grid > .panel:nth-child(2){background:linear-gradient(135deg,rgba(139,92,246,.10),var(--panel))}
+#view-dashboard .dashboard-grid > .panel:nth-child(3){background:linear-gradient(135deg,rgba(245,158,11,.10),var(--panel))}
+#view-dashboard .dashboard-grid > .panel:nth-child(4){background:linear-gradient(135deg,rgba(16,185,129,.10),var(--panel))}
+
+#view-movements .toolbar{background:linear-gradient(135deg,rgba(99,102,241,.10),var(--panel))}
+#view-movements .filter-summary .mini-total:nth-child(1){background:linear-gradient(135deg,rgba(16,185,129,.12),var(--panel))}
+#view-movements .filter-summary .mini-total:nth-child(2){background:linear-gradient(135deg,rgba(239,68,68,.12),var(--panel))}
+#view-movements .filter-summary .mini-total:nth-child(3){background:linear-gradient(135deg,rgba(59,130,246,.12),var(--panel))}
+
+#view-recurrences .recurrence-sidebar{background:linear-gradient(180deg,rgba(139,92,246,.12),var(--panel))}
+#view-recurrences .recurrence-main > .panel{background:linear-gradient(135deg,rgba(6,182,212,.08),var(--panel))}
+
+#view-calendar .calendar-shell{background:linear-gradient(180deg,rgba(59,130,246,.12),rgba(139,92,246,.05),transparent)}
+#view-calendar .selected-day-panel{background:linear-gradient(180deg,rgba(245,158,11,.10),var(--panel))}
+
+#view-work .work-summary-card:nth-child(1){background:linear-gradient(135deg,rgba(239,68,68,.12),var(--panel))}
+#view-work .work-summary-card:nth-child(2){background:linear-gradient(135deg,rgba(16,185,129,.12),var(--panel))}
+#view-work .work-summary-card:nth-child(3){background:linear-gradient(135deg,rgba(59,130,246,.12),var(--panel))}
+#view-work .work-summary-card:nth-child(4){background:linear-gradient(135deg,rgba(245,158,11,.12),var(--panel))}
+#view-work .work-summary-card:nth-child(5){background:linear-gradient(135deg,rgba(6,182,212,.12),var(--panel))}
+#view-work .work-summary-card:nth-child(6){background:linear-gradient(135deg,rgba(139,92,246,.12),var(--panel))}
+#view-work .work-report-grid > .panel:nth-child(1){background:linear-gradient(135deg,rgba(59,130,246,.10),var(--panel))}
+#view-work .work-report-grid > .panel:nth-child(2){background:linear-gradient(135deg,rgba(245,158,11,.10),var(--panel))}
+#view-work .work-report-grid > .panel:nth-child(3){background:linear-gradient(135deg,rgba(139,92,246,.10),var(--panel))}
+#view-work .work-report-grid > .panel:nth-child(4){background:linear-gradient(135deg,rgba(16,185,129,.10),var(--panel))}
+
+#view-settings .panel:nth-of-type(1){background:linear-gradient(135deg,rgba(59,130,246,.10),var(--panel))}
+#view-settings .panel:nth-of-type(2){background:linear-gradient(135deg,rgba(139,92,246,.10),var(--panel))}
+#view-settings .panel:nth-of-type(3){background:linear-gradient(135deg,rgba(245,158,11,.10),var(--panel))}
+#view-settings .panel:nth-of-type(4){background:linear-gradient(135deg,rgba(16,185,129,.10),var(--panel))}
+
+/* v14.9 — palette premium per macro-sezioni */
+.view{display:none}
+.view.active{
+  display:block;
+  padding:18px;
+  border-radius:26px;
+  border:1px solid rgba(var(--section-rgb),.30);
+  background:
+    radial-gradient(circle at 92% 4%,rgba(var(--section-rgb),.13),transparent 30%),
+    linear-gradient(145deg,rgba(var(--section-rgb),.105),rgba(var(--section-rgb),.035) 55%,rgba(8,16,31,.30));
+  box-shadow:0 20px 55px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.025);
+  margin-bottom:16px;
+}
+#view-dashboard{--section-rgb:67,97,238}
+#view-movements{--section-rgb:14,159,110}
+#view-work{--section-rgb:124,92,224}
+#view-recurrences{--section-rgb:217,132,38}
+#view-calendar{--section-rgb:8,145,178}
+#view-settings{--section-rgb:190,72,120}
+.view.active > .section-title{margin-top:0;padding:2px 4px 13px;border-bottom:1px solid rgba(var(--section-rgb),.23)}
+.view.active > .section-title h2{letter-spacing:-.02em}
+.view.active > .section-title h2:before{content:"";display:inline-block;width:9px;height:9px;margin-right:9px;border-radius:999px;background:rgb(var(--section-rgb));box-shadow:0 0 0 5px rgba(var(--section-rgb),.12);vertical-align:2px}
+.view.active .panel,.view.active .kpi-card,.view.active .work-summary-card,.view.active .toolbar,.view.active .mini-total,.view.active .recurrence-side-btn,.view.active .calendar-shell{background:linear-gradient(145deg,rgba(17,26,43,.90),rgba(13,23,40,.86));border-color:rgba(var(--section-rgb),.18)}
+.view.active .panel:hover,.view.active .kpi-card.clickable:hover,.view.active .work-summary-card:hover{border-color:rgba(var(--section-rgb),.42)}
+.nav-btn[data-view="dashboard"]{--nav-rgb:67,97,238}.nav-btn[data-view="movements"]{--nav-rgb:14,159,110}.nav-btn[data-view="work"]{--nav-rgb:124,92,224}.nav-btn[data-view="recurrences"]{--nav-rgb:217,132,38}.nav-btn[data-view="calendar"]{--nav-rgb:8,145,178}.nav-btn[data-view="settings"]{--nav-rgb:190,72,120}
+.nav-btn[data-view]{border-color:rgba(var(--nav-rgb),.20)}
+.nav-btn[data-view]:hover{background:rgba(var(--nav-rgb),.10);border-color:rgba(var(--nav-rgb),.45);color:var(--text)}
+.nav-btn[data-view].active{background:linear-gradient(135deg,rgba(var(--nav-rgb),.25),rgba(var(--nav-rgb),.11));border-color:rgba(var(--nav-rgb),.65);box-shadow:inset 0 0 0 1px rgba(var(--nav-rgb),.10),0 8px 18px rgba(var(--nav-rgb),.10)}
+#view-dashboard .group-header,#view-dashboard .filter-chip{border-color:rgba(67,97,238,.28)}
+#view-movements .group-header,#view-movements .filter-chip{border-color:rgba(14,159,110,.28)}
+#view-work .work-breakdown-row{border-color:rgba(124,92,224,.22)}
+#view-recurrences .recurrence-bucket-title{padding:10px 12px;border-radius:14px;background:rgba(217,132,38,.07)}
+#view-calendar .calendar-main-panel{background:rgba(13,23,40,.82)}
+#view-settings .manager-row{border-color:rgba(190,72,120,.20)}
+html:not(.dark) .view.active{background:radial-gradient(circle at 92% 4%,rgba(var(--section-rgb),.10),transparent 31%),linear-gradient(145deg,rgba(var(--section-rgb),.075),rgba(255,255,255,.96) 56%);border-color:rgba(var(--section-rgb),.24);box-shadow:0 18px 42px rgba(15,23,42,.07)}
+html:not(.dark) .view.active .panel,html:not(.dark) .view.active .kpi-card,html:not(.dark) .view.active .work-summary-card,html:not(.dark) .view.active .toolbar,html:not(.dark) .view.active .mini-total,html:not(.dark) .view.active .recurrence-side-btn,html:not(.dark) .view.active .calendar-shell{background:rgba(255,255,255,.88)}
+html:not(.dark) #view-calendar .calendar-main-panel{background:rgba(255,255,255,.90)}
+@media(max-width:760px){.view.active{padding:12px;border-radius:20px}.view.active > .section-title{padding-bottom:10px}}
+
+
+/* v14.9 — colore uniforme e visibile per macro-sezione */
+.view{display:none}
+.view.active{
+  display:block;
+  padding:20px;
+  border-radius:26px;
+  margin-bottom:18px;
+  border:1px solid rgba(var(--section-rgb),.55);
+  background:linear-gradient(160deg,rgba(var(--section-rgb),.28),rgba(var(--section-rgb),.18)) !important;
+  box-shadow:0 20px 56px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.04);
+}
+#view-dashboard{--section-rgb:55,93,210}       /* blu */
+#view-movements{--section-rgb:20,145,102}      /* verde */
+#view-work{--section-rgb:119,78,190}            /* viola */
+#view-recurrences{--section-rgb:194,116,28}     /* arancio */
+#view-calendar{--section-rgb:0,132,160}          /* turchese */
+#view-settings{--section-rgb:177,64,111}         /* magenta */
+
+.view.active > .section-title{
+  margin-top:0;
+  padding:4px 5px 15px;
+  border-bottom:1px solid rgba(var(--section-rgb),.48);
+}
+.view.active > .section-title h2:before{
+  content:"";
+  display:inline-block;
+  width:10px;height:10px;margin-right:10px;border-radius:50%;
+  background:rgb(var(--section-rgb));
+  box-shadow:0 0 0 6px rgba(var(--section-rgb),.18);
+  vertical-align:2px;
+}
+
+/* Tutti i contenitori interni ereditano la stessa tinta della macro-area */
+.view.active .panel,
+.view.active .kpi-card,
+.view.active .toolbar,
+.view.active .mini-total,
+.view.active .work-summary-card,
+.view.active .work-breakdown-row,
+.view.active .recurrence-sidebar,
+.view.active .recurrence-side-btn,
+.view.active .calendar-shell,
+.view.active .calendar-main-panel,
+.view.active .selected-day-panel,
+.view.active .calendar-list-group,
+.view.active .group-header,
+.view.active .table-wrap{
+  background:linear-gradient(145deg,rgba(var(--section-rgb),.18),rgba(10,18,32,.72)) !important;
+  border-color:rgba(var(--section-rgb),.38) !important;
+}
+.view.active .panel:hover,
+.view.active .kpi-card.clickable:hover,
+.view.active .work-summary-card:hover,
+.view.active .recurrence-side-btn:hover{
+  border-color:rgba(var(--section-rgb),.72) !important;
+}
+
+/* Navbar: stesso codice colore della sezione */
+.nav-btn[data-view="dashboard"]{--nav-rgb:55,93,210}
+.nav-btn[data-view="movements"]{--nav-rgb:20,145,102}
+.nav-btn[data-view="work"]{--nav-rgb:119,78,190}
+.nav-btn[data-view="recurrences"]{--nav-rgb:194,116,28}
+.nav-btn[data-view="calendar"]{--nav-rgb:0,132,160}
+.nav-btn[data-view="settings"]{--nav-rgb:177,64,111}
+.nav-btn[data-view]{border-color:rgba(var(--nav-rgb),.30)}
+.nav-btn[data-view]:hover{background:rgba(var(--nav-rgb),.16);border-color:rgba(var(--nav-rgb),.65);color:var(--text)}
+.nav-btn[data-view].active{
+  background:linear-gradient(135deg,rgba(var(--nav-rgb),.42),rgba(var(--nav-rgb),.24)) !important;
+  border-color:rgba(var(--nav-rgb),.90) !important;
+  color:#fff;
+  box-shadow:0 8px 20px rgba(var(--nav-rgb),.18);
+}
+
+/* Light mode: colori ancora chiaramente percepibili */
+html:not(.dark) .view.active{
+  background:linear-gradient(160deg,rgba(var(--section-rgb),.22),rgba(var(--section-rgb),.10)) !important;
+  border-color:rgba(var(--section-rgb),.42);
+}
+html:not(.dark) .view.active .panel,
+html:not(.dark) .view.active .kpi-card,
+html:not(.dark) .view.active .toolbar,
+html:not(.dark) .view.active .mini-total,
+html:not(.dark) .view.active .work-summary-card,
+html:not(.dark) .view.active .work-breakdown-row,
+html:not(.dark) .view.active .recurrence-sidebar,
+html:not(.dark) .view.active .recurrence-side-btn,
+html:not(.dark) .view.active .calendar-shell,
+html:not(.dark) .view.active .calendar-main-panel,
+html:not(.dark) .view.active .selected-day-panel,
+html:not(.dark) .view.active .calendar-list-group,
+html:not(.dark) .view.active .group-header,
+html:not(.dark) .view.active .table-wrap{
+  background:linear-gradient(145deg,rgba(var(--section-rgb),.13),rgba(255,255,255,.86)) !important;
+  border-color:rgba(var(--section-rgb),.32) !important;
+}
+@media(max-width:760px){.view.active{padding:13px;border-radius:20px}}
+
+
+/* v14.9 — colori macro-aree visibili anche nella Dashboard */
+.dashboard-section-launcher{display:grid;grid-template-columns:repeat(6,minmax(145px,1fr));gap:10px;margin:0 0 16px}
+.dashboard-area-card{min-width:0;display:flex;align-items:center;gap:11px;text-align:left;color:var(--text);border:1px solid transparent;border-radius:16px;padding:14px 13px;box-shadow:0 9px 24px rgba(0,0,0,.14);transition:transform .16s,border-color .16s,box-shadow .16s;background:var(--panel)}
+.dashboard-area-card:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.20)}
+.dashboard-area-card:focus-visible{outline:3px solid rgba(255,255,255,.28);outline-offset:2px}
+.dashboard-area-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(255,255,255,.11);font-size:17px;flex:0 0 auto}
+.dashboard-area-card strong{display:block;font-size:13px;font-weight:900}
+.dashboard-area-card small{display:block;margin-top:2px;font-size:10px;color:rgba(248,250,252,.72);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.area-dashboard{background:linear-gradient(135deg,rgba(55,93,210,.64),rgba(55,93,210,.34));border-color:rgba(96,130,240,.72)}
+.area-movements{background:linear-gradient(135deg,rgba(20,145,102,.64),rgba(20,145,102,.34));border-color:rgba(52,190,140,.72)}
+.area-work{background:linear-gradient(135deg,rgba(119,78,190,.66),rgba(119,78,190,.35));border-color:rgba(155,112,224,.72)}
+.area-recurrences{background:linear-gradient(135deg,rgba(194,116,28,.68),rgba(194,116,28,.35));border-color:rgba(230,151,59,.72)}
+.area-calendar{background:linear-gradient(135deg,rgba(0,132,160,.68),rgba(0,132,160,.35));border-color:rgba(31,174,202,.72)}
+.area-settings{background:linear-gradient(135deg,rgba(177,64,111,.68),rgba(177,64,111,.35));border-color:rgba(217,94,145,.72)}
+
+/* I sei pulsanti restano sempre colorati, anche quando non sono attivi */
+.nav-btn[data-view="dashboard"]{background:rgba(55,93,210,.24)!important;border-color:rgba(55,93,210,.52)!important;color:#dce6ff}
+.nav-btn[data-view="movements"]{background:rgba(20,145,102,.24)!important;border-color:rgba(20,145,102,.52)!important;color:#d4fae9}
+.nav-btn[data-view="work"]{background:rgba(119,78,190,.25)!important;border-color:rgba(119,78,190,.55)!important;color:#eadfff}
+.nav-btn[data-view="recurrences"]{background:rgba(194,116,28,.25)!important;border-color:rgba(194,116,28,.55)!important;color:#ffe8c7}
+.nav-btn[data-view="calendar"]{background:rgba(0,132,160,.25)!important;border-color:rgba(0,132,160,.55)!important;color:#d5f7ff}
+.nav-btn[data-view="settings"]{background:rgba(177,64,111,.25)!important;border-color:rgba(177,64,111,.55)!important;color:#ffe0ed}
+.nav-btn[data-view].active{box-shadow:inset 0 0 0 2px rgba(255,255,255,.22),0 8px 20px rgba(0,0,0,.18)!important;filter:saturate(1.35) brightness(1.10)}
+
+/* Colore uniforme dell'intera macro-sezione aperta */
+#view-dashboard.active{background:linear-gradient(180deg,rgba(55,93,210,.21),rgba(55,93,210,.08))!important;border-color:rgba(55,93,210,.56)!important}
+#view-movements.active{background:linear-gradient(180deg,rgba(20,145,102,.21),rgba(20,145,102,.08))!important;border-color:rgba(20,145,102,.56)!important}
+#view-work.active{background:linear-gradient(180deg,rgba(119,78,190,.22),rgba(119,78,190,.08))!important;border-color:rgba(119,78,190,.58)!important}
+#view-recurrences.active{background:linear-gradient(180deg,rgba(194,116,28,.22),rgba(194,116,28,.08))!important;border-color:rgba(194,116,28,.58)!important}
+#view-calendar.active{background:linear-gradient(180deg,rgba(0,132,160,.22),rgba(0,132,160,.08))!important;border-color:rgba(0,132,160,.58)!important}
+#view-settings.active{background:linear-gradient(180deg,rgba(177,64,111,.22),rgba(177,64,111,.08))!important;border-color:rgba(177,64,111,.58)!important}
+
+html:not(.dark) .dashboard-area-card small{color:rgba(255,255,255,.88)}
+html:not(.dark) .nav-btn[data-view]{color:#fff!important}
+@media(max-width:1200px){.dashboard-section-launcher{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.dashboard-section-launcher{grid-template-columns:1fr 1fr}.dashboard-area-card{padding:12px 10px}.dashboard-area-card small{white-space:normal}}
+
+
+/* v14.9 — fondini colorati per i blocchi della dashboard */
+.hero{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(17,26,43,.96) 46%,rgba(10,18,32,.98));border-color:rgba(245,158,11,.55)}
+.navbar{background:linear-gradient(135deg,rgba(239,68,68,.18),rgba(30,41,59,.96));border-color:rgba(239,68,68,.35)}
+.quick-entry{background:linear-gradient(135deg,rgba(59,130,246,.18),rgba(15,23,42,.96));border-color:rgba(59,130,246,.35)}
+.controlbar{background:linear-gradient(135deg,rgba(234,179,8,.18),rgba(15,23,42,.96));border-color:rgba(234,179,8,.35)}
+
+html:not(.dark) .hero{background:linear-gradient(135deg,rgba(245,158,11,.16),#fff7ed);border-color:rgba(245,158,11,.35)}
+html:not(.dark) .navbar{background:linear-gradient(135deg,rgba(239,68,68,.12),#fef2f2);border-color:rgba(239,68,68,.26)}
+html:not(.dark) .quick-entry{background:linear-gradient(135deg,rgba(59,130,246,.12),#eff6ff);border-color:rgba(59,130,246,.26)}
+html:not(.dark) .controlbar{background:linear-gradient(135deg,rgba(234,179,8,.14),#fefce8);border-color:rgba(234,179,8,.26)}
+
+
+/* v14.9 — fondini dashboard più evidenti + bordi più spessi */
+.hero{
+  background:linear-gradient(135deg,rgba(245,158,11,.28),rgba(17,26,43,.97) 44%,rgba(10,18,32,.99));
+  border:3px solid rgba(245,158,11,.88);
+  box-shadow:0 0 0 1px rgba(245,158,11,.16),0 18px 48px rgba(0,0,0,.26);
+}
+.navbar{
+  background:linear-gradient(135deg,rgba(239,68,68,.24),rgba(30,41,59,.98));
+  border:3px solid rgba(239,68,68,.82);
+  box-shadow:0 0 0 1px rgba(239,68,68,.13),0 14px 36px rgba(0,0,0,.22);
+}
+.quick-entry{
+  background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(15,23,42,.98));
+  border:3px solid rgba(59,130,246,.84);
+  box-shadow:0 0 0 1px rgba(59,130,246,.14),0 14px 36px rgba(0,0,0,.22);
+}
+.controlbar{
+  background:linear-gradient(135deg,rgba(234,179,8,.25),rgba(15,23,42,.98));
+  border:3px solid rgba(234,179,8,.84);
+  box-shadow:0 0 0 1px rgba(234,179,8,.14),0 14px 36px rgba(0,0,0,.22);
+}
+html:not(.dark) .hero{
+  background:linear-gradient(135deg,rgba(245,158,11,.24),#fff7ed);
+  border-color:rgba(217,119,6,.72);
+}
+html:not(.dark) .navbar{
+  background:linear-gradient(135deg,rgba(239,68,68,.18),#fef2f2);
+  border-color:rgba(220,38,38,.66);
+}
+html:not(.dark) .quick-entry{
+  background:linear-gradient(135deg,rgba(59,130,246,.18),#eff6ff);
+  border-color:rgba(37,99,235,.68);
+}
+html:not(.dark) .controlbar{
+  background:linear-gradient(135deg,rgba(234,179,8,.20),#fefce8);
+  border-color:rgba(202,138,4,.70);
+}
+
+
+/* v14.9 — palette unica, niente effetto arcobaleno */
+:root{--section-bg:#111b2d;--section-bg-2:#0f192a;--section-line:#6378e8;--section-line-rgb:99,120,232}
+
+/* I quattro blocchi superiori usano lo stesso fondino e lo stesso bordo */
+.hero,.navbar,.quick-entry,.controlbar{
+  background:linear-gradient(135deg,var(--section-bg),var(--section-bg-2))!important;
+  border:2px solid rgba(var(--section-line-rgb),.62)!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.16)!important;
+}
+
+/* Navigazione: tutti i pulsanti neutri, un solo colore di accento */
+.nav-btn[data-view],.nav-btn{
+  --nav-rgb:var(--section-line-rgb)!important;
+  background:rgba(255,255,255,.035)!important;
+  border:1px solid rgba(var(--section-line-rgb),.30)!important;
+  color:var(--muted)!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.nav-btn[data-view]:hover,.nav-btn:hover{
+  background:rgba(var(--section-line-rgb),.10)!important;
+  border-color:rgba(var(--section-line-rgb),.55)!important;
+  color:var(--text)!important;
+}
+.nav-btn[data-view].active,.nav-btn.active{
+  background:rgba(var(--section-line-rgb),.20)!important;
+  border-color:rgba(var(--section-line-rgb),.78)!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)!important;
+}
+
+/* Le sei card di accesso in dashboard non sono più multicolore */
+.dashboard-area-card,
+.dashboard-area-card.area-dashboard,
+.dashboard-area-card.area-movements,
+.dashboard-area-card.area-work,
+.dashboard-area-card.area-recurrences,
+.dashboard-area-card.area-calendar,
+.dashboard-area-card.area-settings{
+  background:rgba(255,255,255,.035)!important;
+  border:1px solid rgba(var(--section-line-rgb),.34)!important;
+  color:var(--text)!important;
+  box-shadow:none!important;
+}
+.dashboard-area-card:hover{
+  background:rgba(var(--section-line-rgb),.10)!important;
+  border-color:rgba(var(--section-line-rgb),.62)!important;
+}
+.dashboard-area-icon{background:rgba(var(--section-line-rgb),.14)!important;color:#dfe5ff!important}
+.dashboard-area-card small{color:var(--muted)!important}
+
+/* Anche le macro-sezioni aperte usano la stessa superficie/bordo */
+#view-dashboard.active,#view-movements.active,#view-work.active,#view-recurrences.active,#view-calendar.active,#view-settings.active{
+  background:linear-gradient(180deg,rgba(17,27,45,.96),rgba(15,25,42,.96))!important;
+  border:2px solid rgba(var(--section-line-rgb),.46)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.14)!important;
+}
+#view-dashboard.active .panel,#view-dashboard.active .kpi-card,
+#view-movements.active .panel,#view-movements.active .toolbar,#view-movements.active .mini-total,
+#view-work.active .panel,#view-work.active .work-summary-card,
+#view-recurrences.active .panel,#view-recurrences.active .recurrence-side-btn,
+#view-calendar.active .panel,#view-calendar.active .calendar-shell,
+#view-settings.active .panel{
+  background:var(--panel)!important;
+  border-color:var(--border)!important;
+}
+
+/* Elimina lavaggi multicolore dalle KPI dashboard */
+#view-dashboard .kpi-card:nth-child(n){background:var(--panel)!important}
+
+html:not(.dark){--section-bg:#ffffff;--section-bg-2:#f4f7fb;--section-line:#6174d9;--section-line-rgb:97,116,217}
+html:not(.dark) .hero,html:not(.dark) .navbar,html:not(.dark) .quick-entry,html:not(.dark) .controlbar{
+  background:linear-gradient(135deg,var(--section-bg),var(--section-bg-2))!important;
+  border-color:rgba(var(--section-line-rgb),.42)!important;
+}
+html:not(.dark) .nav-btn[data-view],html:not(.dark) .nav-btn{color:var(--muted)!important;background:#fff!important}
+html:not(.dark) .nav-btn[data-view].active,html:not(.dark) .nav-btn.active{color:#243056!important;background:rgba(var(--section-line-rgb),.16)!important}
+html:not(.dark) .dashboard-area-card{background:#fff!important;color:var(--text)!important}
+html:not(.dark) #view-dashboard.active,html:not(.dark) #view-movements.active,html:not(.dark) #view-work.active,html:not(.dark) #view-recurrences.active,html:not(.dark) #view-calendar.active,html:not(.dark) #view-settings.active{background:#f7f9fc!important}
+
+
+/* v14.9 — evidenza ricorrenze in arrivo */
+.series-card.upcoming-7{border:2px solid rgba(245,158,11,.72);box-shadow:0 0 0 3px rgba(245,158,11,.10)}
+.series-card.upcoming-30{border:2px solid rgba(var(--accent-rgb),.58)}
+.series-card.upcoming-later{border-color:rgba(148,163,184,.32)}
+.series-card.series-paused{opacity:.78;border-style:dashed}
+.series-card.series-ended{opacity:.58}
+.upcoming-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900;border:1px solid var(--border);margin-top:8px}
+.upcoming-badge.soon{color:#fcd34d;background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.38)}
+.upcoming-badge.month{color:#bfdbfe;background:rgba(var(--accent-rgb),.10);border-color:rgba(var(--accent-rgb),.30)}
+.upcoming-badge.later{color:var(--muted);background:rgba(148,163,184,.08)}
+.upcoming-badge.paused{color:#fcd34d;background:rgba(245,158,11,.08)}
+.upcoming-badge.ended{color:var(--muted);background:rgba(100,116,139,.08)}
+
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><div class="brand-icon">💼</div><div><h1>Spese & Family <span class="version-badge">v14.0</span></h1><p>Personale e lavoro, in un'unica vista</p></div></div>
+    <div class="brand"><div class="brand-icon">💼</div><div><h1>Spese & Family <span class="version-badge">v14.9</span></h1><p>Personale e lavoro, in un'unica vista</p></div></div>
     <div class="top-actions">
       <button class="btn btn-primary" onclick="openMovementModal()">＋ <span>Nuovo movimento</span></button>
       <button class="btn icon-btn" onclick="toggleTheme()" title="Tema"><span id="themeIcon">☀️</span></button>
@@ -191,6 +552,14 @@ body{line-height:1.45}.modal-open{overflow:hidden}.app{padding-bottom:34px}
   <main>
     <section id="view-dashboard" class="view active">
       <div class="section-title"><div><h2>Panoramica finanziaria</h2><p id="dashboardSubtitle">Riepilogo del periodo selezionato</p></div></div>
+      <div class="dashboard-section-launcher" aria-label="Aree principali">
+        <button class="dashboard-area-card area-dashboard" type="button" onclick="showView('dashboard')"><span class="dashboard-area-icon">▦</span><span><strong>Panoramica</strong><small>Riepilogo generale</small></span></button>
+        <button class="dashboard-area-card area-movements" type="button" onclick="showView('movements')"><span class="dashboard-area-icon">↕</span><span><strong>Movimenti</strong><small>Entrate e spese</small></span></button>
+        <button class="dashboard-area-card area-work" type="button" onclick="showView('work')"><span class="dashboard-area-icon">💼</span><span><strong>Lavoro</strong><small>Gestione professionale</small></span></button>
+        <button class="dashboard-area-card area-recurrences" type="button" onclick="showView('recurrences')"><span class="dashboard-area-icon">↻</span><span><strong>Ricorrenti</strong><small>Scadenze e serie</small></span></button>
+        <button class="dashboard-area-card area-calendar" type="button" onclick="showView('calendar')"><span class="dashboard-area-icon">▣</span><span><strong>Calendario</strong><small>Vista per data</small></span></button>
+        <button class="dashboard-area-card area-settings" type="button" onclick="showView('settings')"><span class="dashboard-area-icon">⚙</span><span><strong>Impostazioni</strong><small>Persone e categorie</small></span></button>
+      </div>
       <div class="kpi-grid">
         <article class="kpi-card income-card clickable" role="button" tabindex="0" onclick="openMovementsByType('income')" onkeydown="activateOnKeyboard(event,()=>openMovementsByType('income'))"><div class="kpi-label">Entrate</div><div id="kpiIncome" class="kpi-value mono income">€0.00</div><div id="kpiIncomeMeta" class="kpi-meta">0 movimenti</div></article>
         <article class="kpi-card expense-card clickable" role="button" tabindex="0" onclick="openMovementsByType('expense')" onkeydown="activateOnKeyboard(event,()=>openMovementsByType('expense'))"><div class="kpi-label">Spese</div><div id="kpiExpense" class="kpi-value mono expense">€0.00</div><div id="kpiExpenseMeta" class="kpi-meta">0 movimenti</div></article>
@@ -762,7 +1131,8 @@ function recurrenceSeriesFiltered(){const freq=document.getElementById('recurren
 function recurrenceBucketHeading(){return ({all:['Tutte le ricorrenze','Spese ed entrate ricorrenti di ogni ambito.'],'work-expense':['💼 Spese lavoro','Costi professionali ricorrenti e relative scadenze.'],'work-income':['💼 Entrate lavoro','Entrate professionali ricorrenti e relative scadenze.'],'family-expense':['🏠 Spese Family','Costi ricorrenti della famiglia.'],'personal-expense':['👤 Spese personali','Costi ricorrenti individuali.'],'personal-income':['👤 Entrate personali','Stipendi, pensioni e altre entrate personali ricorrenti.']})[recurrenceBucket]||['Ricorrenze','']}
 function renderRecurrences(){updateRecurrenceSidebarCounts();const container=document.getElementById('recurrenceContainer'),series=recurrenceSeriesFiltered(),heading=recurrenceBucketHeading(),historyToggle=document.getElementById('recAllHistory'),historyLabel=document.querySelector('label[for="recAllHistory"]');if(historyToggle){historyToggle.disabled=globalMode==='forecast';if(globalMode==='forecast')historyToggle.checked=false}if(historyLabel)historyLabel.textContent=globalMode==='forecast'?'Vista future: usa il periodo globale':'Mostra tutto lo storico fino a oggi';const head=`<div class="recurrence-bucket-title"><div><h3>${heading[0]}</h3><p>${heading[1]}</p></div><span class="badge">${series.length} serie</span></div>`;if(recurrenceTab==='series'){if(!series.length){container.innerHTML=head+'<div class="empty">Nessuna serie ricorrente in questa sezione.</div>';return}container.innerHTML=head+`<div class="series-grid">${series.map(renderSeriesCard).join('')}</div>`;return}const allHistory=!!historyToggle?.checked;let start,end,mode=globalMode;if(allHistory&&mode==='actual'){start=series.map(t=>t.date).sort()[0]||todayStr();end=todayStr()}else{const r=getPeriodRange();start=r.start;end=r.end}let entries=[];series.forEach(t=>occurrenceDates(t,start,end).forEach(d=>{if((mode==='actual'&&d<=todayStr())||(mode==='forecast'&&d>todayStr()))entries.push(getEntry(t,d))}));entries.sort((a,b)=>mode==='forecast'?a.date.localeCompare(b.date):b.date.localeCompare(a.date));container.innerHTML=head+(entries.length?renderGroupedCards(entries,mode==='forecast'?'asc':'desc'):'<div class="empty">Nessuna ripetizione nel periodo selezionato.</div>')}
 function recurrenceDueLabel(t){const d=parseDate(t.date);if(t.recurrence==='monthly')return `Scadenza: giorno ${d.getDate()} di ogni mese`;if(t.recurrence==='yearly')return `Scadenza: ${d.toLocaleDateString('it-IT',{day:'2-digit',month:'long'})} di ogni anno`;if(t.recurrence==='weekly')return `Scadenza: ogni ${d.toLocaleDateString('it-IT',{weekday:'long'})}`;return 'Movimento singolo'}
-function renderSeriesCard(t){const history=occurrenceDates(t,t.date,todayStr()),entries=history.map(d=>getEntry(t,d)),tot=totals(entries,t.currency),count=countableEntries(entries).length,next=findNextOccurrence(t),monthly=t.recurrence==='weekly'?t.amount*52/12:t.recurrence==='monthly'?t.amount:t.amount/12,suspended=!!t.suspendedFrom,concluded=!!(t.endDate&&t.endDate<todayStr()),notStarted=t.date>todayStr(),idJs=jsq(t.id),scope=t.scope||'personal',scopeLabel=scope==='work'?'💼 Lavoro':scope==='family'?'🏠 Family':'👤 Personale',scopeClass=scope==='work'?'badge-work':scope==='family'?'scope-family':'badge-personal',showDue=(scope==='work'&&(t.recurrence==='monthly'||t.recurrence==='yearly'));return `<article class="series-card"><div class="series-head"><div><div class="series-title">${esc(t.category)} <span class="badge ${t.type==='income'?'badge-income':'badge-expense'}">${t.type==='income'?'Entrata':'Spesa'}</span> <span class="badge ${scopeClass}">${scopeLabel}</span></div><div class="series-note">${esc(t.note||'Nessuna descrizione')}</div></div><span class="badge badge-rec">${recurrenceLabel(t.recurrence)}</span></div>${showDue?`<div style="margin-top:9px"><span class="due-badge">⏰ ${recurrenceDueLabel(t)}</span></div>`:''}<div class="series-stats"><div class="series-stat"><label>Per volta</label><strong class="mono ${t.type==='income'?'income':'expense'}">${money(t.amount,t.currency)}</strong></div><div class="series-stat"><label>Occorrenze maturate</label><strong class="mono">${count}</strong></div><div class="series-stat"><label>Totale maturato</label><strong class="mono ${t.type==='income'?'income':'expense'}">${formatCurrencyBreakdown(entries,t.type)}</strong></div><div class="series-stat"><label>Equivalente mensile</label><strong class="mono">${money(monthly,t.currency)}</strong></div><div class="series-stat"><label>Inizio</label><strong>${t.date.split('-').reverse().join('/')}</strong></div><div class="series-stat"><label>Prossima scadenza</label><strong>${next?next.split('-').reverse().join('/'):'Conclusa'}</strong></div></div><div class="series-foot"><div><span class="badge ${suspended?'badge-warning':''}">${suspended?'In pausa':concluded?'Conclusa':notStarted?'Programmata':'Attiva'}</span></div><div class="actions"><button type="button" class="btn btn-small" onclick="toggleSeriesPause('${idJs}')" ${concluded?'disabled':''}>${suspended?'Riprendi':'Pausa'}</button><button type="button" class="btn btn-small" onclick="openMovementModal('${idJs}')">Modifica</button><button type="button" class="btn btn-small" onclick="closeSeries('${idJs}')" ${concluded||notStarted?'disabled':''}>${concluded?'Conclusa':'Concludi'}</button><button type="button" class="btn btn-small btn-danger" onclick="deleteSeries('${idJs}')">Elimina</button></div></div></article>`}
+function recurrenceArrivalInfo(t,next){if(t.endDate&&t.endDate<todayStr())return {cardClass:'series-ended',badgeClass:'ended',label:'Conclusa'};if(t.suspendedFrom)return {cardClass:'series-paused',badgeClass:'paused',label:'In pausa'};if(!next)return {cardClass:'series-ended',badgeClass:'ended',label:'Nessuna prossima scadenza'};const days=dateOrdinal(parseDate(next))-dateOrdinal(parseDate(todayStr()));if(days<=7)return {cardClass:'upcoming-7',badgeClass:'soon',label:days===1?'Domani':`In arrivo tra ${days} giorni`};if(days<=30)return {cardClass:'upcoming-30',badgeClass:'month',label:`In arrivo entro 30 giorni`};return {cardClass:'upcoming-later',badgeClass:'later',label:`Prossima tra ${days} giorni`}}
+function renderSeriesCard(t){const history=occurrenceDates(t,t.date,todayStr()),entries=history.map(d=>getEntry(t,d)),tot=totals(entries,t.currency),count=countableEntries(entries).length,next=findNextOccurrence(t),arrival=recurrenceArrivalInfo(t,next),monthly=t.recurrence==='weekly'?t.amount*52/12:t.recurrence==='monthly'?t.amount:t.amount/12,suspended=!!t.suspendedFrom,concluded=!!(t.endDate&&t.endDate<todayStr()),notStarted=t.date>todayStr(),idJs=jsq(t.id),scope=t.scope||'personal',scopeLabel=scope==='work'?'💼 Lavoro':scope==='family'?'🏠 Family':'👤 Personale',scopeClass=scope==='work'?'badge-work':scope==='family'?'scope-family':'badge-personal',showDue=(scope==='work'&&(t.recurrence==='monthly'||t.recurrence==='yearly'));return `<article class="series-card ${arrival.cardClass}"><div class="series-head"><div><div class="series-title">${esc(t.category)} <span class="badge ${t.type==='income'?'badge-income':'badge-expense'}">${t.type==='income'?'Entrata':'Spesa'}</span> <span class="badge ${scopeClass}">${scopeLabel}</span></div><div class="series-note">${esc(t.note||'Nessuna descrizione')}</div><span class="upcoming-badge ${arrival.badgeClass}">⏱ ${arrival.label}${next&&!concluded&&!suspended?' · '+next.split('-').reverse().join('/'):''}</span></div><span class="badge badge-rec">${recurrenceLabel(t.recurrence)}</span></div>${showDue?`<div style="margin-top:9px"><span class="due-badge">⏰ ${recurrenceDueLabel(t)}</span></div>`:''}<div class="series-stats"><div class="series-stat"><label>Per volta</label><strong class="mono ${t.type==='income'?'income':'expense'}">${money(t.amount,t.currency)}</strong></div><div class="series-stat"><label>Occorrenze maturate</label><strong class="mono">${count}</strong></div><div class="series-stat"><label>Totale maturato</label><strong class="mono ${t.type==='income'?'income':'expense'}">${formatCurrencyBreakdown(entries,t.type)}</strong></div><div class="series-stat"><label>Equivalente mensile</label><strong class="mono">${money(monthly,t.currency)}</strong></div><div class="series-stat"><label>Inizio</label><strong>${t.date.split('-').reverse().join('/')}</strong></div><div class="series-stat"><label>Prossima scadenza</label><strong>${next?next.split('-').reverse().join('/'):'Conclusa'}</strong></div></div><div class="series-foot"><div><span class="badge ${suspended?'badge-warning':''}">${suspended?'In pausa':concluded?'Conclusa':notStarted?'Programmata':'Attiva'}</span></div><div class="actions"><button type="button" class="btn btn-small" onclick="toggleSeriesPause('${idJs}')" ${concluded?'disabled':''}>${suspended?'Riprendi':'Pausa'}</button><button type="button" class="btn btn-small" onclick="openMovementModal('${idJs}')">Modifica</button><button type="button" class="btn btn-small" onclick="closeSeries('${idJs}')" ${concluded||notStarted?'disabled':''}>${concluded?'Conclusa':'Concludi'}</button><button type="button" class="btn btn-small btn-danger" onclick="deleteSeries('${idJs}')">Elimina</button></div></div></article>`}
 function findNextOccurrence(t){const start=addDays(todayStr(),1),end=addDays(todayStr(),3650);return occurrenceDates(t,start,end,1)[0]||null}
 function toggleSeriesPause(id){const t=state.tasks.find(x=>String(x.id)===String(id));if(!t)return;if(t.endDate&&t.endDate<todayStr()){toast('La serie è già conclusa');return}let message='';if(t.suspendedFrom){const until=addDays(todayStr(),-1);if(t.suspendedFrom<=until){const skipped=occurrenceDates({...t,suspendedFrom:''},t.suspendedFrom,until);t.excludedDates=[...new Set([...t.excludedDates,...skipped])]}t.suspendedFrom='';message='Serie riattivata'}else{t.suspendedFrom=todayStr();message='Serie messa in pausa'}if(!saveState()){renderAll();return}renderAll();toast(message)}
 function closeSeries(id){const t=state.tasks.find(x=>String(x.id)===String(id));if(!t)return;if(t.endDate&&t.endDate<todayStr()){toast('La serie è già conclusa');return}if(t.date>todayStr()){toast('La serie non è ancora iniziata: usa Elimina per annullarla.');return}if(confirm(`Concludere la serie “${t.category}” alla data di oggi?`)){t.endDate=todayStr();t.suspendedFrom='';if(!saveState()){renderAll();return}renderAll();toast('Serie conclusa')}}
